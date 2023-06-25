@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Interlocutor</string>
+
+    <string name="main_menu_logo">\>INTERLOCUTOR_</string>
+    <string name="main_menu_button_caption_play">PLAY</string>
+    <string name="main_menu_button_caption_profile">PROFILE</string>
+    <string name="main_menu_button_caption_exit">EXIT</string>
 </resources>
