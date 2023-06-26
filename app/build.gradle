@@ -37,6 +37,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
+    debugImplementation "androidx.fragment:fragment-testing-manifest:1.6.0-alpha04"
+    androidTestImplementation "androidx.fragment:fragment-testing:1.6.0-alpha04"
+
     testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

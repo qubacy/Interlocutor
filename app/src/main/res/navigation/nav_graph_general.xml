@@ -8,5 +8,25 @@
     <fragment
         android:id="@+id/mainMenuFragment"
         android:name="com.qubacy.interlocutor.ui.screen.main.MainMenuFragment"
-        android:label="MainMenuFragment" />
+        android:label="MainMenuFragment" >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_playSearchingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/playSearchingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/playSearchingFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.play.searching.PlaySearchingFragment"
+        android:label="PlaySearchingFragment" />
 </navigation>
