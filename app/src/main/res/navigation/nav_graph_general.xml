@@ -15,18 +15,18 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/profileFragment" />
         <action
-            android:id="@+id/action_mainMenuFragment_to_playSearchingFragment"
+            android:id="@+id/action_mainMenuFragment_to_playActivity"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:destination="@id/playSearchingFragment" />
+            app:destination="@id/playActivity" />
     </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.qubacy.interlocutor.ui.screen.profile.ProfileFragment"
         android:label="ProfileFragment" />
-    <fragment
-        android:id="@+id/playSearchingFragment"
-        android:name="com.qubacy.interlocutor.ui.screen.play.searching.PlaySearchingFragment"
-        android:label="PlaySearchingFragment" />
+    <activity
+        android:id="@+id/playActivity"
+        android:name="com.qubacy.interlocutor.ui.screen.play.main.PlayActivity"
+        android:label="PlayActivity" />
 </navigation>

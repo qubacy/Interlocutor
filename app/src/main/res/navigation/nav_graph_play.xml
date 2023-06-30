@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_play"
+    app:startDestination="@id/playSearchingFragment">
+
+    <fragment
+        android:id="@+id/playSearchingFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.play.searching.PlaySearchingFragment"
+        android:label="PlaySearchingFragment" >
+        <action
+            android:id="@+id/action_playSearchingFragment_to_playChattingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/playChattingFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/playChattingFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.play.chatting.PlayChattingFragment"
+        android:label="PlayChattingFragment" />
+</navigation>

@@ -1,5 +1,6 @@
 package com.qubacy.interlocutor.ui.screen.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,28 +13,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.profile.ProfileDataRepository;
+import com.qubacy.interlocutor.data.general.struct.error.Error;
+import com.qubacy.interlocutor.data.general.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.profile.ProfileDataSource;
+import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.profile.error.ProfileFragmentErrorEnum;
+import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
 import java.io.Serializable;
 
 public class ProfileFragment extends Fragment {
     public static final String C_PROFILE_DATA_REPOSITORY_ARG_NAME = "profileDataRepository";
 
+    private Context m_context = null;
+
     private EditText m_usernameEditText = null;
     private EditText m_contactEditText = null;
 
-    private ProfileDataRepository m_profileDataRepository = null;
+    private ProfileDataSource m_profileDataRepository = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (!initWithArgs()) {
-            // todo: process args' lacking situation..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    ProfileFragmentErrorEnum.NULL_ARGUMENTS.getResourceCode(),
+                    ProfileFragmentErrorEnum.NULL_ARGUMENTS.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }
@@ -49,17 +62,19 @@ public class ProfileFragment extends Fragment {
         Serializable profileDataRepositorySerializable =
                 args.getSerializable(C_PROFILE_DATA_REPOSITORY_ARG_NAME);
 
-        if (!(profileDataRepositorySerializable instanceof ProfileDataRepository))
+        if (!(profileDataRepositorySerializable instanceof ProfileDataSource))
             return false;
 
-        ProfileDataRepository profileDataRepository =
-                (ProfileDataRepository) profileDataRepositorySerializable;
-
-        if (profileDataRepository == null) return false;
-
-        m_profileDataRepository = profileDataRepository;
+        m_profileDataRepository = (ProfileDataSource) profileDataRepositorySerializable;
 
         return true;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        m_context = context;
     }
 
     @Nullable
@@ -103,18 +118,8 @@ public class ProfileFragment extends Fragment {
     {
         super.onViewCreated(view, savedInstanceState);
 
-        if (!(getActivity() instanceof AppCompatActivity)) return;
-
-        AppCompatActivity appCompatActivity = ((AppCompatActivity)getActivity());
-
-        if (appCompatActivity == null) return;
-
-        ActionBar actionBar = appCompatActivity.getSupportActionBar();
-
-        if (actionBar == null) return;
-
-        actionBar.setTitle(R.string.profile_status_bar_title);
-        actionBar.show();
+        ActivityUtility.setAppCompatActivityActionBarTitle(
+                getActivity(), R.string.profile_status_bar_title);
     }
 
     private void confirmProfileChanges() {

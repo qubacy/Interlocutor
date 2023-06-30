@@ -1,5 +1,7 @@
 package com.qubacy.interlocutor.ui.screen.main;
 
+import static com.qubacy.interlocutor.ui.screen.play.main.PlayActivity.C_PROFILE_ARG_NAME;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +11,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.profile.ProfileDataRepository;
+import com.qubacy.interlocutor.data.profile.ProfileDataSource;
 import com.qubacy.interlocutor.data.profile.local.ProfileDataStore;
 import com.qubacy.interlocutor.ui.screen.profile.ProfileFragment;
+import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
 public class MainMenuFragment extends Fragment {
     @Override
@@ -40,9 +42,7 @@ public class MainMenuFragment extends Fragment {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.
-                        findNavController(v).
-                        navigate(R.id.action_mainMenuFragment_to_playSearchingFragment);
+                navigateToPlaySearching(v);
             }
         });
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +63,21 @@ public class MainMenuFragment extends Fragment {
         return view;
     }
 
+    private void navigateToPlaySearching(final View view) {
+        ProfileDataSource profileDataRepository =
+                new ProfileDataStore.Builder().setContext(getContext()).build();
+        Bundle args = new Bundle();
+
+        args.putSerializable(
+                C_PROFILE_ARG_NAME, profileDataRepository.getProfile());
+
+        Navigation.
+                findNavController(view).
+                navigate(R.id.action_mainMenuFragment_to_playActivity, args);
+    }
+
     private void navigateToProfile(final View view) {
-        ProfileDataRepository profileDataRepository =
+        ProfileDataSource profileDataRepository =
                 new ProfileDataStore.Builder().setContext(getContext()).build();
         Bundle args = new Bundle();
 
@@ -83,13 +96,6 @@ public class MainMenuFragment extends Fragment {
     {
         super.onViewCreated(view, savedInstanceState);
 
-        if (!(getActivity() instanceof AppCompatActivity)) return;
-
-        AppCompatActivity appCompatActivity = ((AppCompatActivity)getActivity());
-
-        if (appCompatActivity == null) return;
-        if (appCompatActivity.getSupportActionBar() == null) return;
-
-        appCompatActivity.getSupportActionBar().hide();
+        ActivityUtility.hideAppCompatActivityActionBar(getActivity());
     }
 }

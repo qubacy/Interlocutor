@@ -21,7 +21,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.profile.ProfileDataRepository;
+import com.qubacy.interlocutor.data.profile.ProfileDataSource;
 import com.qubacy.interlocutor.data.profile.local.ProfileDataStore;
 
 import org.junit.Before;
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class ProfileFragmentTest {
     private Context m_context = null;
-    private ProfileDataRepository m_profileDataRepository = null;
+    private ProfileDataSource m_profileDataRepository = null;
     private FragmentScenario m_profileFragmentScenario = null;
 
     @Before

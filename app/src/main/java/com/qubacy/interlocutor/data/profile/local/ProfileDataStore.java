@@ -3,9 +3,12 @@ package com.qubacy.interlocutor.data.profile.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.qubacy.interlocutor.data.profile.ProfileDataRepository;
+import androidx.annotation.NonNull;
 
-public class ProfileDataStore implements ProfileDataRepository {
+import com.qubacy.interlocutor.data.general.struct.profile.local.Profile;
+import com.qubacy.interlocutor.data.profile.ProfileDataSource;
+
+public class ProfileDataStore implements ProfileDataSource {
     public static final String C_DATA_STORE_FILENAME = "profile";
 
     public static final String C_USERNAME_PROP_NAME = "username";
@@ -28,92 +31,28 @@ public class ProfileDataStore implements ProfileDataRepository {
     }
 
     @Override
-    public boolean setUsername(final String username) {
-        if (username == null) return false;
+    public Profile getProfile() {
+        return Profile.getInstance(getUsername(), getContact());
+    }
 
+    @Override
+    public boolean setUsername(@NonNull final String username) {
         m_dataStore.edit().putString(C_USERNAME_PROP_NAME, username).apply();
 
         return true;
     }
 
     @Override
-    public boolean setContact(final String contact) {
-        if (contact == null) return false;
-
+    public boolean setContact(@NonNull final String contact) {
         m_dataStore.edit().putString(C_CONTACT_PROP_NAME, contact).apply();
 
         return true;
     }
 
-//    final private RxDataStore<Preferences> m_dataStore;
-//
-//    private ProfileDataStore(final RxDataStore<Preferences> dataStore) {
-//        m_dataStore = dataStore;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        Preferences.Key<String> usernameKey = PreferencesKeys.stringKey(C_USERNAME_PROP_NAME);
-//        AtomicReference<String> username = new AtomicReference<>(null);
-//
-//        Single<Boolean> result =
-//                m_dataStore.data().any(preferences -> {
-//                    if (preferences.contains(usernameKey)) {
-//                        username.set(preferences.get(usernameKey));
-//                    }
-//
-//                    return false;
-//                });
-//
-//        if (!result.blockingGet()) return null;
-//
-//        return username.get();
-//    }
-//
-//    @Override
-//    public String getContact() {
-//        Preferences.Key<String> contactKey = PreferencesKeys.stringKey(C_CONTACT_PROP_NAME);
-//        AtomicReference<String> contact = new AtomicReference<>(null);
-//
-//        Single<Boolean> result =
-//                m_dataStore.data().any(preferences -> {
-//                    if (preferences.contains(contactKey)) {
-//                        contact.set(preferences.get(contactKey));
-//                    }
-//
-//                    return false;
-//                });
-//
-//        if (!result.blockingGet()) return null;
-//
-//        return contact.get();
-//    }
-//
-//    @Override
-//    public boolean setUsername(final String username) {
-//        if (username == null) return false;
-//
-//        Preferences.Key<String> usernameKey = PreferencesKeys.stringKey(C_USERNAME_PROP_NAME);
-//
-//        Single<Preferences> result = m_dataStore.updateDataAsync(preferences -> {
-//            MutablePreferences mutablePreferences = preferences.toMutablePreferences();
-//
-//            mutablePreferences.set(usernameKey, username);
-//
-//            return Single.just(mutablePreferences);
-//        });
-//
-//        if (result.)
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean setContact(final String contact) {
-//
-//    }
-
-
+    @Override
+    public boolean setProfile(@NonNull final Profile profile) {
+        return (setUsername(profile.getUsername()) && setContact(profile.getContact()));
+    }
 
     public static class Builder {
         private Context m_context = null;

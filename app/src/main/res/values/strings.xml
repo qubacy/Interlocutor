@@ -15,4 +15,40 @@
     <string name="profile_confirm_error_message_invalid_data">Provided profile data is incorrect!</string>
     <string name="profile_confirm_error_message_saving_failed">Provided profile data saving was failed!</string>
     <string name="profile_confirm_error_message_saving_succeed">Provided profile data has been saved!</string>
+
+    <string name="play_searching_fragment_message_searching_game">Searching Game…</string>
+    <string name="play_searching_fragment_message_game_found">Game Found!</string>
+    <string name="play_searching_button_caption_abort_searching">Abort</string>
+
+    <string name="play_chatting_fragment_status_bar_title">Chat</string>
+
+    <!--  ERRORS  -->
+
+    <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
+    <string name="error_game_service_lacking_game_processor">Game Processor hasn\'t been provided!</string>
+    <string name="error_game_service_starting_searching_failed">Starting searching has been failed!</string>
+    <string name="error_game_service_stopping_searching_failed">Stopping searching has been failed!</string>
+
+    <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>
+    <string name="error_game_service_broadcast_receiver_unknown_command_type">Unknown command type has been provided!</string>
+    <string name="error_game_service_broadcast_receiver_lacking_profile_data">Profile data hasn\'t been provided!</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_profile_data">Incorrect Profile data has been provided!</string>
+
+    <string name="error_main_activity_broadcast_receiver_creation_failed">Main Activity Broadcast Receiver creation has been failed!</string>
+
+    <string name="error_main_activity_broadcast_receiver_unknown_command_type">A command of an unknown type has been provided!</string>
+    <string name="error_main_activity_broadcast_receiver_lacking_error_data">Error data hasn\'t been provided!</string>
+    <string name="error_main_activity_broadcast_receiver_incorrect_error_data">Incorrect Error data has been provided!</string>
+
+    <string name="error_play_activity_null_arguments">Arguments were null!</string>
+
+    <string name="error_play_searching_fragment_broadcast_receiver_creation_failed">Play Searching Fragment Broadcast Receiver creation has been failed!</string>
+    <string name="error_play_searching_fragment_null_arguments">Arguments were null!</string>
+
+    <string name="error_play_searching_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
+    <string name="error_play_searching_fragment_broadcast_receiver_lacking_found_game_data">Found Game data hasn\'t been provided!</string>
+    <string name="error_play_searching_fragment_broadcast_receiver_incorrect_found_game_data">Incorrect Found Game data has been provided!</string>
+
+    <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
 </resources>
