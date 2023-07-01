@@ -11,14 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.general.struct.error.Error;
-import com.qubacy.interlocutor.data.general.struct.error.utility.ErrorUtility;
-import com.qubacy.interlocutor.data.profile.ProfileDataSource;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
+import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.profile.error.ProfileFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
@@ -33,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private EditText m_usernameEditText = null;
     private EditText m_contactEditText = null;
 
-    private ProfileDataSource m_profileDataRepository = null;
+    private ProfileDataRepository m_profileDataRepository = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +61,10 @@ public class ProfileFragment extends Fragment {
         Serializable profileDataRepositorySerializable =
                 args.getSerializable(C_PROFILE_DATA_REPOSITORY_ARG_NAME);
 
-        if (!(profileDataRepositorySerializable instanceof ProfileDataSource))
+        if (!(profileDataRepositorySerializable instanceof ProfileDataRepository))
             return false;
 
-        m_profileDataRepository = (ProfileDataSource) profileDataRepositorySerializable;
+        m_profileDataRepository = (ProfileDataRepository) profileDataRepositorySerializable;
 
         return true;
     }
@@ -89,8 +88,16 @@ public class ProfileFragment extends Fragment {
         m_usernameEditText = view.findViewById(R.id.profile_username_input);
         m_contactEditText = view.findViewById(R.id.profile_contact_input);
 
-        String username = m_profileDataRepository.getUsername();
-        String contact = m_profileDataRepository.getContact();
+        ProfileDataSource profileDataSource = m_profileDataRepository.getSource(getContext());
+
+        if (profileDataSource == null) {
+            // todo: processing an error..
+
+            return view;
+        }
+
+        String username = profileDataSource.getUsername();
+        String contact = profileDataSource.getContact();
 
         if (username != null && contact != null) {
             m_usernameEditText.setText(username);
@@ -136,8 +143,16 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        if (!m_profileDataRepository.setUsername(username)
-         || !m_profileDataRepository.setContact(contact))
+        ProfileDataSource profileDataSource = m_profileDataRepository.getSource(getContext());
+
+        if (profileDataSource == null) {
+            // todo: processing an error..
+
+            return;
+        }
+
+        if (!profileDataSource.setUsername(username)
+         || !profileDataSource.setContact(contact))
         {
             Toast.makeText(
                             getContext(),

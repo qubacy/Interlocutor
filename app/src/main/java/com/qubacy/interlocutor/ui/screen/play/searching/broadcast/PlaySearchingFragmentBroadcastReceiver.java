@@ -8,9 +8,9 @@ import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.qubacy.interlocutor.data.game.struct.FoundGameData;
-import com.qubacy.interlocutor.data.general.struct.error.Error;
-import com.qubacy.interlocutor.data.general.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.error.PlaySearchingFragmentBroadcastReceiverErrorEnum;
 

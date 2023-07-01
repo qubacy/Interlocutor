@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+import com.qubacy.interlocutor.data.profile.internal.source.ProfileDataSourceImpl;
+
 @RunWith(AndroidJUnit4.class)
 public class ProfileDataStoreTest {
     private Context m_context = null;
@@ -24,16 +26,16 @@ public class ProfileDataStoreTest {
 
     @Test
     public void testCreatingProfileDataStoreWithNullContext() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(null).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(null).build();
 
         assertNull(profileDataStore);
     }
 
     @Test
     public void testCreatingProfileDataStoreWithNullFilename() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(null).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(null).build();
 
         assertNull(profileDataStore);
     }
@@ -41,8 +43,8 @@ public class ProfileDataStoreTest {
     @Test
     public void testCreatingProfileDataStoreWithCustomFilename() {
         String filename = "some_file";
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).setFilename(filename).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).setFilename(filename).build();
 
         assertNotNull(profileDataStore);
 
@@ -51,8 +53,8 @@ public class ProfileDataStoreTest {
 
     @Test
     public void testReadingNullUsernameFromSharedPreferences() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
         String username = profileDataStore.getUsername();
 
         assertNull(username);
@@ -63,12 +65,12 @@ public class ProfileDataStoreTest {
         String someUsername = "someUsername";
 
         m_context.getSharedPreferences(
-                ProfileDataStore.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).edit().
-                putString(ProfileDataStore.C_USERNAME_PROP_NAME, someUsername).
+                ProfileDataSourceImpl.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).edit().
+                putString(ProfileDataSourceImpl.C_USERNAME_PROP_NAME, someUsername).
                 commit();
 
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
         String username = profileDataStore.getUsername();
 
         assertEquals(username, someUsername);
@@ -76,8 +78,8 @@ public class ProfileDataStoreTest {
 
     @Test
     public void testReadingNullContactFromSharedPreferences() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
         String contact = profileDataStore.getContact();
 
         assertNull(contact);
@@ -88,12 +90,12 @@ public class ProfileDataStoreTest {
         String someContact = "someContact";
 
         m_context.getSharedPreferences(
-                        ProfileDataStore.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).edit().
-                putString(ProfileDataStore.C_CONTACT_PROP_NAME, someContact).
+                        ProfileDataSourceImpl.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).edit().
+                putString(ProfileDataSourceImpl.C_CONTACT_PROP_NAME, someContact).
                 commit();
 
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
         String contact = profileDataStore.getContact();
 
         assertEquals(contact, someContact);
@@ -101,8 +103,8 @@ public class ProfileDataStoreTest {
 
     @Test
     public void testSettingNullUsernameToSharedPreferences() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
 
         assertFalse(profileDataStore.setUsername(null));
     }
@@ -111,8 +113,8 @@ public class ProfileDataStoreTest {
     public void testSettingNotNullUsernameToSharedPreferences() {
         String username = "someUsername";
 
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
 
         profileDataStore.setUsername(username);
 
@@ -123,8 +125,8 @@ public class ProfileDataStoreTest {
 
     @Test
     public void testSettingNullContactToSharedPreferences() {
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
 
         assertFalse(profileDataStore.setContact(null));
     }
@@ -133,8 +135,8 @@ public class ProfileDataStoreTest {
     public void testSettingNotNullContactToSharedPreferences() {
         String contact = "someContact";
 
-        ProfileDataStore profileDataStore =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+        ProfileDataSourceImpl profileDataStore =
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
 
         profileDataStore.setContact(contact);
 
@@ -147,7 +149,7 @@ public class ProfileDataStoreTest {
     public void cleanUp() {
         SharedPreferences sharedPreferences =
                 m_context.getSharedPreferences(
-                    ProfileDataStore.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE);
+                    ProfileDataSourceImpl.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE);
 
         sharedPreferences.edit().clear().commit();
     }

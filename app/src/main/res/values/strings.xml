@@ -42,6 +42,7 @@
     <string name="error_main_activity_broadcast_receiver_incorrect_error_data">Incorrect Error data has been provided!</string>
 
     <string name="error_play_activity_null_arguments">Arguments were null!</string>
+    <string name="error_play_activity_services_start_failed">Services\' start has been failed!</string>
 
     <string name="error_play_searching_fragment_broadcast_receiver_creation_failed">Play Searching Fragment Broadcast Receiver creation has been failed!</string>
     <string name="error_play_searching_fragment_null_arguments">Arguments were null!</string>

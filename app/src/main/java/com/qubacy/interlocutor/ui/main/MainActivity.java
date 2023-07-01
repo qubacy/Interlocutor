@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.general.struct.error.Error;
-import com.qubacy.interlocutor.data.general.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiverCallback;
 import com.qubacy.interlocutor.ui.main.error.MainActivityErrorEnum;

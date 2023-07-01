@@ -21,8 +21,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.profile.ProfileDataSource;
-import com.qubacy.interlocutor.data.profile.local.ProfileDataStore;
+import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
+import com.qubacy.interlocutor.data.profile.internal.source.ProfileDataSourceImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +38,10 @@ public class ProfileFragmentTest {
     public void setUp() {
         m_context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         m_profileDataRepository =
-                new ProfileDataStore.Builder().setContext(m_context).build();
+                new ProfileDataSourceImpl.Builder().setContext(m_context).build();
 
         m_context.getSharedPreferences(
-                ProfileDataStore.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).
+                ProfileDataSourceImpl.C_DATA_STORE_FILENAME, Context.MODE_PRIVATE).
                 edit().clear().commit();
 
         m_profileFragmentScenario = initFragmentScenario();

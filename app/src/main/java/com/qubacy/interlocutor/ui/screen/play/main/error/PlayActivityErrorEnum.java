@@ -4,7 +4,9 @@ import com.qubacy.interlocutor.R;
 
 public enum PlayActivityErrorEnum {
     NULL_ARGUMENTS(
-            R.string.error_play_activity_null_arguments, true);
+            R.string.error_play_activity_null_arguments, true),
+    SERVICES_START_FAILED(
+            R.string.error_play_activity_services_start_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

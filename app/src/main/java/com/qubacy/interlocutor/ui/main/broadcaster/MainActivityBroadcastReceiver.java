@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.qubacy.interlocutor.data.general.struct.error.Error;
-import com.qubacy.interlocutor.data.general.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.error.MainActivityBroadcastReceiverErrorEnum;
 
 import java.io.Serializable;

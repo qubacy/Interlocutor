@@ -27,7 +27,7 @@
             android:exported="true"/>
 
         <service
-            android:name=".data.game.GameService"
+            android:name=".data.game.internal.service.GameService"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
     </application>
 
