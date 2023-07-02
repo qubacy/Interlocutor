@@ -21,6 +21,7 @@
     <string name="play_searching_button_caption_abort_searching">Abort</string>
 
     <string name="play_chatting_fragment_status_bar_title">Chat</string>
+    <string name="play_chatting_fragment_section_sending_message_text_hint">Type a message..</string>
 
     <!--  ERRORS  -->
 

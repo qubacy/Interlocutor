@@ -4,14 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable-notnight/main_menu_background.xml" value="0.167" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/ic_arrow_forward_24.xml" value="0.2265" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/main_menu_button.xml" value="0.21" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/main_menu_button_default.xml" value="0.167" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/main_menu_button_pressed.xml" value="0.232" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/play_chatting_button_sending.xml" value="0.2265" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/play_chatting_button_sending_default.xml" value="0.2265" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/play_chatting_section_sending_background.xml" value="0.167" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/drawable/play_searching_progress_bar.xml" value="0.227" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/activity_main.xml" value="0.17806484295845998" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/activity_play.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_main_menu.xml" value="0.5" />
-        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_play_chatting.xml" value="0.365625" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_play_chatting.xml" value="0.25" />
+        <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_play_chatting_message.xml" value="0.365625" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_play_searching.xml" value="0.22" />
         <entry key="..\:/Users/MCDead/AndroidStudioProjects/Interlocutor/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
       </map>
