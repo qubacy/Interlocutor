@@ -41,6 +41,8 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error stopSearchingCommandProcessing(
             @NonNull final CommandStopSearching commandStopSearching)
     {
+
+
         Thread.currentThread().interrupt();
 
         return null;

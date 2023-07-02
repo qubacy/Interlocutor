@@ -5,23 +5,19 @@ import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import java.io.Serializable;
 
 public class RemoteMessage extends Message implements Serializable {
-    protected int m_senderId;
-
-    protected RemoteMessage(final String text, final int senderId) {
-        super(text);
+    protected RemoteMessage(
+            final int senderId, final String text)
+    {
+        super(senderId, text);
     }
 
     public static RemoteMessage getInstance(
-            final String text,
-            final int senderId)
+            final int senderId,
+            final String text)
     {
         if (text == null) return null;
         if (text.isEmpty()) return null;
 
-        return new RemoteMessage(text, senderId);
-    }
-
-    public int getSenderId() {
-        return m_senderId;
+        return new RemoteMessage(senderId, text);
     }
 }

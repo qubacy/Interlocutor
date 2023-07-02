@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.data.profile.local;
+package com.qubacy.interlocutor.data.profile.internal.source;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 import com.qubacy.interlocutor.data.profile.internal.source.ProfileDataSourceImpl;
 
 @RunWith(AndroidJUnit4.class)
-public class ProfileDataStoreTest {
+public class ProfileDataSourceImplTest {
     private Context m_context = null;
 
     @Before

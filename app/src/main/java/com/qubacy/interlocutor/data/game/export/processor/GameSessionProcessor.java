@@ -103,6 +103,9 @@ public abstract class GameSessionProcessor implements Serializable {
         }
     }
 
+    public boolean isRunning() {
+        return !m_thread.isInterrupted();
+    }
     public void stop() {
         m_thread.interrupt();
     }

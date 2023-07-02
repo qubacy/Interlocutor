@@ -29,7 +29,7 @@
         app:layout_constraintLeft_toLeftOf="@id/play_searching_guideline_vertical_center"
         android:layout_marginBottom="8dp"
         android:textSize="24sp"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="?android:attr/colorPrimary"
         android:text="test"/>
 
     <ImageView
