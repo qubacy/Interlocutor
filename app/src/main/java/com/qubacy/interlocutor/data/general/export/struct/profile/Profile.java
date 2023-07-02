@@ -18,13 +18,22 @@ public class Profile extends ProfilePublic implements Serializable {
     }
 
     public static Profile getInstance(
-            //final int id,
             final String username,
             final String contact)
     {
         if (username == null || contact == null) return null;
 
         return new Profile(C_DEFAULT_LOCAL_ID, username, contact);
+    }
+
+    public static Profile getInstance(
+            final int id,
+            final String username,
+            final String contact)
+    {
+        if (id < 0 || username == null || contact == null) return null;
+
+        return new Profile(id, username, contact);
     }
 
     public String getContact() {
