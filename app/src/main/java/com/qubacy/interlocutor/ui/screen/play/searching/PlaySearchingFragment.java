@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -27,6 +26,7 @@ import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiverCallback;
 import com.qubacy.interlocutor.ui.screen.play.searching.error.PlaySearchingFragmentErrorEnum;
+import com.qubacy.interlocutor.ui.screen.play.searching.model.PlaySearchingFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.model.PlaySearchingViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
@@ -34,24 +34,23 @@ public class PlaySearchingFragment extends PlayFragment
     implements
         PlaySearchingFragmentBroadcastReceiverCallback
 {
-    private static final String C_IS_SEARCHING_LAUNCHED_PROP_NAME = "isSearchingLaunched";
-
     private PlaySearchingFragmentBroadcastReceiver m_broadcastReceiver = null;
 
-    private PlaySearchingViewModel m_viewModel = null;
+    private PlaySearchingFragmentViewModel m_playSearchingFragmentViewModel = null;
+    private PlaySearchingViewModel m_playSearchingViewModel = null;
 
     private TextView m_messageTextView = null;
     private AnimatorSet m_progressIndicatorAnimatorSet = null;
-
-    private boolean m_isSearchingLaunched = false;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        retainSavedState(savedInstanceState);
+        //retainSavedState(savedInstanceState);
 
-        m_viewModel =
+        m_playSearchingFragmentViewModel =
+                new ViewModelProvider(this).get(PlaySearchingFragmentViewModel.class);
+        m_playSearchingViewModel =
                 (PlaySearchingViewModel) new ViewModelProvider(getActivity()).
                         get(PlayFullViewModel.class);
 
@@ -71,21 +70,6 @@ public class PlaySearchingFragment extends PlayFragment
         }
 
         m_broadcastReceiver = broadcastReceiver;
-    }
-
-    private void retainSavedState(final Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-        if (savedInstanceState.isEmpty()) return;
-
-        m_isSearchingLaunched =
-                savedInstanceState.getBoolean(C_IS_SEARCHING_LAUNCHED_PROP_NAME);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putSerializable(C_IS_SEARCHING_LAUNCHED_PROP_NAME, m_isSearchingLaunched);
     }
 
     @Override
@@ -133,7 +117,7 @@ public class PlaySearchingFragment extends PlayFragment
     }
 
     private void processGameSearchingAbort(final View view) {
-        GameServiceBroadcastReceiver.broadcastStopGameSearching(m_context);
+        m_playSearchingFragmentViewModel.processSearchingStop(m_context);
 
         super.closeGame(view);
     }
@@ -145,23 +129,15 @@ public class PlaySearchingFragment extends PlayFragment
         m_progressIndicatorAnimatorSet.start();
         m_messageTextView.setText(R.string.play_searching_fragment_message_searching_game);
 
-        processSearchingStart();
+        m_playSearchingFragmentViewModel.
+                processSearchingStart(m_context, m_playSearchingViewModel.getProfile());
 
         ActivityUtility.hideAppCompatActivityActionBar(getActivity());
     }
 
-    private void processSearchingStart() {
-        if (m_isSearchingLaunched) return;
-
-        m_isSearchingLaunched = true;
-
-        GameServiceBroadcastReceiver.broadcastStartGameSearching(
-                m_context, m_viewModel.getProfile());
-    }
-
     @Override
     public void onGameFound(@NonNull final FoundGameData foundGameData) {
-        m_viewModel.setFoundGameData(foundGameData);
+        m_playSearchingViewModel.setFoundGameData(foundGameData);
         m_messageTextView.setText(R.string.play_searching_fragment_message_game_found);
 
         navigateToChatting();
@@ -176,5 +152,6 @@ public class PlaySearchingFragment extends PlayFragment
     @Override
     public void onSearchingStopped() {
         // todo: doing something??.
+
     }
 }

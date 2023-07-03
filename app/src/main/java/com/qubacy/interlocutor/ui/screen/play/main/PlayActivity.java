@@ -3,7 +3,6 @@ package com.qubacy.interlocutor.ui.screen.play.main;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +14,7 @@ import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUti
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.main.error.PlayActivityErrorEnum;
+import com.qubacy.interlocutor.ui.screen.play.main.model.PlayActivityViewModel;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 
 import java.io.Serializable;
@@ -24,14 +24,8 @@ public class PlayActivity extends AppCompatActivity
     public static final String C_GAME_SERVICE_LAUNCHER_ARG_NAME = "gameServiceLauncher";
     public static final String C_PROFILE_ARG_NAME = "profile";
 
-    private static final String C_IS_GAME_SERVICE_LAUNCHED_PROP_NAME = "isGameServiceLaunched";
-
-    private PlayFullViewModel m_viewModel = null;
-
-    //todo: implement it's local ViewModel to retain something??
-    private GameServiceLauncher m_gameServiceLauncher = null;
-
-    private boolean m_isGameServiceLaunched = false;
+    private PlayFullViewModel m_playFullViewModel = null;
+    private PlayActivityViewModel m_playActivityViewModel = null;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -39,9 +33,10 @@ public class PlayActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_play);
 
-        retainSavedState(savedInstanceState);
-
-        m_viewModel = new ViewModelProvider(this).get(PlayFullViewModel.class);
+        m_playActivityViewModel =
+                new ViewModelProvider(this).get(PlayActivityViewModel.class);
+        m_playFullViewModel =
+                new ViewModelProvider(this).get(PlayFullViewModel.class);
 
         if (!initWithArgs()) {
             Error error =
@@ -55,7 +50,7 @@ public class PlayActivity extends AppCompatActivity
             return;
         }
 
-        if (!startServices()) {
+        if (!m_playActivityViewModel.startServices(this)) {
             Error error =
                     ErrorUtility.getErrorByStringResourceCodeAndFlag(
                             this,
@@ -68,25 +63,10 @@ public class PlayActivity extends AppCompatActivity
         }
     }
 
-    private void retainSavedState(final Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-        if (savedInstanceState.isEmpty()) return;
-
-        m_isGameServiceLaunched =
-                savedInstanceState.getBoolean(C_IS_GAME_SERVICE_LAUNCHED_PROP_NAME);
-    }
-
-    private boolean startServices() {
-        if (m_isGameServiceLaunched) return true;
-
-        m_isGameServiceLaunched = true;
-
-        m_gameServiceLauncher.startService(this);
-
-        return true;
-    }
-
     private boolean initWithArgs() {
+        if (m_playActivityViewModel.isInitialized())
+            return true;
+
         Intent intent = getIntent();
 
         if (intent == null) return false;
@@ -104,23 +84,17 @@ public class PlayActivity extends AppCompatActivity
             return false;
         }
 
-        m_viewModel.setProfile((Profile) profileSerializable);
+        m_playFullViewModel.setProfile((Profile) profileSerializable);
 
-        m_gameServiceLauncher = (GameServiceLauncher) gameServiceLauncherSerializable;
+        m_playActivityViewModel.setGameServiceLauncher(
+                (GameServiceLauncher) gameServiceLauncherSerializable);
 
         return true;
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putSerializable(C_IS_GAME_SERVICE_LAUNCHED_PROP_NAME, m_isGameServiceLaunched);
-    }
-
-    @Override
     public void onBackPressed() {
-        m_gameServiceLauncher.stopService(this);
+        m_playActivityViewModel.getGameServiceLauncher().stopService(this);
 
         super.onBackPressed();
     }

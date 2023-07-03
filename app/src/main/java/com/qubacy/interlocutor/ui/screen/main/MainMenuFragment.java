@@ -11,44 +11,33 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
-import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncherFactory;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
-import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepositoryFactory;
 import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
+import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.FragmentBase;
+import com.qubacy.interlocutor.ui.screen.main.error.MainMenuFragmentErrorEnum;
+import com.qubacy.interlocutor.ui.screen.main.model.MainMenuFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.profile.ProfileFragment;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
-public class MainMenuFragment extends Fragment {
-    private ProfileDataRepository m_profileDataRepository = null;
+public class MainMenuFragment extends FragmentBase {
+    private MainMenuFragmentViewModel m_mainMenuFragmentViewModel = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!initProfileDataRepository()) {
-            // todo: processing an error..
-        }
-    }
+        m_mainMenuFragmentViewModel =
+                new ViewModelProvider(this).get(MainMenuFragmentViewModel.class);
 
-    private boolean initProfileDataRepository() {
-        ProfileDataRepositoryFactory profileDataRepositoryFactory =
-                ProfileDataRepositoryFactory.getInstance();
-
-        if (profileDataRepositoryFactory == null) return false;
-
-        ProfileDataRepository profileDataRepository =
-                profileDataRepositoryFactory.generateProfileDataRepository();
-
-        if (profileDataRepository == null) return false;
-
-        m_profileDataRepository = profileDataRepository;
-
-        return true;
+        if (!m_mainMenuFragmentViewModel.initProfileDataRepository()) return;
     }
 
     @Nullable
@@ -90,28 +79,29 @@ public class MainMenuFragment extends Fragment {
 
     private void navigateToPlaySearching(final View view) {
         ProfileDataSource profileDataSource =
-                m_profileDataRepository.getSource(getContext());
+                m_mainMenuFragmentViewModel.getProfileDataSource(m_context);
 
         if (profileDataSource == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(m_context,
+                    MainMenuFragmentErrorEnum.NULL_PROFILE_DATA_SOURCE.getResourceCode(),
+                    MainMenuFragmentErrorEnum.NULL_PROFILE_DATA_SOURCE.isCritical());
 
-            return;
-        }
-
-        GameServiceLauncherFactory gameServiceLauncherFactory =
-                GameServiceLauncherFactory.getInstance();
-
-        if (gameServiceLauncherFactory == null) {
-            // todo: processing an error..
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }
 
         GameServiceLauncher gameServiceLauncher =
-                gameServiceLauncherFactory.generateGameServiceLauncher();
+                m_mainMenuFragmentViewModel.getGameServiceLauncher();
 
         if (gameServiceLauncher == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(m_context,
+                    MainMenuFragmentErrorEnum.NULL_GAME_SERVICE_LAUNCHER.getResourceCode(),
+                    MainMenuFragmentErrorEnum.NULL_GAME_SERVICE_LAUNCHER.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }
@@ -129,17 +119,20 @@ public class MainMenuFragment extends Fragment {
     }
 
     private void navigateToProfile(final View view) {
-        ProfileDataRepositoryFactory profileDataRepositoryFactory =
-                ProfileDataRepositoryFactory.getInstance();
+        ProfileDataRepository profileDataRepository =
+                m_mainMenuFragmentViewModel.getProfileDataRepository();
 
-        if (profileDataRepositoryFactory == null) {
-            // todo: processing an error...
+        if (profileDataRepository == null) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(m_context,
+                    MainMenuFragmentErrorEnum.NULL_PROFILE_DATA_REPOSITORY.getResourceCode(),
+                    MainMenuFragmentErrorEnum.NULL_PROFILE_DATA_REPOSITORY.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }
 
-        ProfileDataRepository profileDataRepository =
-                profileDataRepositoryFactory.generateProfileDataRepository();
         Bundle args = new Bundle();
 
         args.putSerializable(

@@ -10,10 +10,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -22,6 +20,7 @@ import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiverCallback;
 import com.qubacy.interlocutor.ui.screen.play.chatting.error.PlayChattingFragmentErrorEnum;
+import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingViewModel;
 import com.qubacy.interlocutor.ui.screen.play.model.PlayViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
@@ -30,7 +29,9 @@ public class PlayChattingFragment extends PlayFragment
     implements
         PlayChattingFragmentBroadcastReceiverCallback
 {
-    private PlayChattingViewModel m_viewModel = null;
+    private PlayChattingFragmentViewModel m_playChattingFragmentViewModel = null;
+    private PlayChattingViewModel m_playChattingViewModel = null;
+
     private PlayChattingFragmentBroadcastReceiver m_broadcastReceiver = null;
 
     private EditText m_messageEditText = null;
@@ -39,7 +40,9 @@ public class PlayChattingFragment extends PlayFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        m_viewModel =
+        m_playChattingFragmentViewModel =
+                new ViewModelProvider(this).get(PlayChattingFragmentViewModel.class);
+        m_playChattingViewModel =
                 (PlayChattingViewModel) new ViewModelProvider(getActivity()).
                         get(PlayViewModel.class);
 
@@ -101,7 +104,7 @@ public class PlayChattingFragment extends PlayFragment
 
     @Override
     public void onMessageReceived(@NonNull final Message message) {
-        m_viewModel.addMessage(message);
+        m_playChattingViewModel.addMessage(message);
 
         // todo: notifying the messages' list of the change..
 
@@ -126,9 +129,7 @@ public class PlayChattingFragment extends PlayFragment
             return;
         }
 
-        Message message = Message.getInstance(messageText);
-
-        if (message == null) {
+        if (!m_playChattingFragmentViewModel.onMessageSendingRequested(messageText, m_context)) {
             Error error =
                 ErrorUtility.getErrorByStringResourceCodeAndFlag(
                     m_context,
@@ -139,7 +140,5 @@ public class PlayChattingFragment extends PlayFragment
 
             return;
         }
-
-        GameServiceBroadcastReceiver.broadcastSendMessage(m_context, message);
     }
 }

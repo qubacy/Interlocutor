@@ -24,6 +24,10 @@
     <string name="play_chatting_fragment_section_sending_message_text_hint">Type a message..</string>
 
     <!--  ERRORS  -->
+    
+    <string name="error_main_menu_fragment_null_profile_data_source">Profile Data Source was null!</string>
+    <string name="error_main_menu_fragment_null_game_service_launcher">Game Service launcher was null!</string>
+    <string name="error_main_menu_fragment_null_profile_data_repository">Profile Data Repository was null!</string>
 
     <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
     <string name="error_game_service_lacking_game_processor">Game Processor hasn\'t been provided!</string>

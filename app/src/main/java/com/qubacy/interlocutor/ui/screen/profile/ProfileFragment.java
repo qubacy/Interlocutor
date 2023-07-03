@@ -11,32 +11,35 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
-import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.FragmentBase;
 import com.qubacy.interlocutor.ui.screen.profile.error.ProfileFragmentErrorEnum;
+import com.qubacy.interlocutor.ui.screen.profile.model.ProfileFragmentViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
 import java.io.Serializable;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends FragmentBase {
     public static final String C_PROFILE_DATA_REPOSITORY_ARG_NAME = "profileDataRepository";
 
-    private Context m_context = null;
+    private ProfileFragmentViewModel m_profileFragmentViewModel = null;
 
     private EditText m_usernameEditText = null;
     private EditText m_contactEditText = null;
 
-    private ProfileDataRepository m_profileDataRepository = null;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        m_profileFragmentViewModel =
+                new ViewModelProvider(this).get(ProfileFragmentViewModel.class);
 
         if (!initWithArgs()) {
             Error error =
@@ -54,6 +57,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private boolean initWithArgs() {
+        if (m_profileFragmentViewModel.isInitialized())
+            return true;
+
         Bundle args = getArguments();
 
         if (args == null) return false;
@@ -64,16 +70,10 @@ public class ProfileFragment extends Fragment {
         if (!(profileDataRepositorySerializable instanceof ProfileDataRepository))
             return false;
 
-        m_profileDataRepository = (ProfileDataRepository) profileDataRepositorySerializable;
+        m_profileFragmentViewModel.
+                setProfileDataRepository((ProfileDataRepository) profileDataRepositorySerializable);
 
         return true;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        m_context = context;
     }
 
     @Nullable
@@ -88,16 +88,16 @@ public class ProfileFragment extends Fragment {
         m_usernameEditText = view.findViewById(R.id.profile_username_input);
         m_contactEditText = view.findViewById(R.id.profile_contact_input);
 
-        ProfileDataSource profileDataSource = m_profileDataRepository.getSource(getContext());
+        Profile profile = m_profileFragmentViewModel.getProfile(m_context);
 
-        if (profileDataSource == null) {
+        if (profile == null) {
             // todo: processing an error..
 
             return view;
         }
 
-        String username = profileDataSource.getUsername();
-        String contact = profileDataSource.getContact();
+        String username = profile.getUsername();
+        String contact = profile.getContact();
 
         if (username != null && contact != null) {
             m_usernameEditText.setText(username);
@@ -143,17 +143,15 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        ProfileDataSource profileDataSource = m_profileDataRepository.getSource(getContext());
+        Profile profile = Profile.getInstance(username, contact);
 
-        if (profileDataSource == null) {
+        if (profile == null) {
             // todo: processing an error..
 
             return;
         }
 
-        if (!profileDataSource.setUsername(username)
-         || !profileDataSource.setContact(contact))
-        {
+        if (!m_profileFragmentViewModel.changeProfileData(profile, m_context)) {
             Toast.makeText(
                             getContext(),
                             R.string.profile_confirm_error_message_saving_failed,
