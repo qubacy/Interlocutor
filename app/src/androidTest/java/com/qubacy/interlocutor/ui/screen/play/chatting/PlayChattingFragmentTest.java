@@ -1,7 +1,6 @@
 package com.qubacy.interlocutor.ui.screen.play.chatting;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.Lifecycle;
@@ -27,6 +26,7 @@ public class PlayChattingFragmentTest {
     @Test
     public void testPlayChattingFragmentAppearance() {
         m_fragmentScenario.moveToState(Lifecycle.State.STARTED);
+
 
     }
 

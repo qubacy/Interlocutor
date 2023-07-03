@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.game.internal.service.broadcast.GameServiceBroadcastCommand;
 import com.qubacy.interlocutor.data.game.internal.service.broadcast.GameServiceBroadcastReceiverCallback;
 import com.qubacy.interlocutor.data.game.internal.service.broadcast.error.GameServiceBroadcastReceiverErrorEnum;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 
 public class GameServiceBroadcastReceiver extends BroadcastReceiver {
     public static final String C_PROFILE_PROP_NAME = "profile";
+    public static final String C_MESSAGE_PROP_NAME = "message";
 
     private final Context m_context;
     private final GameServiceBroadcastReceiverCallback m_callback;
@@ -82,6 +84,17 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
 
     public static void broadcastStopGameSearching(@NonNull final Context context) {
         Intent intent = new Intent(GameServiceBroadcastCommand.STOP_SEARCHING.toString());
+
+        LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
+    }
+
+    public static void broadcastSendMessage(
+            @NonNull final Context context,
+            @NonNull final Message message)
+    {
+        Intent intent = new Intent(GameServiceBroadcastCommand.SEND_MESSAGE.toString());
+
+        intent.putExtra(C_MESSAGE_PROP_NAME, message);
 
         LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
     }

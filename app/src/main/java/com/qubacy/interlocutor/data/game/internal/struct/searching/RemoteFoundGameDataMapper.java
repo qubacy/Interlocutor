@@ -43,6 +43,6 @@ public class RemoteFoundGameDataMapper
             profilePublicList.add(profilePublic);
         }
 
-        return FoundGameData.getInstance(profilePublicList);
+        return FoundGameData.getInstance(input.getLocalProfileId(), profilePublicList);
     }
 }

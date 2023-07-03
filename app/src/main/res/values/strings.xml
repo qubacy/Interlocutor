@@ -52,5 +52,12 @@
     <string name="error_play_searching_fragment_broadcast_receiver_lacking_found_game_data">Found Game data hasn\'t been provided!</string>
     <string name="error_play_searching_fragment_broadcast_receiver_incorrect_found_game_data">Incorrect Found Game data has been provided!</string>
 
+    <string name="error_play_chatting_fragment_broadcast_receiver_creation_failed">Play Chatting Fragment Broadcast Receiver creation has been failed!</string>
+    <string name="error_play_chatting_fragment_sending_message_creation_failed">Sending Message creation has been failed!</string>
+
+    <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
+    <string name="error_play_chatting_fragment_broadcast_receiver_lacking_message_data">Message data hasn\'t been provided!</string>
+    <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_message_data">Incorrect Message data has been provided!</string>
+
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
 </resources>

@@ -3,6 +3,8 @@ package com.qubacy.interlocutor.data.general.export.struct.profile;
 import java.io.Serializable;
 
 public class ProfilePublic implements Serializable {
+    public static final int C_DEFAULT_LOCAL_ID = 0;
+
     final protected int m_id;
     final protected String m_username;
 
@@ -21,6 +23,14 @@ public class ProfilePublic implements Serializable {
         if (id < 0 || username == null) return null;
 
         return new ProfilePublic(id, username);
+    }
+
+    public static ProfilePublic getInstance(
+            final String username)
+    {
+        if (username == null) return null;
+
+        return new ProfilePublic(C_DEFAULT_LOCAL_ID, username);
     }
 
     public int getId() {

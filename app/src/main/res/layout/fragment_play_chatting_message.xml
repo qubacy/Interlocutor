@@ -3,8 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/play_chatting_section_message_background"
+    android:padding="8dp">
 
+    <TextView
+        android:id="@+id/play_chatting_message_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"/>
 
+    <TextView
+        android:id="@+id/play_chatting_message_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/play_chatting_message_username"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        android:text=""/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

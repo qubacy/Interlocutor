@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 public enum PlayChattingFragmentBroadcastCommand {
     MESSAGE_RECEIVED(
-            PlayChattingFragmentBroadcastReceiver.class.getName() + ".message_received");
+            PlayChattingFragmentBroadcastReceiver.class.getName() + ".message_received"),
+    TIME_IS_OVER(
+            PlayChattingFragmentBroadcastReceiver.class.getName() + ".time_is_over");
 
     private final String m_commandString;
 

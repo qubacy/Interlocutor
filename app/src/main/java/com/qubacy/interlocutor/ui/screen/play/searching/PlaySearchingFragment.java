@@ -34,6 +34,8 @@ public class PlaySearchingFragment extends PlayFragment
     implements
         PlaySearchingFragmentBroadcastReceiverCallback
 {
+    private static final String C_IS_SEARCHING_LAUNCHED_PROP_NAME = "isSearchingLaunched";
+
     private PlaySearchingFragmentBroadcastReceiver m_broadcastReceiver = null;
 
     private PlaySearchingViewModel m_viewModel = null;
@@ -41,9 +43,13 @@ public class PlaySearchingFragment extends PlayFragment
     private TextView m_messageTextView = null;
     private AnimatorSet m_progressIndicatorAnimatorSet = null;
 
+    private boolean m_isSearchingLaunched = false;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        retainSavedState(savedInstanceState);
 
         m_viewModel =
                 (PlaySearchingViewModel) new ViewModelProvider(getActivity()).
@@ -65,6 +71,21 @@ public class PlaySearchingFragment extends PlayFragment
         }
 
         m_broadcastReceiver = broadcastReceiver;
+    }
+
+    private void retainSavedState(final Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+        if (savedInstanceState.isEmpty()) return;
+
+        m_isSearchingLaunched =
+                savedInstanceState.getBoolean(C_IS_SEARCHING_LAUNCHED_PROP_NAME);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(C_IS_SEARCHING_LAUNCHED_PROP_NAME, m_isSearchingLaunched);
     }
 
     @Override
@@ -124,10 +145,18 @@ public class PlaySearchingFragment extends PlayFragment
         m_progressIndicatorAnimatorSet.start();
         m_messageTextView.setText(R.string.play_searching_fragment_message_searching_game);
 
-        GameServiceBroadcastReceiver.broadcastStartGameSearching(
-                m_context, m_viewModel.getProfile());
+        processSearchingStart();
 
         ActivityUtility.hideAppCompatActivityActionBar(getActivity());
+    }
+
+    private void processSearchingStart() {
+        if (m_isSearchingLaunched) return;
+
+        m_isSearchingLaunched = true;
+
+        GameServiceBroadcastReceiver.broadcastStartGameSearching(
+                m_context, m_viewModel.getProfile());
     }
 
     @Override
