@@ -87,8 +87,6 @@ public abstract class GameSessionProcessor implements Serializable {
         while (!Thread.currentThread().isInterrupted()) {
             SystemClock.sleep(C_EXEC_TIMEOUT);
 
-            Log.d("TEST", "HOP");
-
             Command curCommand = m_commandQueue.poll();
 
             if (curCommand == null) continue;

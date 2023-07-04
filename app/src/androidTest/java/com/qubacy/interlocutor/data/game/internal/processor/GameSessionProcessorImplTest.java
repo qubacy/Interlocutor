@@ -8,6 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
+import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
@@ -30,7 +31,7 @@ public class GameSessionProcessorImplTest {
         m_context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         m_callback = new GameSessionProcessorCallback() {
             @Override
-            public void gameFound(@NonNull final FoundGameData foundGameData) {
+            public void gameFound(@NonNull final RemoteFoundGameData foundGameData) {
                 return;
             }
 

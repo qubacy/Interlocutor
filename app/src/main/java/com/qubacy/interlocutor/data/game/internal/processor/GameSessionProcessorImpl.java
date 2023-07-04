@@ -8,9 +8,13 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandLeave
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandSendMessage;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStartSearching;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopSearching;
+import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 *
@@ -32,7 +36,15 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error startSearchingCommandProcessing(
             @NonNull final CommandStartSearching commandStartSearching)
     {
-
+        // <temporal>
+        List<RemoteProfilePublic> remoteProfilePublicList =
+                new ArrayList<RemoteProfilePublic>() {
+                    {
+                        add(RemoteProfilePublic.getInstance(1, "user1"));
+                    }
+                };
+        m_callback.gameFound(RemoteFoundGameData.getInstance(0, remoteProfilePublicList));
+        // </temporal>
 
         return null;
     }

@@ -1,6 +1,5 @@
 package com.qubacy.interlocutor.ui.screen.profile;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +90,13 @@ public class ProfileFragment extends FragmentBase {
         Profile profile = m_profileFragmentViewModel.getProfile(m_context);
 
         if (profile == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    ProfileFragmentErrorEnum.LACKING_PROFILE_DATA.getResourceCode(),
+                    ProfileFragmentErrorEnum.LACKING_PROFILE_DATA.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return view;
         }
@@ -109,8 +114,6 @@ public class ProfileFragment extends FragmentBase {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: saving changes..
-
                 confirmProfileChanges();
             }
         });
@@ -146,7 +149,13 @@ public class ProfileFragment extends FragmentBase {
         Profile profile = Profile.getInstance(username, contact);
 
         if (profile == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    ProfileFragmentErrorEnum.PROFILE_CREATION_FAILED.getResourceCode(),
+                    ProfileFragmentErrorEnum.PROFILE_CREATION_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }

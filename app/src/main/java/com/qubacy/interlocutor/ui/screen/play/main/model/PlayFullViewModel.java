@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
+import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingViewModel;
 import com.qubacy.interlocutor.ui.screen.play.model.PlayViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.model.PlaySearchingViewModel;
@@ -20,10 +21,10 @@ public class PlayFullViewModel extends PlayViewModel
     protected Profile m_profile = null;
     protected FoundGameData m_foundGameData = null;
 
-    protected final List<Message> m_messageList;
+//    protected final List<Message> m_messageList;
 
     public PlayFullViewModel() {
-        m_messageList = new LinkedList<>();
+//        m_messageList = new LinkedList<>();
     }
 
     public boolean setProfile(@NonNull final Profile profile) {
@@ -45,20 +46,16 @@ public class PlayFullViewModel extends PlayViewModel
     }
 
     @Override
-    public Message getMessageByIndex(final int index) {
-        if  (index < 0 || index >= m_messageList.size())
+    public ProfilePublic getProfileById(final int id) {
+        List<ProfilePublic> profilePublicList =
+                m_foundGameData.getProfilePublicList();
+
+        if (id < 0 || id >= profilePublicList.size())
             return null;
 
-        return m_messageList.get(index);
-    }
+        for (final ProfilePublic profilePublic : profilePublicList)
+            if (profilePublic.getId() == id) return profilePublic;
 
-    @Override
-    public int getMessageCount() {
-        return m_messageList.size();
-    }
-
-    @Override
-    public void addMessage(@NonNull final Message message) {
-        m_messageList.add(message);
+        return null;
     }
 }

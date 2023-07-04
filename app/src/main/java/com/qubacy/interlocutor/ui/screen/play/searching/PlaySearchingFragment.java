@@ -109,17 +109,17 @@ public class PlaySearchingFragment extends PlayFragment
         abortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processGameSearchingAbort(v);
+                processGameSearchingAbort();
             }
         });
 
         return view;
     }
 
-    private void processGameSearchingAbort(final View view) {
+    private void processGameSearchingAbort() {
         m_playSearchingFragmentViewModel.processSearchingStop(m_context);
 
-        super.closeGame(view);
+        super.closeGame();
     }
 
     @Override
@@ -129,10 +129,13 @@ public class PlaySearchingFragment extends PlayFragment
         m_progressIndicatorAnimatorSet.start();
         m_messageTextView.setText(R.string.play_searching_fragment_message_searching_game);
 
+        ActivityUtility.hideAppCompatActivityActionBar(getActivity());
+    }
+
+    @Override
+    public void onServiceReady() {
         m_playSearchingFragmentViewModel.
                 processSearchingStart(m_context, m_playSearchingViewModel.getProfile());
-
-        ActivityUtility.hideAppCompatActivityActionBar(getActivity());
     }
 
     @Override

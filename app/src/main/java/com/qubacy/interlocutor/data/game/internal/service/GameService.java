@@ -4,9 +4,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.IInterface;
-import android.os.Parcel;
-import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +17,18 @@ import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessor
 import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
+import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
+import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameDataMapper;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
+import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublicDataMapper;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastCommand;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 
-import java.io.FileDescriptor;
 import java.io.Serializable;
 import java.util.List;
 
@@ -85,6 +84,12 @@ public class GameService extends Service
         }
 
         m_gameSessionBroadcastReceiver = gameSessionBroadcastReceiver;
+
+        processServiceReady();
+    }
+
+    private void processServiceReady() {
+        PlaySearchingFragmentBroadcastReceiver.broadcastServiceReady(this);
     }
 
     @Override
@@ -138,16 +143,37 @@ public class GameService extends Service
     // GameSessionProcessor:
 
     @Override
-    public void gameFound(@NonNull final FoundGameData foundGameData) {
-        Intent intent = new Intent(PlaySearchingFragmentBroadcastCommand.GAME_FOUND.toString());
+    public void gameFound(@NonNull final RemoteFoundGameData foundGameData) {
+        // mb some actions...
 
-        intent.putExtra(
-                PlaySearchingFragmentBroadcastReceiver.C_GAME_FOUND_DATA_PROP_NAME,
-                foundGameData);
+        RemoteProfilePublicDataMapper remoteProfilePublicDataMapper =
+                RemoteProfilePublicDataMapper.getInstance();
 
-        LocalBroadcastManager.
-                getInstance(getApplicationContext()).
-                sendBroadcast(intent);
+        if (remoteProfilePublicDataMapper == null) {
+            // todo: processing an error..
+
+            return;
+        }
+
+        RemoteFoundGameDataMapper remoteFoundGameDataMapper =
+                RemoteFoundGameDataMapper.getInstance(remoteProfilePublicDataMapper);
+
+        if (remoteFoundGameDataMapper == null) {
+            // todo: processing an error..
+
+            return;
+        }
+
+        FoundGameData mappedFoundGameData = remoteFoundGameDataMapper.map(foundGameData);
+
+        if (mappedFoundGameData == null) {
+            // todo: processing an error..
+
+            return;
+        }
+
+        PlaySearchingFragmentBroadcastReceiver.broadcastGameFound(
+                mappedFoundGameData, this);
     }
 
     @Override

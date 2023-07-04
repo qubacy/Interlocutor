@@ -4,8 +4,11 @@ import com.qubacy.interlocutor.R;
 
 public enum ProfileFragmentErrorEnum {
     NULL_ARGUMENTS(
-            R.string.error_profile_fragment_null_arguments, true)
-    ;
+            R.string.error_profile_fragment_null_arguments, true),
+    LACKING_PROFILE_DATA(
+            R.string.error_profile_fragment_lacking_profile_data, true),
+    PROFILE_CREATION_FAILED(
+            R.string.error_profile_fragment_profile_creation_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

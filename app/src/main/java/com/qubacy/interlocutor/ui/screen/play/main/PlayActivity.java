@@ -2,6 +2,7 @@ package com.qubacy.interlocutor.ui.screen.play.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -96,7 +97,7 @@ public class PlayActivity extends AppCompatActivity
     public void onBackPressed() {
         m_playActivityViewModel.getGameServiceLauncher().stopService(this);
 
-        super.onBackPressed();
+        finish();
     }
 
     @Override

@@ -69,6 +69,31 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver);
     }
 
+    public static void broadcastServiceReady(
+            @NonNull final Context context)
+    {
+        Intent intent =
+                new Intent(PlaySearchingFragmentBroadcastCommand.SERVICE_READY.toString());
+
+        LocalBroadcastManager.
+                getInstance(context.getApplicationContext()).sendBroadcast(intent);
+    }
+
+    public static void broadcastGameFound(
+            @NonNull final FoundGameData foundGameData,
+            @NonNull final Context context)
+    {
+        Intent intent = new Intent(PlaySearchingFragmentBroadcastCommand.GAME_FOUND.toString());
+
+        intent.putExtra(
+                PlaySearchingFragmentBroadcastReceiver.C_GAME_FOUND_DATA_PROP_NAME,
+                foundGameData);
+
+        LocalBroadcastManager.
+                getInstance(context.getApplicationContext()).
+                sendBroadcast(intent);
+    }
+
     @Override
     public void onReceive(
             final Context context,
@@ -104,6 +129,7 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
             final Intent data)
     {
         switch (command) {
+            case SERVICE_READY: return processServiceReadyCommand(data);
             case GAME_FOUND: return processGameFoundCommand(data);
             case SEARCHING_STOPPED: return processSearchingStoppedCommand(data);
         }
@@ -115,6 +141,12 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
                 PlaySearchingFragmentBroadcastReceiverErrorEnum.INCORRECT_COMMAND.isCritical());
 
         return error;
+    }
+
+    private Error processServiceReadyCommand(final Intent data) {
+        m_callback.onServiceReady();
+
+        return null;
     }
 
     private Error processGameFoundCommand(final Intent data) {

@@ -8,8 +8,30 @@ import androidx.lifecycle.ViewModel;
 import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 
-public class PlayChattingFragmentViewModel extends ViewModel {
+import java.util.LinkedList;
+import java.util.List;
 
+public class PlayChattingFragmentViewModel extends ViewModel {
+    protected final List<Message> m_messageList;
+
+    public PlayChattingFragmentViewModel() {
+        m_messageList = new LinkedList<>();
+    }
+
+    public Message getMessageByIndex(final int index) {
+        if  (index < 0 || index >= m_messageList.size())
+            return null;
+
+        return m_messageList.get(index);
+    }
+
+    public int getMessageCount() {
+        return m_messageList.size();
+    }
+
+    public void addMessage(@NonNull final Message message) {
+        m_messageList.add(message);
+    }
 
     public boolean onMessageSendingRequested(
             @NonNull final String messageText,

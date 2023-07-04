@@ -58,10 +58,17 @@
 
     <string name="error_play_chatting_fragment_broadcast_receiver_creation_failed">Play Chatting Fragment Broadcast Receiver creation has been failed!</string>
     <string name="error_play_chatting_fragment_sending_message_creation_failed">Sending Message creation has been failed!</string>
+    <string name="error_play_chatting_fragment_message_adapter_creation_failed">Message Adapter creation has been failed!</string>
 
     <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
     <string name="error_play_chatting_fragment_broadcast_receiver_lacking_message_data">Message data hasn\'t been provided!</string>
     <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_message_data">Incorrect Message data has been provided!</string>
 
+    <string name="error_play_chatting_message_adapter_null_message">Null Message has been provided!</string>
+    <string name="error_play_chatting_message_adapter_null_sender_profile">Null Sender Profile has been provided!</string>
+    <string name="error_play_chatting_message_adapter_setting_view_holder_data_failed">View Holder\'s data setting has been failed!</string>
+
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
+    <string name="error_profile_fragment_lacking_profile_data">Profile data hasn\'t been provided!</string>
+    <string name="error_profile_fragment_profile_creation_failed">Profile creation has been failed!</string>
 </resources>
