@@ -3,11 +3,9 @@ package com.qubacy.interlocutor.data.game.export.processor;
 import android.content.Context;
 import android.os.Process;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessorCallback;
 import com.qubacy.interlocutor.data.game.internal.processor.command.Command;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandChooseUsers;
@@ -16,7 +14,11 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandSendM
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStartSearching;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopSearching;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
+import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
+import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionState;
+import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 
@@ -34,27 +36,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public abstract class GameSessionProcessor implements Serializable {
     public static final int C_EXEC_TIMEOUT = 400;
 
-    public enum ErrorType {
-        UNKNOWN_COMMAND_TYPE(R.string.error_game_session_processor_unknown_command),
-        ;
-
-        final private int m_resourceCode;
-
-        private ErrorType(final int resourceCode) {
-            m_resourceCode = resourceCode;
-        }
-
-        public int getResourceCode() {
-            return m_resourceCode;
-        }
-    }
-
     final protected BlockingQueue<Command> m_commandQueue;
 
     protected Context m_context = null;
     protected GameSessionProcessorCallback m_callback = null;
 
     protected Thread m_thread = null;
+
+    protected GameSessionState m_gameSessionState = null;
+    protected RemoteFoundGameData m_foundGameData = null;
 
     protected GameSessionProcessor() {
         m_commandQueue = new LinkedBlockingQueue<Command>();
@@ -87,19 +77,63 @@ public abstract class GameSessionProcessor implements Serializable {
         while (!Thread.currentThread().isInterrupted()) {
             SystemClock.sleep(C_EXEC_TIMEOUT);
 
-            Command curCommand = m_commandQueue.poll();
+            Error executionError = execIteration();
 
-            if (curCommand == null) continue;
-
-            Error commandProcessingError = processCommand(curCommand);
-
-            if (commandProcessingError != null) {
-                m_callback.errorOccurred(commandProcessingError);
+            if (executionError != null) {
+                m_callback.errorOccurred(executionError);
 
                 continue;
             }
         }
     }
+    protected Error execIteration() {
+        Error commandError = execCommand();
+
+        if (commandError != null)
+            return commandError;
+
+        Error stateError = execState();
+
+        if (stateError != null)
+            return stateError;
+
+        return null;
+    }
+    protected Error execCommand() {
+        Command curCommand = m_commandQueue.poll();
+
+        if (curCommand == null) return null;
+
+        Error commandProcessingError = processCommand(curCommand);
+
+        if (commandProcessingError != null)
+            return commandProcessingError;
+
+        return null;
+    }
+    protected Error execState() {
+        if (m_gameSessionState == null) return null;
+
+        switch (m_gameSessionState.getType()) {
+            case SEARCHING: return execSearchingState();
+            case CHATTING: return execChattingState();
+            case CHOOSING: return execChoosingState();
+            case ENDING: return execEndingState();
+        }
+
+        Error error =
+            ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                m_context,
+                GameSessionProcessorErrorEnum.UNKNOWN_STATE_TYPE.getResourceCode(),
+                GameSessionProcessorErrorEnum.UNKNOWN_STATE_TYPE.isCritical());
+
+        return error;
+    }
+
+    protected abstract Error execSearchingState();
+    protected abstract Error execChattingState();
+    protected abstract Error execChoosingState();
+    protected abstract Error execEndingState();
 
     public boolean isRunning() {
         return !m_thread.isInterrupted();
@@ -122,9 +156,13 @@ public abstract class GameSessionProcessor implements Serializable {
                 return leaveCommandProcessing((CommandLeave) command);
         }
 
-        return Error.getInstance(
-                m_context.getString(ErrorType.UNKNOWN_COMMAND_TYPE.getResourceCode()),
-                true);
+        Error error =
+            ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                m_context,
+                GameSessionProcessorErrorEnum.UNKNOWN_COMMAND_TYPE.getResourceCode(),
+                GameSessionProcessorErrorEnum.UNKNOWN_COMMAND_TYPE.isCritical());
+
+        return error;
     }
 
     public boolean startSearching(@NonNull final Profile localProfile) {

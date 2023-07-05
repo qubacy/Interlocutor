@@ -48,7 +48,9 @@ public class PlayChattingMessageAdapter
             @NonNull final ViewGroup parent,
             final int viewType)
     {
-        View view = m_layoutInflater.inflate(R.layout.fragment_play_chatting_message, parent);
+        View view =
+                m_layoutInflater.inflate(
+                        R.layout.fragment_play_chatting_message, parent, false);
 
         return new PlayChattingMessageViewHolder(view);
     }

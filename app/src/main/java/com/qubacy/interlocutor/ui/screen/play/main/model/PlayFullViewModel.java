@@ -50,12 +50,13 @@ public class PlayFullViewModel extends PlayViewModel
         List<ProfilePublic> profilePublicList =
                 m_foundGameData.getProfilePublicList();
 
-        if (id < 0 || id >= profilePublicList.size())
-            return null;
+        if (id < 0) return null;
 
         for (final ProfilePublic profilePublic : profilePublicList)
             if (profilePublic.getId() == id) return profilePublic;
 
-        return null;
+        // todo: how to validate that we are dealing with the local user?
+
+        return m_profile;
     }
 }

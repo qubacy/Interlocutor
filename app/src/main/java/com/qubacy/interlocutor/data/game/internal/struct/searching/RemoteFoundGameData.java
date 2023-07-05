@@ -10,22 +10,33 @@ public class RemoteFoundGameData extends FoundGameDataBase {
 
     protected RemoteFoundGameData(
             final int localProfileId,
+            final long startSessionTime,
+            final long chattingStageDuration,
+            final long choosingStageDuration,
             final List<RemoteProfilePublic> remoteProfilePublicList)
     {
-        super(localProfileId);
+        super(localProfileId, startSessionTime, chattingStageDuration, choosingStageDuration);
 
         m_remoteProfilePublicList = remoteProfilePublicList;
     }
 
     public static RemoteFoundGameData getInstance(
             final int localProfileId,
+            final long startSessionTime,
+            final long chattingStageDuration,
+            final long choosingStageDuration,
             final List<RemoteProfilePublic> remoteProfilePublicList)
     {
         if (remoteProfilePublicList == null || localProfileId < 0)
             return null;
         if (remoteProfilePublicList.isEmpty()) return null;
 
-        return new RemoteFoundGameData(localProfileId, remoteProfilePublicList);
+        return new RemoteFoundGameData(
+                localProfileId,
+                startSessionTime,
+                chattingStageDuration,
+                choosingStageDuration,
+                remoteProfilePublicList);
     }
 
     public List<RemoteProfilePublic> getProfilePublicList() {

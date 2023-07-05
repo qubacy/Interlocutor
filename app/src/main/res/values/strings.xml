@@ -29,10 +29,13 @@
     <string name="error_main_menu_fragment_null_game_service_launcher">Game Service launcher was null!</string>
     <string name="error_main_menu_fragment_null_profile_data_repository">Profile Data Repository was null!</string>
 
-    <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
     <string name="error_game_service_lacking_game_processor">Game Processor hasn\'t been provided!</string>
     <string name="error_game_service_starting_searching_failed">Starting searching has been failed!</string>
     <string name="error_game_service_stopping_searching_failed">Stopping searching has been failed!</string>
+
+    <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
+    <string name="error_game_session_processor_searching_state_creation_failed">Searching State creation has been failed!</string>
+    <string name="error_game_session_processor_unknown_state">Unknown state has been provided!</string>
 
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>

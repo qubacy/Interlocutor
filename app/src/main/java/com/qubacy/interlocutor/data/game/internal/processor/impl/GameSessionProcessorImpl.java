@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.data.game.internal.processor;
+package com.qubacy.interlocutor.data.game.internal.processor.impl;
 
 import androidx.annotation.NonNull;
 
@@ -8,13 +8,12 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandLeave
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandSendMessage;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStartSearching;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopSearching;
-import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
+import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateSearching;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
 *
@@ -33,18 +32,49 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     }
 
     @Override
+    protected Error execSearchingState() {
+        // todo: reading and processing a network source..
+
+        return null;
+    }
+
+    @Override
+    protected Error execChattingState() {
+        // todo: reading and processing a network source..
+
+        return null;
+    }
+
+    @Override
+    protected Error execChoosingState() {
+        // todo: reading and processing a network source..
+
+        return null;
+    }
+
+    @Override
+    protected Error execEndingState() {
+        // todo: reading and processing a network source..
+
+        return null;
+    }
+
+    @Override
     public Error startSearchingCommandProcessing(
             @NonNull final CommandStartSearching commandStartSearching)
     {
-        // <temporal>
-        List<RemoteProfilePublic> remoteProfilePublicList =
-                new ArrayList<RemoteProfilePublic>() {
-                    {
-                        add(RemoteProfilePublic.getInstance(1, "user1"));
-                    }
-                };
-        m_callback.gameFound(RemoteFoundGameData.getInstance(0, remoteProfilePublicList));
-        // </temporal>
+        GameSessionImplStateSearching gameSessionStateSearching =
+                GameSessionImplStateSearching.getInstance();
+
+        if (gameSessionStateSearching == null) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.getResourceCode(),
+                    GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.isCritical());
+
+            return error;
+        }
 
         return null;
     }

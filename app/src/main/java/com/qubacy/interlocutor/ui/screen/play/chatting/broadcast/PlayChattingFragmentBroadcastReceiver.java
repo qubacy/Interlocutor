@@ -70,6 +70,20 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
                 unregisterReceiver(broadcastReceiver);
     }
 
+    public static void broadcastMessageReceived(
+            @NonNull final Context context,
+            @NonNull final Message message)
+    {
+        Intent intent =
+                new Intent(PlayChattingFragmentBroadcastCommand.MESSAGE_RECEIVED.toString());
+
+        intent.putExtra(C_MESSAGE_PROP_NAME, message);
+
+        LocalBroadcastManager.
+                getInstance(context).
+                sendBroadcast(intent);
+    }
+
     @Override
     public void onReceive(
             final Context context,

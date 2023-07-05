@@ -1,6 +1,7 @@
 package com.qubacy.interlocutor.data.game.export.processor;
 
-import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessorImpl;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
+import com.qubacy.interlocutor.data.game.internal.processor.implfake.GameSessionProcessorImplFake;
 
 public class GameSessionProcessorFactory {
     protected GameSessionProcessorFactory() {
@@ -12,8 +13,9 @@ public class GameSessionProcessorFactory {
     }
 
     public GameSessionProcessor generateGameSessionProcessor() {
-        GameSessionProcessorImpl gameSessionProcessor =
-                GameSessionProcessorImpl.getInstance();
+        GameSessionProcessor gameSessionProcessor =
+                GameSessionProcessorImplFake.getInstance(); // todo: get back to a real impl.
+//                GameSessionProcessorImpl.getInstance();
 
         return gameSessionProcessor;
     }

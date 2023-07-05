@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
-import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;

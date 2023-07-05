@@ -108,7 +108,13 @@ public class PlayChattingFragment extends PlayFragment
         RecyclerView recyclerView = view.findViewById(R.id.play_chatting_chat_list);
 
         recyclerView.setAdapter(m_playChattingMessageAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(m_context));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(m_context);
+
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         m_messageEditText = view.findViewById(R.id.play_chatting_section_sending_message_text);
 
@@ -137,7 +143,8 @@ public class PlayChattingFragment extends PlayFragment
         int lastItemIndex = m_playChattingFragmentViewModel.getMessageCount() - 1;
 
         m_playChattingFragmentViewModel.addMessage(message);
-        m_playChattingMessageAdapter.notifyItemRangeInserted(lastItemIndex, 1);
+        // todo: think of substitution, paying attention to the leveraging of the device's resources;
+        m_playChattingMessageAdapter.notifyDataSetChanged();//.notifyItemRangeInserted(lastItemIndex, 1);
     }
 
     @Override

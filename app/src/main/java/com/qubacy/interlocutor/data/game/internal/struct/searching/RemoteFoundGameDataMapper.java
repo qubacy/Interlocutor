@@ -43,6 +43,11 @@ public class RemoteFoundGameDataMapper
             profilePublicList.add(profilePublic);
         }
 
-        return FoundGameData.getInstance(input.getLocalProfileId(), profilePublicList);
+        return FoundGameData.getInstance(
+                input.getLocalProfileId(),
+                input.getStartSessionTime(),
+                input.getChattingStageDuration(),
+                input.getChoosingStageDuration(),
+                profilePublicList);
     }
 }

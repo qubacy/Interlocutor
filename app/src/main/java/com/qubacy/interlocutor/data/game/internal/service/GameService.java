@@ -26,6 +26,7 @@ import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfil
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublicDataMapper;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastCommand;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 
@@ -200,7 +201,7 @@ public class GameService extends Service
 
     @Override
     public void messageReceived(@NonNull final RemoteMessage message) {
-
+        PlayChattingFragmentBroadcastReceiver.broadcastMessageReceived(this, message);
     }
 
     @Override

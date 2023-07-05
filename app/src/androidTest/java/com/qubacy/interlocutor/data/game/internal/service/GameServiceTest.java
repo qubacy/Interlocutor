@@ -9,7 +9,7 @@ import androidx.test.rule.ServiceTestRule;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
-import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessorImpl;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.service.launcher.GameServiceLauncherImpl;
 
 import org.junit.Assert;
