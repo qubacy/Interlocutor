@@ -16,6 +16,9 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopS
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionState;
+import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionStateChatting;
+import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionStateChoosing;
+import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionStateSearching;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -252,15 +255,67 @@ public abstract class GameSessionProcessor implements Serializable {
         return true;
     }
 
-    public abstract Error startSearchingCommandProcessing(
-            @NonNull final CommandStartSearching commandStartSearching);
-    public abstract Error stopSearchingCommandProcessing(
-            @NonNull final CommandStopSearching commandStopSearching);
+    public Error startSearchingCommandProcessing(
+            @NonNull final CommandStartSearching commandStartSearching)
+    {
+        if (m_gameSessionState != null) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.getResourceCode(),
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.isCritical());
 
-    public abstract Error sendMessageCommandProcessing(
-            @NonNull final CommandSendMessage commandSendMessage);
-    public abstract Error chooseUsersCommandProcessing(
-            @NonNull final CommandChooseUsers commandChooseUsers);
+            return error;
+        }
+
+        return null;
+    }
+    public Error stopSearchingCommandProcessing(
+            @NonNull final CommandStopSearching commandStopSearching)
+    {
+        if (!(m_gameSessionState instanceof GameSessionStateSearching)) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.getResourceCode(),
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.isCritical());
+
+            return error;
+        }
+
+        return null;
+    }
+
+    public Error sendMessageCommandProcessing(
+            @NonNull final CommandSendMessage commandSendMessage)
+    {
+        if (!(m_gameSessionState instanceof GameSessionStateChatting)) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.getResourceCode(),
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.isCritical());
+
+            return error;
+        }
+
+        return null;
+    }
+    public Error chooseUsersCommandProcessing(
+            @NonNull final CommandChooseUsers commandChooseUsers)
+    {
+        if (!(m_gameSessionState instanceof GameSessionStateChoosing)) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.getResourceCode(),
+                    GameSessionProcessorErrorEnum.ILLEGAL_STATE.isCritical());
+
+            return error;
+        }
+
+        return null;
+    }
 
     public abstract Error leaveCommandProcessing(
             @NonNull final CommandLeave commandLeave);

@@ -144,6 +144,7 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
         switch (command) {
             case START_SEARCHING: return startSearching(data);
             case STOP_SEARCHING: return stopSearching(data);
+            case SEND_MESSAGE: return sendMessage(data);
         }
 
         Error error =
@@ -190,6 +191,38 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
 
     private Error stopSearching(final Intent data) {
         m_callback.onStopSearchingRequested();
+
+        return null;
+    }
+
+    private Error sendMessage(final Intent data) {
+        if (!data.hasExtra(C_MESSAGE_PROP_NAME)) {
+            Error error =
+                ErrorUtility.
+                    getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_MESSAGE_DATA.getResourceCode(),
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_MESSAGE_DATA.isCritical());
+
+            return error;
+        }
+
+        Serializable messageSerializable = data.getSerializableExtra(C_MESSAGE_PROP_NAME);
+
+        if (!(messageSerializable instanceof Message)) {
+            Error error =
+                ErrorUtility.
+                    getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameServiceBroadcastReceiverErrorEnum.INCORRECT_MESSAGE_DATA.getResourceCode(),
+                        GameServiceBroadcastReceiverErrorEnum.INCORRECT_MESSAGE_DATA.isCritical());
+
+            return error;
+        }
+
+        Message message = (Message) messageSerializable;
+
+        m_callback.onMessageSendingRequested(message);
 
         return null;
     }

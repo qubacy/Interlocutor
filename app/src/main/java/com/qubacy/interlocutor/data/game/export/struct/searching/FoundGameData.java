@@ -13,9 +13,11 @@ public class FoundGameData extends FoundGameDataBase implements Serializable {
             final long startSessionTime,
             final long chattingStageDuration,
             final long choosingStageDuration,
+            final String chattingTopic,
             final List<ProfilePublic> profilePublicList)
     {
-        super(localProfileId, startSessionTime, chattingStageDuration, choosingStageDuration);
+        super(localProfileId, startSessionTime,
+                chattingStageDuration, choosingStageDuration, chattingTopic);
 
         m_profilePublicList = profilePublicList;
     }
@@ -25,22 +27,25 @@ public class FoundGameData extends FoundGameDataBase implements Serializable {
             final long startSessionTime,
             final long chattingStageDuration,
             final long choosingStageDuration,
+            final String chattingTopic,
             final List<ProfilePublic> profilePublicList)
     {
         if (profilePublicList == null || localProfileId < 0 ||
             startSessionTime < 0 || chattingStageDuration <= 0 ||
-            choosingStageDuration <= 0)
+            choosingStageDuration <= 0 || chattingTopic == null)
         {
             return null;
         }
 
-        if (profilePublicList.isEmpty()) return null;
+        if (profilePublicList.isEmpty() || chattingTopic.isEmpty())
+            return null;
 
         return new FoundGameData(
                 localProfileId,
                 startSessionTime,
                 chattingStageDuration,
                 choosingStageDuration,
+                chattingTopic,
                 profilePublicList);
     }
 

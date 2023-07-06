@@ -10,7 +10,15 @@ public enum GameServiceErrorEnum {
     STARTING_SEARCHING_FAILED(
             R.string.error_game_service_starting_searching_failed, true),
     STOPPING_SEARCHING_FAILED(
-            R.string.error_game_service_stopping_searching_failed, true);
+            R.string.error_game_service_stopping_searching_failed, true),
+    REMOTE_PROFILE_DATA_MAPPER_CREATION_FAILED(
+            R.string.error_game_service_remote_profile_data_mapper_creation_failed, true),
+    REMOTE_FOUND_GAME_DATA_MAPPER_CREATION_FAILED(
+            R.string.error_game_service_remote_found_game_data_mapper_creation_failed, true),
+    REMOTE_FOUND_GAME_DATA_MAPPING_FAILED(
+            R.string.error_game_service_remote_found_game_data_mapping_failed, true),
+    SENDING_MESSAGE_FAILED(
+            R.string.error_game_service_sending_message_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

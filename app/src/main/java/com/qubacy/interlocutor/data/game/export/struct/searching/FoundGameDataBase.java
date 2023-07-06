@@ -10,11 +10,14 @@ public abstract class FoundGameDataBase implements Serializable {
     protected final long m_chattingStageDuration;
     protected final long m_choosingStageDuration;
 
+    protected final String m_chattingTopic;
+
     protected FoundGameDataBase(
             final int localProfileId,
             final long startSessionTime,
             final long chattingStageDuration,
-            final long choosingStageDuration)
+            final long choosingStageDuration,
+            final String chattingTopic)
     {
         m_localProfileId = localProfileId;
 
@@ -22,6 +25,8 @@ public abstract class FoundGameDataBase implements Serializable {
 
         m_chattingStageDuration = chattingStageDuration;
         m_choosingStageDuration = choosingStageDuration;
+
+        m_chattingTopic = chattingTopic;
     }
 
     public int getLocalProfileId() {
@@ -38,5 +43,9 @@ public abstract class FoundGameDataBase implements Serializable {
 
     public long getChoosingStageDuration() {
         return m_choosingStageDuration;
+    }
+
+    public String getChattingTopic() {
+        return m_chattingTopic;
     }
 }

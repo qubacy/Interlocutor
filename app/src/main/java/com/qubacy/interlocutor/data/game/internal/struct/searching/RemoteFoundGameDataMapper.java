@@ -48,6 +48,7 @@ public class RemoteFoundGameDataMapper
                 input.getStartSessionTime(),
                 input.getChattingStageDuration(),
                 input.getChoosingStageDuration(),
+                input.getChattingTopic(),
                 profilePublicList);
     }
 }

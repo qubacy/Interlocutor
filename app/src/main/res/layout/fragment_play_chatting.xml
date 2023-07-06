@@ -64,14 +64,13 @@
             android:textSize="20sp"
             android:hint="@string/play_chatting_fragment_section_sending_message_text_hint"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/play_chatting_section_sending_button_send"
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/play_chatting_button_sending"
-            android:foreground="?android:attr/selectableItemBackground"
             android:text=""/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

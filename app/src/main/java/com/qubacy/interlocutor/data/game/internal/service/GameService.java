@@ -151,7 +151,13 @@ public class GameService extends Service
                 RemoteProfilePublicDataMapper.getInstance();
 
         if (remoteProfilePublicDataMapper == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    this,
+                    GameServiceErrorEnum.REMOTE_PROFILE_DATA_MAPPER_CREATION_FAILED.getResourceCode(),
+                    GameServiceErrorEnum.REMOTE_PROFILE_DATA_MAPPER_CREATION_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(this, error);
 
             return;
         }
@@ -160,7 +166,13 @@ public class GameService extends Service
                 RemoteFoundGameDataMapper.getInstance(remoteProfilePublicDataMapper);
 
         if (remoteFoundGameDataMapper == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    this,
+                    GameServiceErrorEnum.REMOTE_FOUND_GAME_DATA_MAPPER_CREATION_FAILED.getResourceCode(),
+                    GameServiceErrorEnum.REMOTE_FOUND_GAME_DATA_MAPPER_CREATION_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(this, error);
 
             return;
         }
@@ -168,7 +180,13 @@ public class GameService extends Service
         FoundGameData mappedFoundGameData = remoteFoundGameDataMapper.map(foundGameData);
 
         if (mappedFoundGameData == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    this,
+                    GameServiceErrorEnum.REMOTE_FOUND_GAME_DATA_MAPPING_FAILED.getResourceCode(),
+                    GameServiceErrorEnum.REMOTE_FOUND_GAME_DATA_MAPPING_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(this, error);
 
             return;
         }
@@ -241,7 +259,16 @@ public class GameService extends Service
 
     @Override
     public void onMessageSendingRequested(@NonNull final Message message) {
+        if (m_gameSessionProcessor.sendMessage(message)) return;
 
+        Error error =
+            ErrorUtility.
+                getErrorByStringResourceCodeAndFlag(
+                    this,
+                    GameServiceErrorEnum.SENDING_MESSAGE_FAILED.getResourceCode(),
+                    GameServiceErrorEnum.SENDING_MESSAGE_FAILED.isCritical());
+
+        MainActivityBroadcastReceiver.broadcastError(this, error);
     }
 
     @Override

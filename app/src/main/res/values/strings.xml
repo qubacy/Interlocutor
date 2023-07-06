@@ -32,16 +32,23 @@
     <string name="error_game_service_lacking_game_processor">Game Processor hasn\'t been provided!</string>
     <string name="error_game_service_starting_searching_failed">Starting searching has been failed!</string>
     <string name="error_game_service_stopping_searching_failed">Stopping searching has been failed!</string>
+    <string name="error_game_service_sending_message_failed">Sending message has been failed!</string>
+    <string name="error_game_service_remote_profile_data_mapper_creation_failed">Remote Profile Data Mapper creation has been failed!</string>
+    <string name="error_game_service_remote_found_game_data_mapper_creation_failed">Remote Found Game Data Mapper creation has been failed!</string>
+    <string name="error_game_service_remote_found_game_data_mapping_failed">Remote Found Game Data mapping has been failed!</string>
 
     <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
     <string name="error_game_session_processor_searching_state_creation_failed">Searching State creation has been failed!</string>
     <string name="error_game_session_processor_unknown_state">Unknown state has been provided!</string>
+    <string name="error_game_session_processor_illegal_state">Illegal state has been reached!</string>
 
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>
     <string name="error_game_service_broadcast_receiver_unknown_command_type">Unknown command type has been provided!</string>
     <string name="error_game_service_broadcast_receiver_lacking_profile_data">Profile data hasn\'t been provided!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_profile_data">Incorrect Profile data has been provided!</string>
+    <string name="error_game_service_broadcast_receiver_lacking_message_data">Message data hasn\'t been provided!</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_message_data">Incorrect Message data has been provided!</string>
 
     <string name="error_main_activity_broadcast_receiver_creation_failed">Main Activity Broadcast Receiver creation has been failed!</string>
 

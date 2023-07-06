@@ -7,4 +7,6 @@ public interface PlayChattingViewModel {
 //    public int getMessageCount();
 //    public void addMessage(@NonNull final Message message);
     public ProfilePublic getProfileById(final int id);
+    public String getTopic();
+    public long getChattingDuration();
 }

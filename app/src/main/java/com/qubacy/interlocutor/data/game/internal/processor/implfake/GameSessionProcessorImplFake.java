@@ -14,6 +14,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionPro
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateChatting;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateSearching;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
+import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessageDataMapper;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -29,6 +30,11 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
     private static final long C_SEARCHING_TIME_MILLISECONDS = 5000;
     private static final long C_CHATTING_TIME_MILLISECONDS = 30000; //300000;
     private static final long C_CHOOSING_TIME_MILLISECONDS = 20000; //60000;
+
+    private static final int C_LOCAL_ID = 0;
+    private static final int C_INTERLOCUTOR_ID = 1;
+
+    private static final String C_INTERLOCUTOR_USERNAME = "user1";
 
     protected GameSessionProcessorImplFake() {
         super();
@@ -52,16 +58,18 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
         List<RemoteProfilePublic> remoteProfilePublicList =
                 new ArrayList<RemoteProfilePublic>() {
                     {
-                        add(RemoteProfilePublic.getInstance(1, "user1"));
+                        add(RemoteProfilePublic.
+                                getInstance(C_INTERLOCUTOR_ID, C_INTERLOCUTOR_USERNAME));
                     }
                 };
 
         RemoteFoundGameData remoteFoundGameData =
                 RemoteFoundGameData.getInstance(
-                        0,
+                        C_LOCAL_ID,
                         System.currentTimeMillis(),
                         C_CHATTING_TIME_MILLISECONDS,
                         C_CHOOSING_TIME_MILLISECONDS,
+                        "Test topic",
                         remoteProfilePublicList);
 
         m_callback.gameFound(remoteFoundGameData);
@@ -86,6 +94,7 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
             System.currentTimeMillis())
         {
             // todo: moving to CHOOSING state..
+            Log.d("TEST", "moving to CHOOSING state..");
 
             return null;
         }
@@ -93,8 +102,6 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
         RemoteMessage remoteMessage = gameSessionImplFakeStateChatting.takeFakePendingMessage();
 
         if (remoteMessage == null) return null;
-
-        Log.d("TEST", "execChattingState(); Remote Message: " + remoteMessage.getText());
 
         m_callback.messageReceived(remoteMessage);
 
@@ -115,17 +122,21 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
     public Error startSearchingCommandProcessing(
             @NonNull final CommandStartSearching commandStartSearching)
     {
+        Error error = super.startSearchingCommandProcessing(commandStartSearching);
+
+        if (error != null) return error;
+
         GameSessionImplFakeStateSearching gameSessionStateSearching =
                 GameSessionImplFakeStateSearching.getInstance(System.currentTimeMillis());
 
         if (gameSessionStateSearching == null) {
-            Error error =
+            Error stateSearchingError =
                 ErrorUtility.getErrorByStringResourceCodeAndFlag(
                     m_context,
                     GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.getResourceCode(),
                     GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.isCritical());
 
-            return error;
+            return stateSearchingError;
         }
 
         m_gameSessionState = gameSessionStateSearching;
@@ -137,7 +148,9 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
     public Error stopSearchingCommandProcessing(
             @NonNull final CommandStopSearching commandStopSearching)
     {
+        Error error = super.stopSearchingCommandProcessing(commandStopSearching);
 
+        if (error != null) return error;
 
         Thread.currentThread().interrupt();
 
@@ -148,7 +161,15 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
     public Error sendMessageCommandProcessing(
             @NonNull final CommandSendMessage commandSendMessage)
     {
+        Error error = super.sendMessageCommandProcessing(commandSendMessage);
 
+        if (error != null) return error;
+
+        GameSessionImplFakeStateChatting gameSessionImplFakeStateChatting =
+                (GameSessionImplFakeStateChatting) m_gameSessionState;
+
+        gameSessionImplFakeStateChatting.addFakePendingMessage(
+                RemoteMessage.getInstance(C_LOCAL_ID, commandSendMessage.getMessage().getText()));
 
         return null;
     }
@@ -157,7 +178,9 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
     public Error chooseUsersCommandProcessing(
             @NonNull final CommandChooseUsers commandChooseUsers)
     {
+        Error error = super.chooseUsersCommandProcessing(commandChooseUsers);
 
+        if (error != null) return error;
 
         return null;
     }

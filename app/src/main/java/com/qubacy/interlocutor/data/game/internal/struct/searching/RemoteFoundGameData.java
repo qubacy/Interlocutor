@@ -13,9 +13,11 @@ public class RemoteFoundGameData extends FoundGameDataBase {
             final long startSessionTime,
             final long chattingStageDuration,
             final long choosingStageDuration,
+            final String chattingTopic,
             final List<RemoteProfilePublic> remoteProfilePublicList)
     {
-        super(localProfileId, startSessionTime, chattingStageDuration, choosingStageDuration);
+        super(localProfileId, startSessionTime, chattingStageDuration,
+                choosingStageDuration, chattingTopic);
 
         m_remoteProfilePublicList = remoteProfilePublicList;
     }
@@ -25,17 +27,20 @@ public class RemoteFoundGameData extends FoundGameDataBase {
             final long startSessionTime,
             final long chattingStageDuration,
             final long choosingStageDuration,
+            final String chattingTopic,
             final List<RemoteProfilePublic> remoteProfilePublicList)
     {
-        if (remoteProfilePublicList == null || localProfileId < 0)
+        if (remoteProfilePublicList == null || localProfileId < 0 || chattingTopic == null)
             return null;
-        if (remoteProfilePublicList.isEmpty()) return null;
+        if (remoteProfilePublicList.isEmpty() || chattingTopic.isEmpty())
+            return null;
 
         return new RemoteFoundGameData(
                 localProfileId,
                 startSessionTime,
                 chattingStageDuration,
                 choosingStageDuration,
+                chattingTopic,
                 remoteProfilePublicList);
     }
 

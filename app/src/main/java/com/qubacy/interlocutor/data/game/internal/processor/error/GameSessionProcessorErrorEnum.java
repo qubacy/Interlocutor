@@ -8,7 +8,9 @@ public enum GameSessionProcessorErrorEnum {
     SEARCHING_STATE_CREATION_FAILED(
             R.string.error_game_session_processor_searching_state_creation_failed, true),
     UNKNOWN_STATE_TYPE(
-            R.string.error_game_session_processor_unknown_state, true);
+            R.string.error_game_session_processor_unknown_state, true),
+    ILLEGAL_STATE(
+            R.string.error_game_session_processor_illegal_state, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

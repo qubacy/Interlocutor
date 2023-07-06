@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
+import com.qubacy.interlocutor.data.utility.time.TimeUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
 import com.qubacy.interlocutor.ui.screen.play.chatting.adapter.PlayChattingMessageAdapter;
@@ -27,6 +29,7 @@ import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFra
 import com.qubacy.interlocutor.ui.screen.play.chatting.error.PlayChattingFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingViewModel;
+import com.qubacy.interlocutor.ui.screen.play.chatting.task.ChattingTimerAsyncTask;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
@@ -43,6 +46,8 @@ public class PlayChattingFragment extends PlayFragment
     private PlayChattingFragmentBroadcastReceiver m_broadcastReceiver = null;
 
     private EditText m_messageEditText = null;
+
+    private ChattingTimerAsyncTask m_timerAsyncTask = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +75,17 @@ public class PlayChattingFragment extends PlayFragment
         }
 
         m_broadcastReceiver = broadcastReceiver;
+
+        if (m_playChattingFragmentViewModel.getChattingTimeRemaining() == null) {
+            m_playChattingFragmentViewModel.setChattingTimeRemaining(
+                    m_playChattingViewModel.getChattingDuration());
+        }
     }
 
     @Override
     public void onDestroy() {
+        m_timerAsyncTask.cancel(true);
+
         PlayChattingFragmentBroadcastReceiver.stop(m_context, m_broadcastReceiver);
 
         super.onDestroy();
@@ -118,7 +130,7 @@ public class PlayChattingFragment extends PlayFragment
 
         m_messageEditText = view.findViewById(R.id.play_chatting_section_sending_message_text);
 
-        Button sendButton = view.findViewById(R.id.play_chatting_section_sending_button_send);
+        ImageButton sendButton = view.findViewById(R.id.play_chatting_section_sending_button_send);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +148,19 @@ public class PlayChattingFragment extends PlayFragment
 
         ActivityUtility.setAppCompatActivityActionBarTitle(
                 getActivity(), R.string.play_chatting_fragment_status_bar_title);
+
+        TextView topicTextView = view.findViewById(R.id.play_chatting_header_topic);
+        TextView timerTextView = view.findViewById(R.id.play_chatting_header_timer);
+
+        topicTextView.setText(m_playChattingViewModel.getTopic());
+        timerTextView.setText(
+                TimeUtility.millisecondsToMinutesString(
+                        m_playChattingFragmentViewModel.getChattingTimeRemaining()));
+
+        m_timerAsyncTask =
+                ChattingTimerAsyncTask.getInstance(m_playChattingFragmentViewModel, timerTextView);
+
+        m_timerAsyncTask.execute();
     }
 
     @Override
@@ -164,6 +189,8 @@ public class PlayChattingFragment extends PlayFragment
 
             return;
         }
+
+        m_messageEditText.setText(new String());
 
         if (!m_playChattingFragmentViewModel.onMessageSendingRequested(messageText, m_context)) {
             Error error =
