@@ -61,11 +61,15 @@ public class PlayFullViewModel extends PlayViewModel
 
     @Override
     public String getTopic() {
+        if (m_foundGameData == null) return null;
+
         return m_foundGameData.getChattingTopic();
     }
 
     @Override
     public long getChattingDuration() {
+        if (m_foundGameData == null) return 0;
+
         return m_foundGameData.getChattingStageDuration();
     }
 }
