@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.data.utility.time;
+package com.qubacy.interlocutor.data.general.export.utility.time;
 
 public class TimeUtility {
     public final static long C_MILLISECONDS_IN_SECOND = 1000;

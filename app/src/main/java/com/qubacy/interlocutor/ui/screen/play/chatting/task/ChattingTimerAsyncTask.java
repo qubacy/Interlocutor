@@ -5,7 +5,7 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.widget.TextView;
 
-import com.qubacy.interlocutor.data.utility.time.TimeUtility;
+import com.qubacy.interlocutor.data.general.export.utility.time.TimeUtility;
 
 public class ChattingTimerAsyncTask extends AsyncTask<Void, Long, Void> {
     private static final long C_TIMER_UPDATE_TIMEOUT = 1000;

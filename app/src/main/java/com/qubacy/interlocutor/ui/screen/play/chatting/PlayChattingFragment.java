@@ -19,7 +19,7 @@ import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
-import com.qubacy.interlocutor.data.utility.time.TimeUtility;
+import com.qubacy.interlocutor.data.general.export.utility.time.TimeUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
 import com.qubacy.interlocutor.ui.screen.play.chatting.adapter.PlayChattingMessageAdapter;
