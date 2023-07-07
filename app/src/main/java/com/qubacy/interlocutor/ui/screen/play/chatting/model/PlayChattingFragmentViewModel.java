@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
-import com.qubacy.interlocutor.ui.screen.play.chatting.task.ChattingTimerAsyncTaskCallback;
+import com.qubacy.interlocutor.ui.screen.play.common.task.TextViewTimerAsyncTaskCallback;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class PlayChattingFragmentViewModel extends ViewModel
-    implements ChattingTimerAsyncTaskCallback
+    implements TextViewTimerAsyncTaskCallback
 {
     protected Long m_chattingTimeRemaining = null;
     protected final List<Message> m_messageList;
@@ -22,7 +22,7 @@ public class PlayChattingFragmentViewModel extends ViewModel
         m_messageList = new LinkedList<>();
     }
 
-    public Long getChattingTimeRemaining() {
+    public Long getRemainingTime() {
         return m_chattingTimeRemaining;
     }
 
@@ -37,10 +37,10 @@ public class PlayChattingFragmentViewModel extends ViewModel
         return m_messageList.size();
     }
 
-    public boolean setChattingTimeRemaining(@NonNull final Long newChattingTimeRemaining) {
-        if (newChattingTimeRemaining < 0) return false;
+    public boolean setRemainingTime(@NonNull final Long newRemainingTime) {
+        if (newRemainingTime < 0) return false;
 
-        m_chattingTimeRemaining = newChattingTimeRemaining;
+        m_chattingTimeRemaining = newRemainingTime;
 
         return true;
     }

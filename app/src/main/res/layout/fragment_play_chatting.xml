@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:background="@drawable/play_chatting_header_background">
+        android:background="@drawable/play_header_background">
 
         <TextView
             android:id="@+id/play_chatting_header_topic"

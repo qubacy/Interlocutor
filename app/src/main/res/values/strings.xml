@@ -23,6 +23,10 @@
     <string name="play_chatting_fragment_status_bar_title">Chat</string>
     <string name="play_chatting_fragment_section_sending_message_text_hint">Type a message..</string>
 
+    <string name="play_choosing_fragment_status_bar_title">Choose</string>
+    <string name="play_choosing_fragment_header_title_text">Choose your favorites!</string>
+    <string name="play_choosing_fragment_button_confirm_caption">Confirm</string>
+
     <!--  ERRORS  -->
     
     <string name="error_main_menu_fragment_null_profile_data_source">Profile Data Source was null!</string>

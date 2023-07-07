@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.ui.screen.play.model;
+package com.qubacy.interlocutor.ui.screen.play.common.model;
 
 import androidx.lifecycle.ViewModel;
 

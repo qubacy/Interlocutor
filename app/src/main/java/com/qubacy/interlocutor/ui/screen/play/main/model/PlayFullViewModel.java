@@ -6,7 +6,8 @@ import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingViewModel;
-import com.qubacy.interlocutor.ui.screen.play.model.PlayViewModel;
+import com.qubacy.interlocutor.ui.screen.play.choosing.model.PlayChoosingViewModel;
+import com.qubacy.interlocutor.ui.screen.play.common.model.PlayViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.model.PlaySearchingViewModel;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 public class PlayFullViewModel extends PlayViewModel
     implements
         PlaySearchingViewModel,
-        PlayChattingViewModel
+        PlayChattingViewModel,
+        PlayChoosingViewModel
 {
     protected Profile m_profile = null;
     protected FoundGameData m_foundGameData = null;
@@ -71,5 +73,19 @@ public class PlayFullViewModel extends PlayViewModel
         if (m_foundGameData == null) return 0;
 
         return m_foundGameData.getChattingStageDuration();
+    }
+
+    @Override
+    public long getChoosingDuration() {
+        if (m_foundGameData == null) return 0;
+
+        return m_foundGameData.getChoosingStageDuration();
+    }
+
+    @Override
+    public List<ProfilePublic> getUserList() {
+        if (m_foundGameData == null) return null;
+
+        return m_foundGameData.getProfilePublicList();
     }
 }

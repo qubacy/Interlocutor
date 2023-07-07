@@ -12,9 +12,9 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStart
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopSearching;
 import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateChatting;
+import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateChoosing;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateSearching;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
-import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessageDataMapper;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -27,8 +27,8 @@ import java.util.List;
 public class GameSessionProcessorImplFake extends GameSessionProcessor
         implements Serializable
 {
-    private static final long C_SEARCHING_TIME_MILLISECONDS = 5000;
-    private static final long C_CHATTING_TIME_MILLISECONDS = 30000; //300000;
+    private static final long C_SEARCHING_TIME_MILLISECONDS = 1000;
+    private static final long C_CHATTING_TIME_MILLISECONDS = 1000; //300000;
     private static final long C_CHOOSING_TIME_MILLISECONDS = 20000; //60000;
 
     private static final int C_LOCAL_ID = 0;
@@ -95,6 +95,10 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
         {
             // todo: moving to CHOOSING state..
             Log.d("TEST", "moving to CHOOSING state..");
+
+            m_callback.onChattingPhaseIsOver();
+
+            m_gameSessionState = GameSessionImplFakeStateChoosing.getInstance();
 
             return null;
         }

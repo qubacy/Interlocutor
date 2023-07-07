@@ -75,6 +75,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="playChoosingFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="537" />
+                            <option name="y" value="-166" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="playSearchingFragment">
                     <value>
                       <LayoutPositions>
@@ -83,6 +95,15 @@
                             <option name="x" value="40" />
                             <option name="y" value="40" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_playSearchingFragment_to_playChattingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -223,6 +223,11 @@ public class GameService extends Service
     }
 
     @Override
+    public void onChattingPhaseIsOver() {
+        PlayChattingFragmentBroadcastReceiver.broadcastChattingPhaseIsOver(this);
+    }
+
+    @Override
     public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList) {
 
     }

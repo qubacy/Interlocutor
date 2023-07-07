@@ -84,6 +84,17 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
                 sendBroadcast(intent);
     }
 
+    public static void broadcastChattingPhaseIsOver(
+            @NonNull final Context context)
+    {
+        Intent intent =
+                new Intent(PlayChattingFragmentBroadcastCommand.TIME_IS_OVER.toString());
+
+        LocalBroadcastManager.
+                getInstance(context).
+                sendBroadcast(intent);
+    }
+
     @Override
     public void onReceive(
             final Context context,

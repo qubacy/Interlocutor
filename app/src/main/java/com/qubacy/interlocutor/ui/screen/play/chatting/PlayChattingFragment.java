@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFra
 import com.qubacy.interlocutor.ui.screen.play.chatting.error.PlayChattingFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.play.chatting.model.PlayChattingViewModel;
-import com.qubacy.interlocutor.ui.screen.play.chatting.task.ChattingTimerAsyncTask;
+import com.qubacy.interlocutor.ui.screen.play.common.task.TextViewTimerAsyncTask;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
@@ -47,7 +48,7 @@ public class PlayChattingFragment extends PlayFragment
 
     private EditText m_messageEditText = null;
 
-    private ChattingTimerAsyncTask m_timerAsyncTask = null;
+    private TextViewTimerAsyncTask m_timerAsyncTask = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,15 +77,16 @@ public class PlayChattingFragment extends PlayFragment
 
         m_broadcastReceiver = broadcastReceiver;
 
-        if (m_playChattingFragmentViewModel.getChattingTimeRemaining() == null) {
-            m_playChattingFragmentViewModel.setChattingTimeRemaining(
+        if (m_playChattingFragmentViewModel.getRemainingTime() == null) {
+            m_playChattingFragmentViewModel.setRemainingTime(
                     m_playChattingViewModel.getChattingDuration());
         }
     }
 
     @Override
     public void onDestroy() {
-        m_timerAsyncTask.cancel(true);
+        if (m_timerAsyncTask != null)
+            m_timerAsyncTask.cancel(true);
 
         PlayChattingFragmentBroadcastReceiver.stop(m_context, m_broadcastReceiver);
 
@@ -99,6 +101,17 @@ public class PlayChattingFragment extends PlayFragment
             @Nullable Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_play_chatting, container, false);
+
+        TextView topicTextView = view.findViewById(R.id.play_chatting_header_topic);
+        TextView timerTextView = view.findViewById(R.id.play_chatting_header_timer);
+
+        topicTextView.setText(m_playChattingViewModel.getTopic());
+        timerTextView.setText(
+                TimeUtility.millisecondsToMinutesString(
+                        m_playChattingFragmentViewModel.getRemainingTime()));
+
+        m_timerAsyncTask =
+                TextViewTimerAsyncTask.getInstance(m_playChattingFragmentViewModel, timerTextView);
 
         PlayChattingMessageAdapter playChattingMessageAdapter =
                 PlayChattingMessageAdapter.getInstance(m_context, this);
@@ -123,9 +136,6 @@ public class PlayChattingFragment extends PlayFragment
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(m_context);
 
-//        linearLayoutManager.setReverseLayout(true);
-//        linearLayoutManager.setStackFromEnd(true);
-
         recyclerView.setLayoutManager(linearLayoutManager);
 
         m_messageEditText = view.findViewById(R.id.play_chatting_section_sending_message_text);
@@ -149,17 +159,6 @@ public class PlayChattingFragment extends PlayFragment
         ActivityUtility.setAppCompatActivityActionBarTitle(
                 getActivity(), R.string.play_chatting_fragment_status_bar_title);
 
-        TextView topicTextView = view.findViewById(R.id.play_chatting_header_topic);
-        TextView timerTextView = view.findViewById(R.id.play_chatting_header_timer);
-
-        topicTextView.setText(m_playChattingViewModel.getTopic());
-        timerTextView.setText(
-                TimeUtility.millisecondsToMinutesString(
-                        m_playChattingFragmentViewModel.getChattingTimeRemaining()));
-
-        m_timerAsyncTask =
-                ChattingTimerAsyncTask.getInstance(m_playChattingFragmentViewModel, timerTextView);
-
         m_timerAsyncTask.execute();
     }
 
@@ -174,11 +173,9 @@ public class PlayChattingFragment extends PlayFragment
 
     @Override
     public void onTimeIsOver() {
-        // todo: moving to the PlayChoosingFragment screen..
-
-//        Navigation.
-//                findNavController(getView()).
-//                navigate(R.id.);
+        Navigation.
+                findNavController(getView()).
+                navigate(R.id.action_playChattingFragment_to_playChoosingFragment);
     }
 
     private void onMessageSendingRequested() {
