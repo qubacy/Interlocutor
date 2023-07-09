@@ -40,11 +40,13 @@
     <string name="error_game_service_remote_profile_data_mapper_creation_failed">Remote Profile Data Mapper creation has been failed!</string>
     <string name="error_game_service_remote_found_game_data_mapper_creation_failed">Remote Found Game Data Mapper creation has been failed!</string>
     <string name="error_game_service_remote_found_game_data_mapping_failed">Remote Found Game Data mapping has been failed!</string>
+    <string name="error_game_service_choosing_users_failed">Users choosing has been failed!</string>
 
     <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
     <string name="error_game_session_processor_searching_state_creation_failed">Searching State creation has been failed!</string>
     <string name="error_game_session_processor_unknown_state">Unknown state has been provided!</string>
     <string name="error_game_session_processor_illegal_state">Illegal state has been reached!</string>
+    <string name="error_game_session_processor_chosen_users_setting_failed">Chosen Users setting has been failed!</string>
 
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>
@@ -53,6 +55,7 @@
     <string name="error_game_service_broadcast_receiver_incorrect_profile_data">Incorrect Profile data has been provided!</string>
     <string name="error_game_service_broadcast_receiver_lacking_message_data">Message data hasn\'t been provided!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_message_data">Incorrect Message data has been provided!</string>
+    <string name="error_game_service_broadcast_receiver_chosen_users_data">Chosen Users data hasn\'t been fully provided!</string>
 
     <string name="error_main_activity_broadcast_receiver_creation_failed">Main Activity Broadcast Receiver creation has been failed!</string>
 
@@ -81,6 +84,11 @@
     <string name="error_play_chatting_message_adapter_null_message">Null Message has been provided!</string>
     <string name="error_play_chatting_message_adapter_null_sender_profile">Null Sender Profile has been provided!</string>
     <string name="error_play_chatting_message_adapter_setting_view_holder_data_failed">View Holder\'s data setting has been failed!</string>
+
+    <string name="error_play_choosing_fragment_broadcast_receiver_creation_failed">Game Choosing Broadcast Receiver creation has been failed!</string>
+    <string name="error_play_choosing_fragment_user_adapter_creation_failed">Users\' Adapter creation has been failed!</string>
+
+    <string name="error_play_choosing_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
 
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
     <string name="error_profile_fragment_lacking_profile_data">Profile data hasn\'t been provided!</string>

@@ -1,27 +1,25 @@
 package com.qubacy.interlocutor.data.game.internal.processor.command;
 
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
-
 import java.util.List;
 
 public class CommandChooseUsers extends Command {
-    private final List<RemoteProfilePublic> m_chosenUserList;
+    private final List<Integer> m_chosenUserIdList;
 
     protected CommandChooseUsers(
-            final List<RemoteProfilePublic> chosenUserList)
+            final List<Integer> chosenUserIdList)
     {
         super();
 
-        m_chosenUserList = chosenUserList;
+        m_chosenUserIdList = chosenUserIdList;
     }
 
     public static CommandChooseUsers getInstance(
-            final List<RemoteProfilePublic> chosenUserList)
+            final List<Integer> chosenUserIdList)
     {
-        if (chosenUserList == null) return null;
-        if (chosenUserList.isEmpty()) return null;
+        if (chosenUserIdList == null) return null;
+        if (chosenUserIdList.isEmpty()) return null;
 
-        return new CommandChooseUsers(chosenUserList);
+        return new CommandChooseUsers(chosenUserIdList);
     }
 
     @Override
@@ -29,7 +27,7 @@ public class CommandChooseUsers extends Command {
         return CommandType.CHOOSE_USERS;
     }
 
-    public List<RemoteProfilePublic> getChosenUserList() {
-        return m_chosenUserList;
+    public List<Integer> getChosenUserIdList() {
+        return m_chosenUserIdList;
     }
 }

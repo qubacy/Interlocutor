@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/play_choosing_user_button_choose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:button="@drawable/play_choosing_user_button_choose_background"
+        android:background="@drawable/play_choosing_user_button_choose_background"
+        android:button="@null"
         android:checked="false"/>
 
     <TextView
@@ -24,6 +25,6 @@
         android:layout_marginLeft="4dp"
         android:gravity="center"
         android:textSize="18sp"
-        android:text="TEST"/>
+        android:text=""/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

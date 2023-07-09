@@ -220,9 +220,9 @@ public abstract class GameSessionProcessor implements Serializable {
 
         return true;
     }
-    public boolean chooseUsers(@NonNull final List<RemoteProfilePublic> chosenUserList) {
+    public boolean chooseUsers(@NonNull final List<Integer> chosenUserIdList) {
         CommandChooseUsers commandChooseUsers =
-                CommandChooseUsers.getInstance(chosenUserList);
+                CommandChooseUsers.getInstance(chosenUserIdList);
 
         if (commandChooseUsers == null) return false;
 

@@ -60,6 +60,10 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
                     {
                         add(RemoteProfilePublic.
                                 getInstance(C_INTERLOCUTOR_ID, C_INTERLOCUTOR_USERNAME));
+                        add(RemoteProfilePublic.
+                                getInstance(C_INTERLOCUTOR_ID + 1, "user2"));
+                        add(RemoteProfilePublic.
+                                getInstance(C_INTERLOCUTOR_ID + 2, "user3"));
                     }
                 };
 
@@ -93,9 +97,6 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
             m_foundGameData.getChattingStageDuration() <=
             System.currentTimeMillis())
         {
-            // todo: moving to CHOOSING state..
-            Log.d("TEST", "moving to CHOOSING state..");
-
             m_callback.onChattingPhaseIsOver();
 
             m_gameSessionState = GameSessionImplFakeStateChoosing.getInstance();
@@ -114,6 +115,22 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
 
     @Override
     protected Error execChoosingState() {
+        GameSessionImplFakeStateChoosing gameSessionImplFakeStateChoosing =
+                (GameSessionImplFakeStateChoosing) m_gameSessionState;
+
+        if (m_foundGameData.getStartSessionTime() +
+            m_foundGameData.getChattingStageDuration() +
+            m_foundGameData.getChoosingStageDuration() <=
+            System.currentTimeMillis())
+        {
+            m_callback.onChoosingPhaseIsOver();
+
+            // todo: moving to the ending state..
+            //m_gameSessionState = ;
+
+            return null;
+        }
+
         return null;
     }
 
@@ -185,6 +202,22 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
         Error error = super.chooseUsersCommandProcessing(commandChooseUsers);
 
         if (error != null) return error;
+
+        GameSessionImplFakeStateChoosing gameSessionImplFakeStateChoosing =
+                (GameSessionImplFakeStateChoosing) m_gameSessionState;
+
+        if (!gameSessionImplFakeStateChoosing.setChosenUserIdList(
+                commandChooseUsers.getChosenUserIdList()))
+        {
+            Error settingError =
+                ErrorUtility.
+                    getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameSessionProcessorErrorEnum.CHOSEN_USERS_SETTING_FAILED.getResourceCode(),
+                        GameSessionProcessorErrorEnum.CHOSEN_USERS_SETTING_FAILED.isCritical());
+
+            return settingError;
+        }
 
         return null;
     }

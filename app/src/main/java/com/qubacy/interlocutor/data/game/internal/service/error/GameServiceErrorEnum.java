@@ -18,7 +18,9 @@ public enum GameServiceErrorEnum {
     REMOTE_FOUND_GAME_DATA_MAPPING_FAILED(
             R.string.error_game_service_remote_found_game_data_mapping_failed, true),
     SENDING_MESSAGE_FAILED(
-            R.string.error_game_service_sending_message_failed, true);
+            R.string.error_game_service_sending_message_failed, true),
+    CHOOSING_USERS_FAILED(
+            R.string.error_game_service_choosing_users_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

@@ -27,6 +27,7 @@ import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfil
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublicDataMapper;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.PlayChoosingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastCommand;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 
@@ -228,6 +229,11 @@ public class GameService extends Service
     }
 
     @Override
+    public void onChoosingPhaseIsOver() {
+        PlayChoosingFragmentBroadcastReceiver.broadcastChoosingPhaseIsOver(this);
+    }
+
+    @Override
     public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList) {
 
     }
@@ -278,9 +284,18 @@ public class GameService extends Service
 
     @Override
     public void onChooseUsersRequested(
-            @NonNull final List<RemoteProfilePublic> chosenUserList)
+            @NonNull final List<Integer> chosenUserIdList)
     {
+        if (m_gameSessionProcessor.chooseUsers(chosenUserIdList)) return;
 
+        Error error =
+            ErrorUtility.
+                getErrorByStringResourceCodeAndFlag(
+                    this,
+                    GameServiceErrorEnum.CHOOSING_USERS_FAILED.getResourceCode(),
+                    GameServiceErrorEnum.CHOOSING_USERS_FAILED.isCritical());
+
+        MainActivityBroadcastReceiver.broadcastError(this, error);
     }
 
     @Override

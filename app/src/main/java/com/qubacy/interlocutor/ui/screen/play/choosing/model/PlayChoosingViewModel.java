@@ -7,4 +7,6 @@ import java.util.List;
 public interface PlayChoosingViewModel {
     public long getChoosingDuration();
     public List<ProfilePublic> getUserList();
+    public ProfilePublic getProfileByIndex(final int index);
+    public int getUserCount();
 }

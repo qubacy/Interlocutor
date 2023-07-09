@@ -21,10 +21,8 @@ public class PlayFullViewModel extends PlayViewModel
     protected Profile m_profile = null;
     protected FoundGameData m_foundGameData = null;
 
-//    protected final List<Message> m_messageList;
-
     public PlayFullViewModel() {
-//        m_messageList = new LinkedList<>();
+
     }
 
     public boolean setProfile(@NonNull final Profile profile) {
@@ -87,5 +85,19 @@ public class PlayFullViewModel extends PlayViewModel
         if (m_foundGameData == null) return null;
 
         return m_foundGameData.getProfilePublicList();
+    }
+
+    @Override
+    public ProfilePublic getProfileByIndex(final int index) {
+        if (m_foundGameData == null) return null;
+
+        return m_foundGameData.getProfilePublicList().get(index);
+    }
+
+    @Override
+    public int getUserCount() {
+        if (m_foundGameData == null) return 0;
+
+        return m_foundGameData.getProfilePublicList().size();
     }
 }

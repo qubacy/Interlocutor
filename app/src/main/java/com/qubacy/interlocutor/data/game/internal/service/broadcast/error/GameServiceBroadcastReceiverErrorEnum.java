@@ -14,7 +14,9 @@ public enum GameServiceBroadcastReceiverErrorEnum {
     LACKING_MESSAGE_DATA(
             R.string.error_game_service_broadcast_receiver_lacking_message_data, true),
     INCORRECT_MESSAGE_DATA(
-            R.string.error_game_service_broadcast_receiver_incorrect_message_data, true);
+            R.string.error_game_service_broadcast_receiver_incorrect_message_data, true),
+    LACKING_CHOSEN_USERS_DATA(
+            R.string.error_game_service_broadcast_receiver_chosen_users_data, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

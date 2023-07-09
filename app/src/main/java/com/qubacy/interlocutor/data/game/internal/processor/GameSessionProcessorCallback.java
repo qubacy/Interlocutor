@@ -16,5 +16,6 @@ public interface GameSessionProcessorCallback {
     public void messageSent();
     public void messageReceived(@NonNull final RemoteMessage message);
     public void onChattingPhaseIsOver();
+    public void onChoosingPhaseIsOver();
     public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList);
 }

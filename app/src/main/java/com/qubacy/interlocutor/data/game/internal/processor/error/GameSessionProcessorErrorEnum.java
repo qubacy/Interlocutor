@@ -10,7 +10,9 @@ public enum GameSessionProcessorErrorEnum {
     UNKNOWN_STATE_TYPE(
             R.string.error_game_session_processor_unknown_state, true),
     ILLEGAL_STATE(
-            R.string.error_game_session_processor_illegal_state, true);
+            R.string.error_game_session_processor_illegal_state, true),
+    CHOSEN_USERS_SETTING_FAILED(
+            R.string.error_game_session_processor_chosen_users_setting_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

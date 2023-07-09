@@ -18,10 +18,13 @@ import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameServiceBroadcastReceiver extends BroadcastReceiver {
     public static final String C_PROFILE_PROP_NAME = "profile";
     public static final String C_MESSAGE_PROP_NAME = "message";
+    public static final String C_CHOSEN_USER_ID_LIST_PROP_NAME = "chosenUserIdList";
 
     private final Context m_context;
     private final GameServiceBroadcastReceiverCallback m_callback;
@@ -99,6 +102,18 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
         LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
     }
 
+    public static void broadcastChooseUsers(
+            @NonNull final Context context,
+            @NonNull final List<Integer> chosenUserIdList)
+    {
+        Intent intent = new Intent(GameServiceBroadcastCommand.CHOOSE_USERS.toString());
+
+        intent.putIntegerArrayListExtra(
+                C_CHOSEN_USER_ID_LIST_PROP_NAME, (ArrayList<Integer>) chosenUserIdList);
+
+        LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
+    }
+
     @Override
     public void onReceive(
             final Context context,
@@ -145,6 +160,7 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
             case START_SEARCHING: return startSearching(data);
             case STOP_SEARCHING: return stopSearching(data);
             case SEND_MESSAGE: return sendMessage(data);
+            case CHOOSE_USERS: return chooseUsers(data);
         }
 
         Error error =
@@ -223,6 +239,37 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
         Message message = (Message) messageSerializable;
 
         m_callback.onMessageSendingRequested(message);
+
+        return null;
+    }
+
+    private Error chooseUsers(final Intent data) {
+        if (!data.hasExtra(C_CHOSEN_USER_ID_LIST_PROP_NAME)) {
+            Error error =
+                ErrorUtility.
+                    getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.getResourceCode(),
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.isCritical());
+
+            return error;
+        }
+
+        List<Integer> chosenUserIdList =
+                data.getIntegerArrayListExtra(C_CHOSEN_USER_ID_LIST_PROP_NAME);
+
+        if (chosenUserIdList.isEmpty()) {
+            Error error =
+                ErrorUtility.
+                    getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.getResourceCode(),
+                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.isCritical());
+
+            return error;
+        }
+
+        m_callback.onChooseUsersRequested(chosenUserIdList);
 
         return null;
     }
