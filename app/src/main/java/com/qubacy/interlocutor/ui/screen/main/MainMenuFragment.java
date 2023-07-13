@@ -21,13 +21,13 @@ import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUti
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
 import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
-import com.qubacy.interlocutor.ui.screen.FragmentBase;
+import com.qubacy.interlocutor.ui.screen.NavigationFragment;
 import com.qubacy.interlocutor.ui.screen.main.error.MainMenuFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.main.model.MainMenuFragmentViewModel;
 import com.qubacy.interlocutor.ui.screen.profile.ProfileFragment;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
-public class MainMenuFragment extends FragmentBase {
+public class MainMenuFragment extends NavigationFragment {
     private MainMenuFragmentViewModel m_mainMenuFragmentViewModel = null;
 
     @Override

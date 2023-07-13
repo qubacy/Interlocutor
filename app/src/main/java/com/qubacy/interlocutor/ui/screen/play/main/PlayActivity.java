@@ -2,10 +2,9 @@ package com.qubacy.interlocutor.ui.screen.play.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.qubacy.interlocutor.R;
@@ -13,20 +12,26 @@ import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLaun
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
+import com.qubacy.interlocutor.ui.common.activity.ErrorHandlingActivity;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.PlayActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.PlayActivityBroadcastReceiverCallback;
 import com.qubacy.interlocutor.ui.screen.play.main.error.PlayActivityErrorEnum;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayActivityViewModel;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 
 import java.io.Serializable;
 
-public class PlayActivity extends AppCompatActivity
+public class PlayActivity extends ErrorHandlingActivity
+    implements PlayActivityBroadcastReceiverCallback
 {
     public static final String C_GAME_SERVICE_LAUNCHER_ARG_NAME = "gameServiceLauncher";
     public static final String C_PROFILE_ARG_NAME = "profile";
 
     private PlayFullViewModel m_playFullViewModel = null;
     private PlayActivityViewModel m_playActivityViewModel = null;
+
+    private PlayActivityBroadcastReceiver m_broadcastReceiver = null;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -51,12 +56,29 @@ public class PlayActivity extends AppCompatActivity
             return;
         }
 
+        PlayActivityBroadcastReceiver broadcastReceiver =
+                PlayActivityBroadcastReceiver.start(this, this);
+
+        if (broadcastReceiver == null) {
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    this,
+                    PlayActivityErrorEnum.BROADCAST_RECEIVER_CREATION_FAILED.getResourceCode(),
+                    PlayActivityErrorEnum.BROADCAST_RECEIVER_CREATION_FAILED.isCritical());
+
+            onErrorOccurred(error);
+
+            return;
+        }
+
+        m_broadcastReceiver = broadcastReceiver;
+
         if (!m_playActivityViewModel.startServices(this)) {
             Error error =
-                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                            this,
-                            PlayActivityErrorEnum.SERVICES_START_FAILED.getResourceCode(),
-                            PlayActivityErrorEnum.SERVICES_START_FAILED.isCritical());
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    this,
+                    PlayActivityErrorEnum.SERVICES_START_FAILED.getResourceCode(),
+                    PlayActivityErrorEnum.SERVICES_START_FAILED.isCritical());
 
             MainActivityBroadcastReceiver.broadcastError(this, error);
 
@@ -102,6 +124,13 @@ public class PlayActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        PlayActivityBroadcastReceiver.stop(this, m_broadcastReceiver);
+
         super.onDestroy();
+    }
+
+    @Override
+    public void onErrorOccurred(@NonNull final Error error) {
+        showErrorToast(error);
     }
 }

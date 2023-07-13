@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.ui.screen;
+package com.qubacy.interlocutor.ui.common.fragment;
 
 import android.content.Context;
 

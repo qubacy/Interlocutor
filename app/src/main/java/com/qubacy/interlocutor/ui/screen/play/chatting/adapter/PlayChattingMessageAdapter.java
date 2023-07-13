@@ -89,7 +89,7 @@ public class PlayChattingMessageAdapter
             return;
         }
 
-        if (holder.setData(senderProfile, message)) {
+        if (!holder.setData(senderProfile, message)) {
             Error error =
                 ErrorUtility.getErrorByStringResourceCodeAndFlag(
                     m_context,

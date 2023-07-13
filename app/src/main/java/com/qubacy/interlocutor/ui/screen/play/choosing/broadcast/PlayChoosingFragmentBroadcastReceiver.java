@@ -1,6 +1,5 @@
 package com.qubacy.interlocutor.ui.screen.play.choosing.broadcast;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,19 +9,16 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.ui.common.broadcaster.BroadcastReceiverBase;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.error.PlayChoosingFragmentBroadcastErrorEnum;
 
-public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiver {
-    private final Context m_context;
-    private final PlayChoosingFragmentBroadcastReceiverCallback m_callback;
-
+public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase {
     protected PlayChoosingFragmentBroadcastReceiver(
             final Context context,
             final PlayChoosingFragmentBroadcastReceiverCallback callback)
     {
-        m_context = context;
-        m_callback = callback;
+        super(context, callback);
     }
 
     public static PlayChoosingFragmentBroadcastReceiver getInstance(
@@ -34,10 +30,8 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiver {
         return new PlayChoosingFragmentBroadcastReceiver(context, callback);
     }
 
-    public static PlayChoosingFragmentBroadcastReceiver start(
-            @NonNull final Context context,
-            @NonNull final PlayChoosingFragmentBroadcastReceiverCallback callback)
-    {
+    @Override
+    public IntentFilter generateIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
 
         for (final PlayChoosingFragmentBroadcastCommand command :
@@ -46,8 +40,17 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiver {
             intentFilter.addAction(command.toString());
         }
 
+        return intentFilter;
+    }
+
+    public static PlayChoosingFragmentBroadcastReceiver start(
+            @NonNull final Context context,
+            @NonNull final PlayChoosingFragmentBroadcastReceiverCallback callback)
+    {
         PlayChoosingFragmentBroadcastReceiver playChoosingFragmentBroadcastReceiver =
                 new PlayChoosingFragmentBroadcastReceiver(context, callback);
+
+        IntentFilter intentFilter = playChoosingFragmentBroadcastReceiver.generateIntentFilter();
 
         LocalBroadcastManager.
                 getInstance(context).
@@ -121,7 +124,7 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiver {
     }
 
     private Error processTimeIsOverCommand(final Intent data) {
-        m_callback.onTimeIsOver();
+        ((PlayChoosingFragmentBroadcastReceiverCallback)m_callback).onTimeIsOver();
 
         return null;
     }

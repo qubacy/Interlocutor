@@ -22,6 +22,7 @@ import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
+import com.qubacy.interlocutor.ui.screen.play.main.PlayActivity;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiverCallback;
@@ -133,6 +134,11 @@ public class PlaySearchingFragment extends PlayFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onServiceReady() {
         m_playSearchingFragmentViewModel.
                 processSearchingStart(m_context, m_playSearchingViewModel.getProfile());
@@ -147,9 +153,11 @@ public class PlaySearchingFragment extends PlayFragment
     }
 
     private void navigateToChatting() {
+        if (getView() == null) return;
+
         Navigation.
-                findNavController(getView()).
-                navigate(R.id.action_playSearchingFragment_to_playChattingFragment);
+            findNavController(getView()).
+            navigate(R.id.action_playSearchingFragment_to_playChattingFragment);
     }
 
     @Override

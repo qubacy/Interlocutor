@@ -3,7 +3,8 @@ package com.qubacy.interlocutor.ui.main.broadcaster;
 import androidx.annotation.NonNull;
 
 public enum MainActivityBroadcastCommand {
-    ERROR_OCCURRED(MainActivityBroadcastReceiver.class.getName() + ".error_occurred");
+    ERROR_OCCURRED(MainActivityBroadcastReceiver.class.getName() + ".error_occurred"),
+    ERROR_PROCESSED(MainActivityBroadcastReceiver.class.getName() + ".shutdown_app");
 
     final private String m_commandString;
 

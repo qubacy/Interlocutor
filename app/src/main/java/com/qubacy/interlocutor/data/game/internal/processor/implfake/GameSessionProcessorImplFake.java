@@ -1,7 +1,5 @@
 package com.qubacy.interlocutor.data.game.internal.processor.implfake;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;

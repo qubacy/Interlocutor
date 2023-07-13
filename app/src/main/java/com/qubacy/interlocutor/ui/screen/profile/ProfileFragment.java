@@ -18,14 +18,14 @@ import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUti
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
-import com.qubacy.interlocutor.ui.screen.FragmentBase;
+import com.qubacy.interlocutor.ui.screen.NavigationFragment;
 import com.qubacy.interlocutor.ui.screen.profile.error.ProfileFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.profile.model.ProfileFragmentViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
 import java.io.Serializable;
 
-public class ProfileFragment extends FragmentBase {
+public class ProfileFragment extends NavigationFragment {
     public static final String C_PROFILE_DATA_REPOSITORY_ARG_NAME = "profileDataRepository";
 
     private ProfileFragmentViewModel m_profileFragmentViewModel = null;

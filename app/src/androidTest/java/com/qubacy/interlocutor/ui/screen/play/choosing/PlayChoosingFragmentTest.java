@@ -49,7 +49,8 @@ public class PlayChoosingFragmentTest {
         m_fragmentScenario =
             FragmentScenario.launchInContainer(
                 PlayChoosingFragment.class,
-                null, R.style.Theme_Interlocutor,
+                null,
+                R.style.Theme_Interlocutor,
                 Lifecycle.State.CREATED);
     }
 

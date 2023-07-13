@@ -1,6 +1,5 @@
 package com.qubacy.interlocutor.ui.screen.play.searching.broadcast;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,25 +10,20 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.ui.common.broadcaster.BroadcastReceiverBase;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.error.PlaySearchingFragmentBroadcastReceiverErrorEnum;
 
 import java.io.Serializable;
 
-public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
+public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiverBase {
     public static final String C_GAME_FOUND_DATA_PROP_NAME = "gameFoundData";
-
-    private final Context m_context;
-    private final PlaySearchingFragmentBroadcastReceiverCallback m_callback;
 
     protected PlaySearchingFragmentBroadcastReceiver(
             final Context context,
             final PlaySearchingFragmentBroadcastReceiverCallback callback)
     {
-        super();
-
-        m_context = context;
-        m_callback = callback;
+        super(context, callback);
     }
 
     public static PlaySearchingFragmentBroadcastReceiver getInstance(
@@ -41,10 +35,8 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
         return new PlaySearchingFragmentBroadcastReceiver(context, callback);
     }
 
-    public static PlaySearchingFragmentBroadcastReceiver start(
-            @NonNull final Context context,
-            @NonNull final PlaySearchingFragmentBroadcastReceiverCallback callback)
-    {
+    @Override
+    public IntentFilter generateIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
 
         for (final PlaySearchingFragmentBroadcastCommand command :
@@ -53,8 +45,18 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
             intentFilter.addAction(command.toString());
         }
 
+        return intentFilter;
+    }
+
+    public static PlaySearchingFragmentBroadcastReceiver start(
+            @NonNull final Context context,
+            @NonNull final PlaySearchingFragmentBroadcastReceiverCallback callback)
+    {
         PlaySearchingFragmentBroadcastReceiver playSearchingFragmentBroadcastReceiver =
                 new PlaySearchingFragmentBroadcastReceiver(context, callback);
+
+        IntentFilter intentFilter =
+                playSearchingFragmentBroadcastReceiver.generateIntentFilter();
 
         LocalBroadcastManager.getInstance(context).registerReceiver(
                 playSearchingFragmentBroadcastReceiver, intentFilter);
@@ -144,7 +146,7 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
     }
 
     private Error processServiceReadyCommand(final Intent data) {
-        m_callback.onServiceReady();
+        ((PlaySearchingFragmentBroadcastReceiverCallback)m_callback).onServiceReady();
 
         return null;
     }
@@ -175,13 +177,13 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiver {
 
         FoundGameData foundGameData = (FoundGameData) foundGameDataSerializable;
 
-        m_callback.onGameFound(foundGameData);
+        ((PlaySearchingFragmentBroadcastReceiverCallback)m_callback).onGameFound(foundGameData);
 
         return null;
     }
 
     private Error processSearchingStoppedCommand(final Intent data) {
-        m_callback.onSearchingStopped();
+        ((PlaySearchingFragmentBroadcastReceiverCallback)m_callback).onSearchingStopped();
 
         return null;
     }

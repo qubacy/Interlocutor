@@ -27,6 +27,8 @@
     <string name="play_choosing_fragment_header_title_text">Choose your favorites!</string>
     <string name="play_choosing_fragment_button_confirm_caption">Confirm</string>
 
+    <string name="error_fragment_button_ok_caption">OK</string>
+
     <!--  ERRORS  -->
     
     <string name="error_main_menu_fragment_null_profile_data_source">Profile Data Source was null!</string>
@@ -64,6 +66,7 @@
     <string name="error_main_activity_broadcast_receiver_incorrect_error_data">Incorrect Error data has been provided!</string>
 
     <string name="error_play_activity_null_arguments">Arguments were null!</string>
+    <string name="error_play_activity_broadcast_receiver_creation_failed">Play Activity Broadcast Receiver creation has been failed!</string>
     <string name="error_play_activity_services_start_failed">Services\' start has been failed!</string>
 
     <string name="error_play_searching_fragment_broadcast_receiver_creation_failed">Play Searching Fragment Broadcast Receiver creation has been failed!</string>
@@ -93,4 +96,10 @@
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
     <string name="error_profile_fragment_lacking_profile_data">Profile data hasn\'t been provided!</string>
     <string name="error_profile_fragment_profile_creation_failed">Profile creation has been failed!</string>
+
+
+
+    <string name="error_error_handling_broadcast_receiver_unknown_command_type">Unknown command type has been provided!</string>
+    <string name="error_error_handling_broadcast_receiver_lacking_error_data">Error data hasn\'t been provided!</string>
+    <string name="error_error_handling_broadcast_receiver_incorrect_error_data">Incorrect Error data has been provided!</string>
 </resources>

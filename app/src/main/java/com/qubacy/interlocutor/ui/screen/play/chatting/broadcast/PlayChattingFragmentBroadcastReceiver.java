@@ -1,6 +1,5 @@
 package com.qubacy.interlocutor.ui.screen.play.chatting.broadcast;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,23 +10,20 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.ui.common.broadcaster.BroadcastReceiverBase;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.error.PlayChattingFragmentBroadcastErrorEnum;
 
 import java.io.Serializable;
 
-public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
+public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiverBase {
     public static final String C_MESSAGE_PROP_NAME = "message";
-
-    private final Context m_context;
-    private final PlayChattingFragmentBroadcastReceiverCallback m_callback;
 
     protected PlayChattingFragmentBroadcastReceiver(
             final Context context,
             final PlayChattingFragmentBroadcastReceiverCallback callback)
     {
-        m_context = context;
-        m_callback = callback;
+        super(context, callback);
     }
 
     public static PlayChattingFragmentBroadcastReceiver getInstance(
@@ -39,10 +35,8 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
         return new PlayChattingFragmentBroadcastReceiver(context, callback);
     }
 
-    public static PlayChattingFragmentBroadcastReceiver start(
-            @NonNull final Context context,
-            @NonNull final PlayChattingFragmentBroadcastReceiverCallback callback)
-    {
+    @Override
+    public IntentFilter generateIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
 
         for (final PlayChattingFragmentBroadcastCommand command :
@@ -51,8 +45,17 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
             intentFilter.addAction(command.toString());
         }
 
+        return intentFilter;
+    }
+
+    public static PlayChattingFragmentBroadcastReceiver start(
+            @NonNull final Context context,
+            @NonNull final PlayChattingFragmentBroadcastReceiverCallback callback)
+    {
         PlayChattingFragmentBroadcastReceiver playChattingFragmentBroadcastReceiver =
                 new PlayChattingFragmentBroadcastReceiver(context, callback);
+
+        IntentFilter intentFilter = playChattingFragmentBroadcastReceiver.generateIntentFilter();
 
         LocalBroadcastManager.
                 getInstance(context).
@@ -168,13 +171,13 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiver {
 
         Message message = (Message) messageSerializable;
 
-        m_callback.onMessageReceived(message);
+        ((PlayChattingFragmentBroadcastReceiverCallback)m_callback).onMessageReceived(message);
 
         return null;
     }
 
     private Error processTimeIsOverCommand(final Intent data) {
-        m_callback.onTimeIsOver();
+        ((PlayChattingFragmentBroadcastReceiverCallback)m_callback).onTimeIsOver();
 
         return null;
     }

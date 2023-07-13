@@ -5,6 +5,8 @@ import com.qubacy.interlocutor.R;
 public enum PlayActivityErrorEnum {
     NULL_ARGUMENTS(
             R.string.error_play_activity_null_arguments, true),
+    BROADCAST_RECEIVER_CREATION_FAILED(
+            R.string.error_play_activity_broadcast_receiver_creation_failed, true),
     SERVICES_START_FAILED(
             R.string.error_play_activity_services_start_failed, true);
 
