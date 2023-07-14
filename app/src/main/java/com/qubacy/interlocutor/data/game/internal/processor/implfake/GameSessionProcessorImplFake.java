@@ -3,6 +3,7 @@ package com.qubacy.interlocutor.data.game.internal.processor.implfake;
 import androidx.annotation.NonNull;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandChooseUsers;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandLeave;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandSendMessage;
@@ -11,6 +12,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopS
 import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateChatting;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateChoosing;
+import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateResults;
 import com.qubacy.interlocutor.data.game.internal.processor.implfake.state.GameSessionImplFakeStateSearching;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
@@ -27,7 +29,7 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
 {
     private static final long C_SEARCHING_TIME_MILLISECONDS = 1000;
     private static final long C_CHATTING_TIME_MILLISECONDS = 1000; //300000;
-    private static final long C_CHOOSING_TIME_MILLISECONDS = 20000; //60000;
+    private static final long C_CHOOSING_TIME_MILLISECONDS = 5000; //60000;
 
     private static final int C_LOCAL_ID = 0;
     private static final int C_INTERLOCUTOR_ID = 1;
@@ -121,10 +123,25 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
             m_foundGameData.getChoosingStageDuration() <=
             System.currentTimeMillis())
         {
-            m_callback.onChoosingPhaseIsOver();
+            ArrayList<MatchedUserProfileData> userProfileContactDataList =
+                    new ArrayList<MatchedUserProfileData>()
+                    {
+                        {
+                            List<Integer> chosenUserIdList =
+                                    gameSessionImplFakeStateChoosing.getChosenUserIdList();
 
-            // todo: moving to the ending state..
-            //m_gameSessionState = ;
+                            if (chosenUserIdList != null) {
+                                for (final Integer userId : chosenUserIdList) {
+                                    add(MatchedUserProfileData.getInstance(
+                                            userId, "Contact of " + userId));
+                                }
+                            }
+                        }
+                    };
+
+            m_callback.onChoosingPhaseIsOver(userProfileContactDataList);
+
+            m_gameSessionState = GameSessionImplFakeStateResults.getInstance();
 
             return null;
         }
@@ -134,6 +151,8 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
 
     @Override
     protected Error execEndingState() {
+        // nothing to execute?..
+
         return null;
     }
 

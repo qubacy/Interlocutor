@@ -94,6 +94,15 @@
                             <option name="y" value="-163" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_playChattingFragment_to_playChoosingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -104,6 +113,18 @@
                           <Point>
                             <option name="x" value="537" />
                             <option name="y" value="-166" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="playResultsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="787" />
+                            <option name="y" value="-164" />
                           </Point>
                         </option>
                       </LayoutPositions>

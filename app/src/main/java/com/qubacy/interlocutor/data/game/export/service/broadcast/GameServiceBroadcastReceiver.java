@@ -258,17 +258,6 @@ public class GameServiceBroadcastReceiver extends BroadcastReceiver {
         List<Integer> chosenUserIdList =
                 data.getIntegerArrayListExtra(C_CHOSEN_USER_ID_LIST_PROP_NAME);
 
-        if (chosenUserIdList.isEmpty()) {
-            Error error =
-                ErrorUtility.
-                    getErrorByStringResourceCodeAndFlag(
-                        m_context,
-                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.getResourceCode(),
-                        GameServiceBroadcastReceiverErrorEnum.LACKING_CHOSEN_USERS_DATA.isCritical());
-
-            return error;
-        }
-
         m_callback.onChooseUsersRequested(chosenUserIdList);
 
         return null;

@@ -17,7 +17,6 @@ public class CommandChooseUsers extends Command {
             final List<Integer> chosenUserIdList)
     {
         if (chosenUserIdList == null) return null;
-        if (chosenUserIdList.isEmpty()) return null;
 
         return new CommandChooseUsers(chosenUserIdList);
     }

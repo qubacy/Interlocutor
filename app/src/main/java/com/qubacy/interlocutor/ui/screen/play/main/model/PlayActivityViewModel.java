@@ -45,4 +45,15 @@ public class PlayActivityViewModel extends ViewModel {
 
         return true;
     }
+
+    public boolean stopServices(@NonNull final Context context) {
+        if (!m_isGameServiceLaunched)
+            return true;
+
+        m_isGameServiceLaunched = false;
+
+        m_gameServiceLauncher.stopService(context);
+
+        return true;
+    }
 }

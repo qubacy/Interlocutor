@@ -7,13 +7,18 @@ import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.common.broadcaster.BroadcastReceiverBase;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.error.PlayChoosingFragmentBroadcastErrorEnum;
 
+import java.util.ArrayList;
+
 public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase {
+    public static final String C_USER_ID_CONTACT_PAIR_LIST_PROP_NAME = "userIdContactPairList";
+
     protected PlayChoosingFragmentBroadcastReceiver(
             final Context context,
             final PlayChoosingFragmentBroadcastReceiverCallback callback)
@@ -69,9 +74,13 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase
     }
 
     public static void broadcastChoosingPhaseIsOver(
-            @NonNull final Context context)
+            @NonNull final Context context,
+            @NonNull final ArrayList<MatchedUserProfileData> userIdContactDataList)
     {
         Intent intent = new Intent(PlayChoosingFragmentBroadcastCommand.TIME_IS_OVER.toString());
+
+        intent.putParcelableArrayListExtra(
+                C_USER_ID_CONTACT_PAIR_LIST_PROP_NAME, userIdContactDataList);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -124,7 +133,35 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase
     }
 
     private Error processTimeIsOverCommand(final Intent data) {
-        ((PlayChoosingFragmentBroadcastReceiverCallback)m_callback).onTimeIsOver();
+        if (!data.hasExtra(C_USER_ID_CONTACT_PAIR_LIST_PROP_NAME)) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayChoosingFragmentBroadcastErrorEnum.LACKING_USER_ID_CONTACT_DATA_LIST.
+                                    getResourceCode(),
+                            PlayChoosingFragmentBroadcastErrorEnum.LACKING_USER_ID_CONTACT_DATA_LIST.
+                                    isCritical());
+
+            return error;
+        }
+
+        ArrayList<MatchedUserProfileData> userIdContactDataList =
+                data.getParcelableArrayListExtra(C_USER_ID_CONTACT_PAIR_LIST_PROP_NAME);
+
+        if (userIdContactDataList == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayChoosingFragmentBroadcastErrorEnum.INVALID_USER_ID_CONTACT_DATA_LIST.
+                                    getResourceCode(),
+                            PlayChoosingFragmentBroadcastErrorEnum.INVALID_USER_ID_CONTACT_DATA_LIST.
+                                    isCritical());
+
+            return error;
+        }
+
+        ((PlayChoosingFragmentBroadcastReceiverCallback)m_callback).
+                onTimeIsOver(userIdContactDataList);
 
         return null;
     }

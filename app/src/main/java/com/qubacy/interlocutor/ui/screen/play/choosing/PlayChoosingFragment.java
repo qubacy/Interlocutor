@@ -10,11 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
@@ -31,6 +33,8 @@ import com.qubacy.interlocutor.ui.screen.play.choosing.model.PlayChoosingViewMod
 import com.qubacy.interlocutor.ui.screen.play.common.task.TextViewTimerAsyncTask;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
+
+import java.util.List;
 
 public class PlayChoosingFragment extends PlayFragment
     implements
@@ -201,9 +205,15 @@ public class PlayChoosingFragment extends PlayFragment
     }
 
     @Override
-    public void onTimeIsOver() {
-        // todo: navigating to the ending fragment..
+    public void onTimeIsOver(final List<MatchedUserProfileData> userIdContactDataList) {
+        if (!m_playChoosingViewModel.setUserIdContactDataList(userIdContactDataList)) {
+            // todo: processing an error..
 
+            return;
+        }
 
+        Navigation.
+                findNavController(getView()).
+                navigate(R.id.action_playChoosingFragment_to_playResultsFragment);
     }
 }

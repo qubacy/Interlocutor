@@ -11,6 +11,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.service.broadcast.GameServiceBroadcastReceiverCallback;
 import com.qubacy.interlocutor.data.game.internal.service.error.GameServiceErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessorCallback;
@@ -32,6 +33,7 @@ import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingF
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameService extends Service
@@ -229,13 +231,11 @@ public class GameService extends Service
     }
 
     @Override
-    public void onChoosingPhaseIsOver() {
-        PlayChoosingFragmentBroadcastReceiver.broadcastChoosingPhaseIsOver(this);
-    }
-
-    @Override
-    public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList) {
-
+    public void onChoosingPhaseIsOver(
+            @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList)
+    {
+        PlayChoosingFragmentBroadcastReceiver.broadcastChoosingPhaseIsOver(
+                this, userProfileContactDataList);
     }
 
     // BroadcastReceiver:

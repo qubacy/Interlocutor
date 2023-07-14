@@ -22,7 +22,6 @@ public class GameSessionImplFakeStateChoosing extends GameSessionStateChoosing
             final List<Integer> chosenUserIdList)
     {
         if (chosenUserIdList == null) return false;
-        if (chosenUserIdList.isEmpty()) return false;
 
         m_chosenUserIdList = chosenUserIdList;
 

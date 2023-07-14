@@ -23,7 +23,6 @@ import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGa
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 
 import java.io.Serializable;
 import java.util.List;
@@ -121,7 +120,7 @@ public abstract class GameSessionProcessor implements Serializable {
             case SEARCHING: return execSearchingState();
             case CHATTING: return execChattingState();
             case CHOOSING: return execChoosingState();
-            case ENDING: return execEndingState();
+            case RESULTS: return execEndingState();
         }
 
         Error error =

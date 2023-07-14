@@ -28,5 +28,15 @@
     <fragment
         android:id="@+id/playChoosingFragment"
         android:name="com.qubacy.interlocutor.ui.screen.play.choosing.PlayChoosingFragment"
-        android:label="PlayChoosingFragment" />
+        android:label="PlayChoosingFragment" >
+        <action
+            android:id="@+id/action_playChoosingFragment_to_playResultsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/playResultsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playResultsFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.play.results.PlayResultsFragment"
+        android:label="PlayResultsFragment" />
 </navigation>

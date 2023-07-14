@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(JUnit4.class)
@@ -61,7 +63,9 @@ public class GameSessionProcessorImplTest {
             }
 
             @Override
-            public void onChoosingPhaseIsOver() {
+            public void onChoosingPhaseIsOver(
+                    @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList)
+            {
 
             }
 

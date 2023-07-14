@@ -27,6 +27,12 @@
     <string name="play_choosing_fragment_header_title_text">Choose your favorites!</string>
     <string name="play_choosing_fragment_button_confirm_caption">Confirm</string>
 
+    <string name="play_results_fragment_status_bar_title">Results</string>
+    <string name="play_results_fragment_header_title_text">Check the results!</string>
+    <string name="play_results_fragment_button_finish_caption">Finish</string>
+
+    <string name="play_results_fragment_clipboard_contact_copied_note">User\'s contact data has been copied!</string>
+
     <string name="error_fragment_button_ok_caption">OK</string>
 
     <!--  ERRORS  -->
@@ -92,6 +98,8 @@
     <string name="error_play_choosing_fragment_user_adapter_creation_failed">Users\' Adapter creation has been failed!</string>
 
     <string name="error_play_choosing_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
+    <string name="error_play_choosing_fragment_broadcast_receiver_lacking_user_id_contact_data_list">User Id - Contact Data hasn\'t been provided!</string>
+    <string name="error_play_choosing_fragment_broadcast_receiver_invalid_user_id_contact_data_list">Incorrect User Id - Contact Data has been provided!</string>
 
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
     <string name="error_profile_fragment_lacking_profile_data">Profile data hasn\'t been provided!</string>

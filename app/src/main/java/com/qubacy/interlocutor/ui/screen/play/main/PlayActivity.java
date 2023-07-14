@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.qubacy.interlocutor.R;
+import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -117,13 +118,14 @@ public class PlayActivity extends ErrorHandlingActivity
 
     @Override
     public void onBackPressed() {
-        m_playActivityViewModel.getGameServiceLauncher().stopService(this);
+        m_playActivityViewModel.stopServices(this);
 
         finish();
     }
 
     @Override
     protected void onDestroy() {
+        m_playActivityViewModel.stopServices(this);
         PlayActivityBroadcastReceiver.stop(this, m_broadcastReceiver);
 
         super.onDestroy();

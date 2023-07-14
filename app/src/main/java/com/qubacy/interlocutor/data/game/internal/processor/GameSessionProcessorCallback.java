@@ -2,12 +2,12 @@ package com.qubacy.interlocutor.data.game.internal.processor;
 
 import androidx.annotation.NonNull;
 
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface GameSessionProcessorCallback {
     public void gameFound(@NonNull final RemoteFoundGameData foundGameData);
@@ -16,6 +16,6 @@ public interface GameSessionProcessorCallback {
     public void messageSent();
     public void messageReceived(@NonNull final RemoteMessage message);
     public void onChattingPhaseIsOver();
-    public void onChoosingPhaseIsOver();
-    public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList);
+    public void onChoosingPhaseIsOver(
+            @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList);
 }

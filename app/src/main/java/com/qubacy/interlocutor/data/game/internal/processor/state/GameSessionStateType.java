@@ -4,7 +4,7 @@ public enum GameSessionStateType {
     SEARCHING(),
     CHATTING(),
     CHOOSING(),
-    ENDING();
+    RESULTS();
 
     private GameSessionStateType() {
 
