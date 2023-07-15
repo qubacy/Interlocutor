@@ -1,7 +1,10 @@
 package com.qubacy.interlocutor.ui.screen.play.choosing.model;
 
+import android.content.Context;
+
 import androidx.lifecycle.ViewModel;
 
+import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.common.task.TextViewTimerAsyncTaskCallback;
 
 import java.util.ArrayList;
@@ -73,5 +76,13 @@ public class PlayChoosingFragmentViewModel extends ViewModel
 
     public void setChoiceMade(final boolean isChoiceMade) {
         m_isChoiceMade = isChoiceMade;
+    }
+
+    public void confirmChosenUsers(final Context context) {
+        if (context == null) return;
+
+        GameServiceBroadcastReceiver.broadcastChooseUsers(
+                context,
+                m_chosenUserIdList);
     }
 }

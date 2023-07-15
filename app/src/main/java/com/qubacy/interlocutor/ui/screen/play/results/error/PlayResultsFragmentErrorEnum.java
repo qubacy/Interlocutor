@@ -1,17 +1,15 @@
-package com.qubacy.interlocutor.ui.screen.profile.error;
+package com.qubacy.interlocutor.ui.screen.play.results.error;
 
 import com.qubacy.interlocutor.R;
 
-public enum ProfileFragmentErrorEnum {
-    NULL_ARGUMENTS(
-            R.string.error_profile_fragment_null_arguments, true),
-    PROFILE_CREATION_FAILED(
-            R.string.error_profile_fragment_profile_creation_failed, true);
+public enum PlayResultsFragmentErrorEnum {
+    ADAPTER_CREATION_FAILED(
+            R.string.error_play_results_fragment_adapter_creation_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;
 
-    private ProfileFragmentErrorEnum(
+    private PlayResultsFragmentErrorEnum(
             final int resourceCode,
             final boolean isCritical)
     {

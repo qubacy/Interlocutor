@@ -51,11 +51,11 @@ public class ErrorFragment extends FragmentBase {
             Error error =
                     (Error) savedInstanceState.getSerializable(C_ERROR_ARG_NAME);
 
-//            if (error == null) {
-//                // todo: should I check this case?..
-//
-//                return;
-//            }
+            if (error == null) {
+                onOkClicked();
+
+                return;
+            }
 
             m_error = error;
         }

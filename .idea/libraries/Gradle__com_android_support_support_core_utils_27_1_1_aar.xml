@@ -2,7 +2,6 @@
   <library name="Gradle: com.android.support:support-core-utils:27.1.1@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4bcfb854b3e269c386149a27d14e61c0/transformed/support-core-utils-27.1.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4bcfb854b3e269c386149a27d14e61c0/transformed/support-core-utils-27.1.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4bcfb854b3e269c386149a27d14e61c0/transformed/support-core-utils-27.1.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />

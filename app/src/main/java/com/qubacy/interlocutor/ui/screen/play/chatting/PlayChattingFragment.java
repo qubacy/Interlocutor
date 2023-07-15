@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -182,7 +183,11 @@ public class PlayChattingFragment extends PlayFragment
         String messageText = m_messageEditText.getText().toString();
 
         if (messageText.isEmpty()) {
-            // todo: should I notify user about it?
+            Toast.makeText(
+                    m_context,
+                    R.string.play_chatting_fragment_notification_null_message_text,
+                    Toast.LENGTH_SHORT).
+                    show();
 
             return;
         }

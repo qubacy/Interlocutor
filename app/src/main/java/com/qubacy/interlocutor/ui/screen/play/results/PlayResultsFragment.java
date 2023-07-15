@@ -19,11 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
+import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.screen.play.results.adapter.PlayResultsUserContactAdapter;
 import com.qubacy.interlocutor.ui.screen.play.results.adapter.PlayResultsUserContactAdapterCallback;
+import com.qubacy.interlocutor.ui.screen.play.results.error.PlayResultsFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.play.results.model.PlayResultsViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
 
@@ -64,7 +68,13 @@ public class PlayResultsFragment extends PlayFragment
                 PlayResultsUserContactAdapter.getInstance(m_context, this);
 
         if (adapter == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayResultsFragmentErrorEnum.ADAPTER_CREATION_FAILED.getResourceCode(),
+                    PlayResultsFragmentErrorEnum.ADAPTER_CREATION_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return view;
         }
@@ -131,5 +141,10 @@ public class PlayResultsFragment extends PlayFragment
                         R.string.play_results_fragment_clipboard_contact_copied_note,
                         Toast.LENGTH_SHORT).
                 show();
+    }
+
+    @Override
+    public void onUserContactAdapterErrorOccurred(@NonNull final Error error) {
+        MainActivityBroadcastReceiver.broadcastError(m_context, error);
     }
 }

@@ -9,7 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qubacy.interlocutor.R;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
+import com.qubacy.interlocutor.ui.screen.play.choosing.adapter.error.PlayChoosingUserAdapterErrorEnum;
 
 public class PlayChoosingUserAdapter extends RecyclerView.Adapter<PlayChoosingUserViewHolder>
     implements
@@ -59,7 +62,13 @@ public class PlayChoosingUserAdapter extends RecyclerView.Adapter<PlayChoosingUs
         ProfilePublic profile = m_callback.getProfileByIndex(position);
 
         if (profile == null) {
-            // todo: processing an error..
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayChoosingUserAdapterErrorEnum.NULL_PROFILE_DATA.getResourceCode(),
+                            PlayChoosingUserAdapterErrorEnum.NULL_PROFILE_DATA.isCritical());
+
+            m_callback.onUserAdapterErrorOccurred(error);
 
             return;
         }
@@ -69,7 +78,13 @@ public class PlayChoosingUserAdapter extends RecyclerView.Adapter<PlayChoosingUs
                 m_callback.isUserChosenById(profile.getId()),
                 m_callback.isChoosingEnabled()))
         {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        PlayChoosingUserAdapterErrorEnum.SETTING_DATA_FAILED.getResourceCode(),
+                        PlayChoosingUserAdapterErrorEnum.SETTING_DATA_FAILED.isCritical());
+
+            m_callback.onUserAdapterErrorOccurred(error);
 
             return;
         }
@@ -93,7 +108,13 @@ public class PlayChoosingUserAdapter extends RecyclerView.Adapter<PlayChoosingUs
             result = m_callback.removeChosenUserId(profilePublic.getId());
 
         if (!result) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayChoosingUserAdapterErrorEnum.USER_CHOSEN_STATE_SETTING_FAILED.getResourceCode(),
+                    PlayChoosingUserAdapterErrorEnum.USER_CHOSEN_STATE_SETTING_FAILED.isCritical());
+
+            m_callback.onUserAdapterErrorOccurred(error);
 
             return;
         }

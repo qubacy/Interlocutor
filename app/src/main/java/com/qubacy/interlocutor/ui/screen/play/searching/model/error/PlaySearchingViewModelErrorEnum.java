@@ -1,17 +1,14 @@
-package com.qubacy.interlocutor.ui.screen.profile.error;
+package com.qubacy.interlocutor.ui.screen.play.searching.model.error;
 
 import com.qubacy.interlocutor.R;
 
-public enum ProfileFragmentErrorEnum {
-    NULL_ARGUMENTS(
-            R.string.error_profile_fragment_null_arguments, true),
-    PROFILE_CREATION_FAILED(
-            R.string.error_profile_fragment_profile_creation_failed, true);
+public enum PlaySearchingViewModelErrorEnum {
+    ;
 
     private final int m_resourceCode;
     private final boolean m_isCritical;
 
-    private ProfileFragmentErrorEnum(
+    private PlaySearchingViewModelErrorEnum(
             final int resourceCode,
             final boolean isCritical)
     {
@@ -26,4 +23,5 @@ public enum ProfileFragmentErrorEnum {
     public boolean isCritical() {
         return m_isCritical;
     }
+
 }

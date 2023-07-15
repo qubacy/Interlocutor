@@ -2,7 +2,6 @@
   <library name="Gradle: android.arch.lifecycle:runtime:1.1.0@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/63a8b4e01dd3b77b5f13b0d1a8745736/transformed/runtime-1.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63a8b4e01dd3b77b5f13b0d1a8745736/transformed/runtime-1.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63a8b4e01dd3b77b5f13b0d1a8745736/transformed/runtime-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />

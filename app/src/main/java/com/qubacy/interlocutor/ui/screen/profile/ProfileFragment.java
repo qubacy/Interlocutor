@@ -89,24 +89,14 @@ public class ProfileFragment extends NavigationFragment {
 
         Profile profile = m_profileFragmentViewModel.getProfile(m_context);
 
-        if (profile == null) {
-            Error error =
-                ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                    m_context,
-                    ProfileFragmentErrorEnum.LACKING_PROFILE_DATA.getResourceCode(),
-                    ProfileFragmentErrorEnum.LACKING_PROFILE_DATA.isCritical());
+        if (profile != null) {
+            String username = profile.getUsername();
+            String contact = profile.getContact();
 
-            MainActivityBroadcastReceiver.broadcastError(m_context, error);
-
-            return view;
-        }
-
-        String username = profile.getUsername();
-        String contact = profile.getContact();
-
-        if (username != null && contact != null) {
-            m_usernameEditText.setText(username);
-            m_contactEditText.setText(contact);
+            if (username != null && contact != null) {
+                m_usernameEditText.setText(username);
+                m_contactEditText.setText(contact);
+            }
         }
 
         Button button = view.findViewById(R.id.profile_confirm_button);

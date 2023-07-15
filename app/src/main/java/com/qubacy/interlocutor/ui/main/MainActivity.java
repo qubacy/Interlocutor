@@ -46,7 +46,7 @@ public class MainActivity extends ErrorHandlingActivity
                     MainActivityErrorEnum.BROADCAST_RECEIVER_CREATION_FAILED.getResourceCode(),
                     MainActivityErrorEnum.BROADCAST_RECEIVER_CREATION_FAILED.isCritical());
 
-            onErrorOccurred(error);//, true);
+            onErrorOccurred(error);
 
             return;
         }
@@ -78,7 +78,7 @@ public class MainActivity extends ErrorHandlingActivity
         ErrorFragment errorFragment = ErrorFragment.getInstance(error);
 
         if (errorFragment == null) {
-            // todo: processing an error..
+            finishAndRemoveTask();
 
             return;
         }

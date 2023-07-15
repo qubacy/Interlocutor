@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qubacy.interlocutor.R;
-import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
@@ -169,9 +168,7 @@ public class PlayChoosingFragment extends PlayFragment
         m_adapter.notifyDataSetChanged();
         m_confirmButton.setEnabled(false);
 
-        GameServiceBroadcastReceiver.broadcastChooseUsers(
-                m_context,
-                m_playChoosingFragmentViewModel.getChosenUserIdList());
+        m_playChoosingFragmentViewModel.confirmChosenUsers(m_context);
     }
 
     @Override
@@ -205,9 +202,20 @@ public class PlayChoosingFragment extends PlayFragment
     }
 
     @Override
+    public void onUserAdapterErrorOccurred(@NonNull final Error error) {
+        MainActivityBroadcastReceiver.broadcastError(m_context, error);
+    }
+
+    @Override
     public void onTimeIsOver(final List<MatchedUserProfileData> userIdContactDataList) {
         if (!m_playChoosingViewModel.setUserIdContactDataList(userIdContactDataList)) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayChoosingFragmentErrorEnum.USER_ID_CONTACT_DATA_LIST_SETTING_FAILED.getResourceCode(),
+                    PlayChoosingFragmentErrorEnum.USER_ID_CONTACT_DATA_LIST_SETTING_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
             return;
         }

@@ -2,7 +2,6 @@
   <library name="Gradle: com.android.support:support-fragment:27.1.1@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0bce24ba482c20968bca9a4068d9c835/transformed/support-fragment-27.1.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0bce24ba482c20968bca9a4068d9c835/transformed/support-fragment-27.1.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0bce24ba482c20968bca9a4068d9c835/transformed/support-fragment-27.1.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />

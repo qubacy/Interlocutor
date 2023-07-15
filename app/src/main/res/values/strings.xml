@@ -22,6 +22,7 @@
 
     <string name="play_chatting_fragment_status_bar_title">Chat</string>
     <string name="play_chatting_fragment_section_sending_message_text_hint">Type a message..</string>
+    <string name="play_chatting_fragment_notification_null_message_text">Provide some text!</string>
 
     <string name="play_choosing_fragment_status_bar_title">Choose</string>
     <string name="play_choosing_fragment_header_title_text">Choose your favorites!</string>
@@ -40,6 +41,7 @@
     <string name="error_main_menu_fragment_null_profile_data_source">Profile Data Source was null!</string>
     <string name="error_main_menu_fragment_null_game_service_launcher">Game Service launcher was null!</string>
     <string name="error_main_menu_fragment_null_profile_data_repository">Profile Data Repository was null!</string>
+    <string name="error_main_menu_fragment_null_profile_data">Profile Data hasn\'t been provided!</string>
 
     <string name="error_game_service_lacking_game_processor">Game Processor hasn\'t been provided!</string>
     <string name="error_game_service_starting_searching_failed">Starting searching has been failed!</string>
@@ -96,13 +98,23 @@
 
     <string name="error_play_choosing_fragment_broadcast_receiver_creation_failed">Game Choosing Broadcast Receiver creation has been failed!</string>
     <string name="error_play_choosing_fragment_user_adapter_creation_failed">Users\' Adapter creation has been failed!</string>
+    <string name="error_play_choosing_fragment_user_id_contact_data_list_setting_failed">User ID - Contact Data List setting has been failed!</string>
 
     <string name="error_play_choosing_fragment_broadcast_receiver_incorrect_command">Incorrect command has been provided!</string>
     <string name="error_play_choosing_fragment_broadcast_receiver_lacking_user_id_contact_data_list">User Id - Contact Data hasn\'t been provided!</string>
     <string name="error_play_choosing_fragment_broadcast_receiver_invalid_user_id_contact_data_list">Incorrect User Id - Contact Data has been provided!</string>
 
+    <string name="error_play_choosing_user_adapter_null_profile_data">Profile data hasn\'t been provided!</string>
+    <string name="error_play_choosing_user_adapter_setting_data_failed">Setting Data has been failed!</string>
+    <string name="error_play_choosing_user_adapter_user_chosen_state_setting_failed">User chosen state setting has been failed!</string>
+
+    <string name="error_play_results_fragment_adapter_creation_failed">Adapter creation has been failed!</string>
+
+    <string name="error_play_results_user_contact_adapter_null_matched_user_profile_data">Matched User Profile Data has been null!</string>
+    <string name="error_play_results_user_contact_adapter_null_profile_data">Profile Data was null!</string>
+    <string name="error_play_results_user_contact_adapter_data_setting_failed">Data setting has been failed!</string>
+
     <string name="error_profile_fragment_null_arguments">Arguments were null!</string>
-    <string name="error_profile_fragment_lacking_profile_data">Profile data hasn\'t been provided!</string>
     <string name="error_profile_fragment_profile_creation_failed">Profile creation has been failed!</string>
 
 

@@ -8,7 +8,9 @@ public enum MainMenuFragmentErrorEnum {
     NULL_GAME_SERVICE_LAUNCHER(
             R.string.error_main_menu_fragment_null_game_service_launcher, true),
     NULL_PROFILE_DATA_REPOSITORY(
-            R.string.error_main_menu_fragment_null_profile_data_repository, true);
+            R.string.error_main_menu_fragment_null_profile_data_repository, true),
+    NULL_PROFILE_DATA(
+            R.string.error_main_menu_fragment_null_profile_data, false);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

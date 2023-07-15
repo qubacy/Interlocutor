@@ -18,6 +18,7 @@ import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
 import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
@@ -92,6 +93,20 @@ public class MainMenuFragment extends NavigationFragment {
             return;
         }
 
+        Profile localProfile = profileDataSource.getProfile();
+
+        if (localProfile == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            MainMenuFragmentErrorEnum.NULL_PROFILE_DATA.getResourceCode(),
+                            MainMenuFragmentErrorEnum.NULL_PROFILE_DATA.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
+
+            return;
+        }
+
         GameServiceLauncher gameServiceLauncher =
                 m_mainMenuFragmentViewModel.getGameServiceLauncher();
 
@@ -109,7 +124,7 @@ public class MainMenuFragment extends NavigationFragment {
         Bundle args = new Bundle();
 
         args.putSerializable(
-                C_PROFILE_ARG_NAME, profileDataSource.getProfile());
+                C_PROFILE_ARG_NAME, localProfile);
         args.putSerializable(
                 C_GAME_SERVICE_LAUNCHER_ARG_NAME, gameServiceLauncher);
 

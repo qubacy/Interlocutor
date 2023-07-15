@@ -6,8 +6,9 @@ public enum PlayChoosingFragmentErrorEnum {
     BROADCAST_RECEIVER_CREATION_FAILED(
             R.string.error_play_choosing_fragment_broadcast_receiver_creation_failed, true),
     USER_ADAPTER_CREATION_FAILED(
-            R.string.error_play_choosing_fragment_user_adapter_creation_failed, true)
-    ;
+            R.string.error_play_choosing_fragment_user_adapter_creation_failed, true),
+    USER_ID_CONTACT_DATA_LIST_SETTING_FAILED(
+            R.string.error_play_choosing_fragment_user_id_contact_data_list_setting_failed, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
+import com.qubacy.interlocutor.ui.screen.play.results.adapter.error.PlayResultsUserContactAdapterErrorEnum;
 
 public class PlayResultsUserContactAdapter
         extends RecyclerView.Adapter<PlayResultsUserContactViewHolder>
@@ -62,7 +65,13 @@ public class PlayResultsUserContactAdapter
                 m_callback.getUserProfileDataByIndex(position);
 
         if (matchedUserProfileData == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayResultsUserContactAdapterErrorEnum.NULL_MATCHED_USER_PROFILE_DATA.getResourceCode(),
+                    PlayResultsUserContactAdapterErrorEnum.NULL_MATCHED_USER_PROFILE_DATA.isCritical());
+
+            m_callback.onUserContactAdapterErrorOccurred(error);
 
             return;
         }
@@ -71,13 +80,25 @@ public class PlayResultsUserContactAdapter
                 m_callback.getProfileById(matchedUserProfileData.getId());
 
         if (profilePublic == null) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayResultsUserContactAdapterErrorEnum.NULL_PROFILE_DATA.getResourceCode(),
+                    PlayResultsUserContactAdapterErrorEnum.NULL_PROFILE_DATA.isCritical());
+
+            m_callback.onUserContactAdapterErrorOccurred(error);
 
             return;
         }
 
         if (!holder.setData(profilePublic.getUsername(), matchedUserProfileData.getContact())) {
-            // todo: processing an error..
+            Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                    m_context,
+                    PlayResultsUserContactAdapterErrorEnum.DATA_SETTING_FAILED.getResourceCode(),
+                    PlayResultsUserContactAdapterErrorEnum.DATA_SETTING_FAILED.isCritical());
+
+            m_callback.onUserContactAdapterErrorOccurred(error);
 
             return;
         }

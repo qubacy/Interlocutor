@@ -53,7 +53,7 @@ public abstract class ErrorHandlingBroadcastReceiver extends BroadcastReceiverBa
         Error processingError = processCommand(command, intent);
 
         if (processingError != null) {
-            // todo: processing an error.. should I??
+            ((ErrorHandlingBroadcastReceiverCallback)m_callback).onErrorOccurred(processingError);
 
             return;
         }
