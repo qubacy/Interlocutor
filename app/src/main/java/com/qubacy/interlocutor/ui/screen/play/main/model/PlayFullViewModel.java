@@ -49,6 +49,8 @@ public class PlayFullViewModel extends PlayViewModel
 
     @Override
     public ProfilePublic getProfileById(final int id) {
+        if (m_foundGameData == null) return null;
+
         if (m_foundGameData.getLocalProfileId() == id)
             return m_profile;
 

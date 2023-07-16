@@ -68,11 +68,6 @@ public class GameSessionProcessorImplTest {
             {
 
             }
-
-            @Override
-            public void usersMadeChoice(@NonNull final List<RemoteProfile> matchedUserList) {
-                return;
-            }
         };
     }
 

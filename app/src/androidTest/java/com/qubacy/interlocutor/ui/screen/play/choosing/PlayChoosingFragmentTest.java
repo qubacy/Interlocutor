@@ -1,9 +1,6 @@
 package com.qubacy.interlocutor.ui.screen.play.choosing;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.support.test.espresso.action.MotionEvents;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -27,6 +24,7 @@ import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
 import com.qubacy.interlocutor.ui.screen.play.choosing.adapter.PlayChoosingUserViewHolder;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
+import com.qubacy.interlocutor.ui.utility.RecyclerViewUtility;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -187,8 +185,12 @@ public class PlayChoosingFragmentTest {
                 final UiController uiController,
                 final View view)
         {
-            PlayChoosingUserViewHolder viewHolder =
-                    getUserViewHolderByPosition(view, m_position);
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.ViewHolder viewHolder =
+                    RecyclerViewUtility.getViewHolderByPosition(recyclerView, m_position);
+
+            if (viewHolder == null) throw new IllegalStateException();
+
             CheckBox checkBox =
                     viewHolder.itemView.findViewById(R.id.play_choosing_user_button_choose);
 
@@ -222,8 +224,12 @@ public class PlayChoosingFragmentTest {
                 final View view,
                 final NoMatchingViewException noViewFoundException)
         {
-            PlayChoosingUserViewHolder viewHolder =
-                    getUserViewHolderByPosition(view, m_position);
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.ViewHolder viewHolder =
+                    RecyclerViewUtility.getViewHolderByPosition(recyclerView, m_position);
+
+            if (viewHolder == null) throw new IllegalStateException();
+
             CheckBox checkBox =
                     viewHolder.itemView.findViewById(R.id.play_choosing_user_button_choose);
 
