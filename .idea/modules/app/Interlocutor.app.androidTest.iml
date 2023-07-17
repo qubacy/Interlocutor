@@ -66,6 +66,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: android.arch.lifecycle:common:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: android.arch.core:common:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.apps.common.testing.accessibility.framework:accessibility-test-framework:2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okhttp3:okhttp:4.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:2.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.fragment:fragment-testing:1.6.0-alpha04@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.fragment:fragment-ktx:1.6.0-alpha04@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.activity:activity-ktx:1.6.0@aar" level="project" />

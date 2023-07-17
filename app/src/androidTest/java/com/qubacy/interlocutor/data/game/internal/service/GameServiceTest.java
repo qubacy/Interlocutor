@@ -7,7 +7,7 @@ import android.content.Intent;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ServiceTestRule;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.service.launcher.GameServiceLauncherImpl;
@@ -39,7 +39,7 @@ public class GameServiceTest {
         Intent serviceIntent = new Intent(m_context, GameService.class);
 
         serviceIntent.putExtra(
-                GameService.C_GAME_SESSION_PROCESSOR_PROP_NAME, m_gameSessionProcessor);
+                GameService.C_GAME_SESSION_PROCESSOR_FACTORY_PROP_NAME, m_gameSessionProcessor);
 
         m_context.startService(serviceIntent);
 

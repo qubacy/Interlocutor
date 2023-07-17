@@ -4,17 +4,17 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessorFactory;
 
 import java.io.Serializable;
 
 public abstract class GameServiceLauncher implements Serializable {
-    protected final GameSessionProcessor m_gameSessionProcessor;
+    protected final GameSessionProcessorFactory m_gameSessionProcessorFactory;
 
     protected GameServiceLauncher(
-            final GameSessionProcessor gameSessionProcessor)
+            final GameSessionProcessorFactory gameSessionProcessorFactory)
     {
-        m_gameSessionProcessor = gameSessionProcessor;
+        m_gameSessionProcessorFactory = gameSessionProcessorFactory;
     }
 
     public abstract void startService(@NonNull final Context context);

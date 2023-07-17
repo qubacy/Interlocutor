@@ -5,14 +5,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(JUnit4.class)
 public class GameSessionProcessorImplTest {

@@ -1,7 +1,7 @@
 package com.qubacy.interlocutor.data.game.export.service.launcher;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessorFactory;
+import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessorFactoryGenerator;
 import com.qubacy.interlocutor.data.game.internal.service.launcher.GameServiceLauncherImpl;
 
 public class GameServiceLauncherFactory {
@@ -14,14 +14,15 @@ public class GameServiceLauncherFactory {
     }
 
     public GameServiceLauncher generateGameServiceLauncher() {
+        GameSessionProcessorFactoryGenerator gameSessionProcessorFactoryGenerator =
+                GameSessionProcessorFactoryGenerator.getInstance();
+
+        if (gameSessionProcessorFactoryGenerator == null)
+            return null;
+
         GameSessionProcessorFactory gameSessionProcessorFactory =
-                GameSessionProcessorFactory.getInstance();
+                gameSessionProcessorFactoryGenerator.generateGameSessionProcessor();
 
-        if (gameSessionProcessorFactory == null) return null;
-
-        GameSessionProcessor gameSessionProcessor =
-                gameSessionProcessorFactory.generateGameSessionProcessor();
-
-        return GameServiceLauncherImpl.getInstance(gameSessionProcessor);
+        return GameServiceLauncherImpl.getInstance(gameSessionProcessorFactory);
     }
 }

@@ -2,7 +2,7 @@ package com.qubacy.interlocutor.data.game.internal.processor.implfake;
 
 import androidx.annotation.NonNull;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandChooseUsers;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandLeave;

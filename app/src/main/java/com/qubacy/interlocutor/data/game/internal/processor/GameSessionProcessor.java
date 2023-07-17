@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.data.game.export.processor;
+package com.qubacy.interlocutor.data.game.internal.processor;
 
 import android.content.Context;
 import android.os.Process;
@@ -35,7 +35,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 * This Processor should be executed in BACKGROUND by it's definition;
 *
 */
-public abstract class GameSessionProcessor implements Serializable {
+public abstract class GameSessionProcessor {
     public static final int C_EXEC_TIMEOUT = 400;
 
     final protected BlockingQueue<Command> m_commandQueue;

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessorFactory;
 import com.qubacy.interlocutor.data.game.export.service.launcher.GameServiceLauncher;
 import com.qubacy.interlocutor.data.game.internal.service.GameService;
 
@@ -15,23 +15,23 @@ public class GameServiceLauncherImpl extends GameServiceLauncher
 {
 
     protected GameServiceLauncherImpl(
-            final GameSessionProcessor gameSessionProcessor)
+            final GameSessionProcessorFactory gameSessionProcessorFactory)
     {
-        super(gameSessionProcessor);
+        super(gameSessionProcessorFactory);
     }
 
     public static GameServiceLauncherImpl getInstance(
-            final GameSessionProcessor gameSessionProcessor)
+            final GameSessionProcessorFactory gameSessionProcessorFactory)
     {
-        if (gameSessionProcessor == null) return null;
+        if (gameSessionProcessorFactory == null) return null;
 
-        return new GameServiceLauncherImpl(gameSessionProcessor);
+        return new GameServiceLauncherImpl(gameSessionProcessorFactory);
     }
 
     @Override
     public void startService(@NonNull final Context context)
     {
-        GameService.start(context, m_gameSessionProcessor);
+        GameService.start(context, m_gameSessionProcessorFactory);
     }
 
     @Override

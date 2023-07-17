@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessor;
+import com.qubacy.interlocutor.data.game.export.processor.GameSessionProcessorFactory;
 import com.qubacy.interlocutor.data.game.export.service.broadcast.GameServiceBroadcastReceiver;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.service.broadcast.GameServiceBroadcastReceiverCallback;
@@ -23,8 +24,6 @@ import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGa
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublicDataMapper;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiver;
@@ -41,18 +40,19 @@ public class GameService extends Service
         GameSessionProcessorCallback,
         GameServiceBroadcastReceiverCallback
 {
-    public static final String C_GAME_SESSION_PROCESSOR_PROP_NAME = "gameSessionProcessor";
+    public static final String C_GAME_SESSION_PROCESSOR_FACTORY_PROP_NAME =
+            "gameSessionProcessorFactory";
 
     private GameServiceBroadcastReceiver m_gameSessionBroadcastReceiver = null;
     private GameSessionProcessor m_gameSessionProcessor = null;
 
     public static boolean start(
             @NonNull final Context context,
-            @NonNull final GameSessionProcessor gameSessionProcessor)
+            @NonNull final GameSessionProcessorFactory gameSessionProcessorFactory)
     {
         Intent intent = new Intent(context, GameService.class);
 
-        intent.putExtra(C_GAME_SESSION_PROCESSOR_PROP_NAME, gameSessionProcessor);
+        intent.putExtra(C_GAME_SESSION_PROCESSOR_FACTORY_PROP_NAME, gameSessionProcessorFactory);
 
         context.startService(intent);
 
@@ -113,13 +113,13 @@ public class GameService extends Service
             final int startId)
     {
         if (intent == null) return START_NOT_STICKY;
-        if (!intent.hasExtra(C_GAME_SESSION_PROCESSOR_PROP_NAME))
+        if (!intent.hasExtra(C_GAME_SESSION_PROCESSOR_FACTORY_PROP_NAME))
             return START_NOT_STICKY;
 
-        Serializable gameSessionProcessorSerializable =
-                intent.getSerializableExtra(C_GAME_SESSION_PROCESSOR_PROP_NAME);
+        Serializable gameSessionProcessorFactorySerializable =
+                intent.getSerializableExtra(C_GAME_SESSION_PROCESSOR_FACTORY_PROP_NAME);
 
-        if (!(gameSessionProcessorSerializable instanceof GameSessionProcessor)) {
+        if (!(gameSessionProcessorFactorySerializable instanceof GameSessionProcessorFactory)) {
             Error error =
                     ErrorUtility.getErrorByStringResourceCodeAndFlag(
                             this,
@@ -131,7 +131,10 @@ public class GameService extends Service
             return START_NOT_STICKY;
         }
 
-        m_gameSessionProcessor = (GameSessionProcessor) gameSessionProcessorSerializable;
+        GameSessionProcessorFactory gameSessionProcessorFactory =
+                (GameSessionProcessorFactory) gameSessionProcessorFactorySerializable;
+
+        m_gameSessionProcessor = gameSessionProcessorFactory.generateProcessor();
 
         m_gameSessionProcessor.launch(this, this);
 
