@@ -58,6 +58,10 @@
     <string name="error_game_session_processor_illegal_state">Illegal state has been reached!</string>
     <string name="error_game_session_processor_chosen_users_setting_failed">Chosen Users setting has been failed!</string>
 
+    <string name="error_game_session_processor_impl_unknown_operation_type">Unknown operation type has been received!</string>
+    <string name="error_game_session_processor_impl_null_server_message">Received server message was null!</string>
+    <string name="error_game_session_processor_impl_null_server_message_body">Received server message\'s body was null!</string>
+
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>
     <string name="error_game_service_broadcast_receiver_unknown_command_type">Unknown command type has been provided!</string>
