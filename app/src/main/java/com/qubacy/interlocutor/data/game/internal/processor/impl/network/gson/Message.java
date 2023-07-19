@@ -4,8 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.MessageBody;
 
 public class Message {
-    @SerializedName("operation") private final OperationEnum m_operation;
-    @SerializedName("body") private final MessageBody m_messageBody;
+    public static final String C_OPERATION_PROP_NAME = "operation";
+    public static final String C_BODY_PROP_NAME = "body";
+
+    @SerializedName(C_OPERATION_PROP_NAME) private final OperationEnum m_operation;
+    @SerializedName(C_BODY_PROP_NAME) private final MessageBody m_messageBody;
 
     protected Message(
             final OperationEnum operation,

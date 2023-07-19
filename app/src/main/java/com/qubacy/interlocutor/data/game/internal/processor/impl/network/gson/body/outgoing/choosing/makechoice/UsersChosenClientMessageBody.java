@@ -6,5 +6,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import java.util.List;
 
 public class UsersChosenClientMessageBody extends ClientMessageBody {
-    @SerializedName("userIdList") public List<Integer> chosenUserIdList;
+    public static final String C_USER_ID_LIST_PROP_NAME = "userIdList";
+
+    @SerializedName(C_USER_ID_LIST_PROP_NAME) public List<Integer> chosenUserIdList;
 }

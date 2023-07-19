@@ -5,6 +5,8 @@ import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
 import java.io.Serializable;
 
 public class Message implements Serializable {
+    public static final String C_TEXT_PROP_NAME = "text";
+
     final protected int m_senderId;
     final protected String m_text;
 

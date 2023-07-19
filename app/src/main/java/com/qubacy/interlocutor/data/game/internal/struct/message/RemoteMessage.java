@@ -5,6 +5,8 @@ import com.qubacy.interlocutor.data.game.export.struct.message.Message;
 import java.io.Serializable;
 
 public class RemoteMessage extends Message implements Serializable {
+    public static final String C_SENDER_ID_PROP_NAME = "senderId";
+
     protected RemoteMessage(
             final int senderId, final String text)
     {

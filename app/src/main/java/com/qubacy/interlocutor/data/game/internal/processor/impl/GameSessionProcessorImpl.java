@@ -209,8 +209,8 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             final OperationEnum operationEnum,
             final ServerMessageBody serverMessageBody)
     {
-        if (serverMessageBody.error != null) {
-            return Error.getInstance(serverMessageBody.error.message, true);
+        if (serverMessageBody.getError() != null) {
+            return Error.getInstance(serverMessageBody.getError().getMessage(), true);
         }
 
         switch (operationEnum) {

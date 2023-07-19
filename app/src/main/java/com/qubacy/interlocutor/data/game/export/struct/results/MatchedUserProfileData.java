@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class MatchedUserProfileData implements Parcelable {
+    public static final String C_ID_PROP_NAME = "id";
+    public static final String C_CONTACT_PROP_NAME = "contact";
+
     private final int m_id;
     private final String m_contact;
 
