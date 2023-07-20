@@ -21,7 +21,7 @@ public class NewMessageClientMessageBodySerializer
     {
         if (src == null) return null;
 
-        JsonObject newMessageJsonObj = serializeMessage(src.message);
+        JsonObject newMessageJsonObj = serializeMessage(src.getMessage());
 
         if (newMessageJsonObj == null) return null;
 

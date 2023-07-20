@@ -122,13 +122,13 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
     private StartSearchingServerMessageBody deserializeSearchingStartMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return new StartSearchingServerMessageBody();
+        return StartSearchingServerMessageBody.getInstance();
     }
 
     private StopSearchingServerMessageBody deserializeSearchingStopMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return new StopSearchingServerMessageBody();
+        return StopSearchingServerMessageBody.getInstance();
     }
 
     private GameFoundServerMessageBody deserializeGameFoundMessageBody(
@@ -152,19 +152,19 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
     private ChattingStageIsOverServerMessageBody deserializeChattingStageIsOverMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return new ChattingStageIsOverServerMessageBody();
+        return ChattingStageIsOverServerMessageBody.getInstance();
     }
 
     private UsersChosenServerMessageBody deserializeUsersChosenMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return new UsersChosenServerMessageBody();
+        return UsersChosenServerMessageBody.getInstance();
     }
 
     private ChoosingStageIsOverServerMessageBody deserializeChoosingStageIsOverMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return new ChoosingStageIsOverServerMessageBody();
+        return ChoosingStageIsOverServerMessageBody.getInstance();
     }
 
     private ResultsGottenServerMessageBody deserializeResultsMatchedUsersGottenMessageBody(

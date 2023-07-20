@@ -52,22 +52,30 @@ public class MessageSerializer implements JsonSerializer<Message> {
         JsonObject bodyJsonObj = null;
 
         switch (operationEnum) {
-            case SEARCHING_START:
+            case SEARCHING_START: {
                 bodyJsonObj =
                         serializeSearchingStartBody(
-                                (StartSearchingClientMessageBody) messageBody); break;
-            case SEARCHING_STOP:
+                                (StartSearchingClientMessageBody) messageBody);
+                break;
+            }
+            case SEARCHING_STOP: {
                 bodyJsonObj =
                         serializeSearchingStopBody(
-                                (StopSearchingClientMessageBody) messageBody); break;
-            case CHATTING_NEW_MESSAGE:
+                                (StopSearchingClientMessageBody) messageBody);
+                break;
+            }
+            case CHATTING_NEW_MESSAGE: {
                 bodyJsonObj =
                         serializeChattingNewMessageBody(
-                                (NewMessageClientMessageBody) messageBody); break;
-            case CHOOSING_USERS_CHOSEN:
+                                (NewMessageClientMessageBody) messageBody);
+                break;
+            }
+            case CHOOSING_USERS_CHOSEN: {
                 bodyJsonObj =
                         serializeChoosingUsersChosenBody(
-                                (UsersChosenClientMessageBody) messageBody); break;
+                                (UsersChosenClientMessageBody) messageBody);
+                break;
+            }
         }
 
         if (bodyJsonObj == null) return false;

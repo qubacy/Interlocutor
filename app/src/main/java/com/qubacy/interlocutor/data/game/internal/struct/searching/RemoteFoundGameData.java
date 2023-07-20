@@ -4,6 +4,7 @@ import com.qubacy.interlocutor.data.game.export.struct.searching.FoundGameDataBa
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RemoteFoundGameData extends FoundGameDataBase {
     public static final String C_LOCAL_PROFILE_ID_PROP_NAME = "localProfileId";
@@ -53,5 +54,20 @@ public class RemoteFoundGameData extends FoundGameDataBase {
 
     public List<RemoteProfilePublic> getProfilePublicList() {
         return m_remoteProfilePublicList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RemoteFoundGameData that = (RemoteFoundGameData) o;
+
+        return Objects.equals(m_remoteProfilePublicList, that.m_remoteProfilePublicList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_remoteProfilePublicList);
     }
 }

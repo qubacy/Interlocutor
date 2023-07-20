@@ -27,7 +27,13 @@ public class GameFoundServerMessageBodyDeserializer
     {
         if (json == null) return null;
 
-        JsonObject gameFoundJsonObj = json.getAsJsonObject();
+        JsonObject gameFoundBodyJsonObj = json.getAsJsonObject();
+
+        if (gameFoundBodyJsonObj == null) return null;
+
+        JsonObject gameFoundJsonObj =
+                gameFoundBodyJsonObj.getAsJsonObject(
+                        GameFoundServerMessageBody.C_FOUND_GAME_DATA_PROP_NAME);
 
         if (gameFoundJsonObj == null) return null;
 

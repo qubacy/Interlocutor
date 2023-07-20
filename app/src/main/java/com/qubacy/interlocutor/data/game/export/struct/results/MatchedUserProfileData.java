@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 public class MatchedUserProfileData implements Parcelable {
     public static final String C_ID_PROP_NAME = "id";
     public static final String C_CONTACT_PROP_NAME = "contact";
@@ -66,5 +68,21 @@ public class MatchedUserProfileData implements Parcelable {
     {
         dest.writeInt(m_id);
         dest.writeString(m_contact);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatchedUserProfileData that = (MatchedUserProfileData) o;
+
+        return m_id == that.m_id &&
+                Objects.equals(m_contact, that.m_contact);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_id, m_contact);
     }
 }

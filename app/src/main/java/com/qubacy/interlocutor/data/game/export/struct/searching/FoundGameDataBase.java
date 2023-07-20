@@ -1,6 +1,7 @@
 package com.qubacy.interlocutor.data.game.export.struct.searching;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class FoundGameDataBase implements Serializable {
     protected final int m_localProfileId;
@@ -47,5 +48,29 @@ public abstract class FoundGameDataBase implements Serializable {
 
     public String getChattingTopic() {
         return m_chattingTopic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FoundGameDataBase that = (FoundGameDataBase) o;
+
+        return m_localProfileId == that.m_localProfileId &&
+                m_startSessionTime == that.m_startSessionTime &&
+                m_chattingStageDuration == that.m_chattingStageDuration &&
+                m_choosingStageDuration == that.m_choosingStageDuration &&
+                Objects.equals(m_chattingTopic, that.m_chattingTopic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                m_localProfileId,
+                m_startSessionTime,
+                m_chattingStageDuration,
+                m_choosingStageDuration,
+                m_chattingTopic);
     }
 }

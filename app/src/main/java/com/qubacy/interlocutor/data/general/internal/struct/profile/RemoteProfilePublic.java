@@ -1,5 +1,7 @@
 package com.qubacy.interlocutor.data.general.internal.struct.profile;
 
+import androidx.annotation.Nullable;
+
 import com.qubacy.interlocutor.data.general.export.struct.profile.ProfilePublic;
 
 public class RemoteProfilePublic extends ProfilePublic {
@@ -24,5 +26,10 @@ public class RemoteProfilePublic extends ProfilePublic {
 
     public int getId() {
         return m_id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
     }
 }

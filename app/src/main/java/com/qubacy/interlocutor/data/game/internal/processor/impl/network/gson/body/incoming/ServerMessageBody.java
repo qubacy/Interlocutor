@@ -2,6 +2,8 @@ package com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.b
 
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.MessageBody;
 
+import java.util.Objects;
+
 public class ServerMessageBody extends MessageBody {
     public static final String C_ERROR_PROP_NAME = "error";
 
@@ -25,5 +27,21 @@ public class ServerMessageBody extends MessageBody {
 
     public ServerMessageError getError() {
         return m_error;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        ServerMessageBody that = (ServerMessageBody) o;
+
+        return Objects.equals(m_error, that.m_error);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_error);
     }
 }

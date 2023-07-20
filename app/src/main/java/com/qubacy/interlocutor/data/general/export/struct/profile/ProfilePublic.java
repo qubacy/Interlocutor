@@ -1,6 +1,7 @@
 package com.qubacy.interlocutor.data.general.export.struct.profile;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ProfilePublic implements Serializable {
     public static final int C_DEFAULT_LOCAL_ID = 0;
@@ -39,5 +40,21 @@ public class ProfilePublic implements Serializable {
 
     public String getUsername() {
         return m_username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProfilePublic that = (ProfilePublic) o;
+
+        return m_id == that.m_id &&
+                Objects.equals(m_username, that.m_username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_id, m_username);
     }
 }

@@ -22,7 +22,7 @@ public class UsersChosenClientMessageBodySerializer
         if (src == null) return null;
 
         JsonArray serializedChosenUserIdListJsonArray =
-                serializeChosenUserIdList(src.chosenUserIdList);
+                serializeChosenUserIdList(src.getChosenUserIdList());
 
         if (serializedChosenUserIdListJsonArray == null)
             return null;
@@ -33,7 +33,7 @@ public class UsersChosenClientMessageBodySerializer
                 UsersChosenClientMessageBody.C_USER_ID_LIST_PROP_NAME,
                 serializedChosenUserIdListJsonArray);
 
-        return null;
+        return usersChosenBodyJsonObj;
     }
 
     private JsonArray serializeChosenUserIdList(final List<Integer> chosenUserIdList) {
