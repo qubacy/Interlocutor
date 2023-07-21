@@ -11,6 +11,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBodySerializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBodySerializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
 
 import java.lang.reflect.Type;
@@ -90,7 +91,15 @@ public class MessageSerializer implements JsonSerializer<Message> {
     {
         if (messageBody == null) return null;
 
-        return new JsonObject();
+        StartSearchingClientMessageBodySerializer serializer =
+                new StartSearchingClientMessageBodySerializer();
+
+        JsonElement serializedMessageBodyJsonElem =
+                serializer.serialize(messageBody, m_curTypeOfSrc, m_curContext);
+
+        if (serializedMessageBodyJsonElem == null) return null;
+
+        return serializedMessageBodyJsonElem.getAsJsonObject();
     }
 
     private JsonObject serializeSearchingStopBody(

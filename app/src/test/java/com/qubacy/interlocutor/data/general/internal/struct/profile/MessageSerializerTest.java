@@ -11,6 +11,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +41,9 @@ public class MessageSerializerTest {
 
     @Test
     public void testStartSearchingMessageSerialization() {
-        MessageBody messageBody = new StartSearchingClientMessageBody();
+        Profile profile = Profile.getInstance("user1", "contact");
+
+        MessageBody messageBody = StartSearchingClientMessageBody.getInstance(profile);
         Message message = Message.getInstance(OperationEnum.SEARCHING_START, messageBody);
 
         String gottenJsonString = m_gson.toJson(message);
@@ -49,7 +52,17 @@ public class MessageSerializerTest {
         expectedJsonStringBuilder.append(Message.C_OPERATION_PROP_NAME);
         expectedJsonStringBuilder.append("\":");
         expectedJsonStringBuilder.append(OperationEnum.SEARCHING_START.getId());
-        expectedJsonStringBuilder.append(",\"body\":{}}");
+        expectedJsonStringBuilder.append(",\"body\":{\"");
+        expectedJsonStringBuilder.append(StartSearchingClientMessageBody.C_PROFILE_PROP_NAME);
+        expectedJsonStringBuilder.append("\":{\"");
+        expectedJsonStringBuilder.append(Profile.C_USERNAME_PROP_NAME);
+        expectedJsonStringBuilder.append("\":\"");
+        expectedJsonStringBuilder.append(profile.getUsername());
+        expectedJsonStringBuilder.append("\",\"");
+        expectedJsonStringBuilder.append(Profile.C_CONTACT_PROP_NAME);
+        expectedJsonStringBuilder.append("\":\"");
+        expectedJsonStringBuilder.append(profile.getContact());
+        expectedJsonStringBuilder.append("\"}}}");
 
         Assert.assertEquals(expectedJsonStringBuilder.toString(), gottenJsonString);
     }

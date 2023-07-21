@@ -3,6 +3,9 @@ package com.qubacy.interlocutor.data.general.export.struct.profile;
 import java.io.Serializable;
 
 public class Profile extends ProfilePublic implements Serializable {
+    public static final String C_USERNAME_PROP_NAME = "username";
+    public static final String C_CONTACT_PROP_NAME = "contact";
+
     final protected String m_contact;
 
     protected Profile(
