@@ -9,9 +9,7 @@ public enum OperationEnum {
     CHATTING_STAGE_IS_OVER(4),
 
     CHOOSING_USERS_CHOSEN(5),
-    CHOOSING_STAGE_IS_OVER(6),
-
-    RESULTS_MATCHED_USERS_GOTTEN(7);
+    CHOOSING_STAGE_IS_OVER(6);
 
     private final int m_id;
 

@@ -133,6 +133,8 @@ public class PlayActivity extends ErrorHandlingActivity
 
     @Override
     public void onErrorOccurred(@NonNull final Error error) {
+        if (error.isCritical()) return;
+
         showErrorToast(error);
     }
 }

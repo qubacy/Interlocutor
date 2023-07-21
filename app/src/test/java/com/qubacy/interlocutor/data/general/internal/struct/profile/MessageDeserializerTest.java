@@ -11,12 +11,10 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.ServerMessageError;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.newmessage.NewChatMessageServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.stageover.ChattingStageIsOverServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.userschosen.UsersChosenServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.results.ResultsGottenServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 
@@ -101,24 +99,6 @@ public class MessageDeserializerTest {
         MessageBody expectedMessageBody = StartSearchingServerMessageBody.getInstance();
         Message expectedMessage =
                 Message.getInstance(OperationEnum.SEARCHING_START, expectedMessageBody);
-        Message deserializedMessage =
-                m_gson.fromJson(messageStringBuilder.toString(), Message.class);
-
-        Assert.assertEquals(expectedMessage, deserializedMessage);
-    }
-
-    @Test
-    public void testStopSearchingMessageDeserialization() {
-        StringBuilder messageStringBuilder = new StringBuilder("{\"");
-
-        messageStringBuilder.append(Message.C_OPERATION_PROP_NAME);
-        messageStringBuilder.append("\":");
-        messageStringBuilder.append(OperationEnum.SEARCHING_STOP.getId());
-        messageStringBuilder.append(",\"body\":{}}");
-
-        MessageBody expectedMessageBody = StopSearchingServerMessageBody.getInstance();
-        Message expectedMessage =
-                Message.getInstance(OperationEnum.SEARCHING_STOP, expectedMessageBody);
         Message deserializedMessage =
                 m_gson.fromJson(messageStringBuilder.toString(), Message.class);
 
@@ -269,24 +249,6 @@ public class MessageDeserializerTest {
     }
 
     @Test
-    public void testChoosingStageIsOverMessageDeserialization() {
-        StringBuilder messageStringBuilder = new StringBuilder("{\"");
-
-        messageStringBuilder.append(Message.C_OPERATION_PROP_NAME);
-        messageStringBuilder.append("\":");
-        messageStringBuilder.append(OperationEnum.CHOOSING_STAGE_IS_OVER.getId());
-        messageStringBuilder.append(",\"body\":{}}");
-
-        MessageBody expectedMessageBody = ChoosingStageIsOverServerMessageBody.getInstance();
-        Message expectedMessage =
-                Message.getInstance(OperationEnum.CHOOSING_STAGE_IS_OVER, expectedMessageBody);
-        Message deserializedMessage =
-                m_gson.fromJson(messageStringBuilder.toString(), Message.class);
-
-        Assert.assertEquals(expectedMessage, deserializedMessage);
-    }
-
-    @Test
     public void testResultsGottenMessageDeserialization() {
         List<MatchedUserProfileData> matchedUserProfileDataList =
                 new ArrayList<MatchedUserProfileData>() {
@@ -300,9 +262,9 @@ public class MessageDeserializerTest {
 
         messageStringBuilder.append(Message.C_OPERATION_PROP_NAME);
         messageStringBuilder.append("\":");
-        messageStringBuilder.append(OperationEnum.RESULTS_MATCHED_USERS_GOTTEN.getId());
+        messageStringBuilder.append(OperationEnum.CHOOSING_STAGE_IS_OVER.getId());
         messageStringBuilder.append(",\"body\":{\"");
-        messageStringBuilder.append(ResultsGottenServerMessageBody.C_MATCHED_USERS_PROP_NAME);
+        messageStringBuilder.append(ChoosingStageIsOverServerMessageBody.C_MATCHED_USERS_PROP_NAME);
         messageStringBuilder.append("\":[");
 
         int matchedUserProfileDataListSize = matchedUserProfileDataList.size();
@@ -323,9 +285,9 @@ public class MessageDeserializerTest {
         messageStringBuilder.append("]}}");
 
         MessageBody expectedMessageBody =
-                ResultsGottenServerMessageBody.getInstance(matchedUserProfileDataList);
+                ChoosingStageIsOverServerMessageBody.getInstance(matchedUserProfileDataList);
         Message expectedMessage =
-                Message.getInstance(OperationEnum.RESULTS_MATCHED_USERS_GOTTEN, expectedMessageBody);
+                Message.getInstance(OperationEnum.CHOOSING_STAGE_IS_OVER, expectedMessageBody);
         Message deserializedMessage =
                 m_gson.fromJson(messageStringBuilder.toString(), Message.class);
 

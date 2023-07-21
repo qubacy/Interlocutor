@@ -1,4 +1,4 @@
-package com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.results;
+package com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -13,12 +13,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultsGottenServerMessageBodyDeserializer
-    extends MessageBodyDeserializer<ResultsGottenServerMessageBody>
+public class ChoosingStageIsOverServerMessageBodyDeserializer
+    extends MessageBodyDeserializer<ChoosingStageIsOverServerMessageBody>
 {
 
     @Override
-    public ResultsGottenServerMessageBody deserialize(
+    public ChoosingStageIsOverServerMessageBody deserialize(
             final JsonElement json,
             final Type typeOfT,
             final JsonDeserializationContext context)
@@ -32,7 +32,7 @@ public class ResultsGottenServerMessageBodyDeserializer
 
         JsonArray matchedUserDataListJsonArray =
                 resultsMessageBodyJsonObj.getAsJsonArray(
-                        ResultsGottenServerMessageBody.C_MATCHED_USERS_PROP_NAME);
+                        ChoosingStageIsOverServerMessageBody.C_MATCHED_USERS_PROP_NAME);
 
         if (matchedUserDataListJsonArray == null) return null;
 
@@ -41,7 +41,7 @@ public class ResultsGottenServerMessageBodyDeserializer
 
         if (matchedUserDataList == null) return null;
 
-        return ResultsGottenServerMessageBody.getInstance(matchedUserDataList);
+        return ChoosingStageIsOverServerMessageBody.getInstance(matchedUserDataList);
     }
 
     private List<MatchedUserProfileData> deserializeMatchedUserDataList(

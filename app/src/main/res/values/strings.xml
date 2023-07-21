@@ -18,7 +18,8 @@
 
     <string name="play_searching_fragment_message_searching_game">Searching Game…</string>
     <string name="play_searching_fragment_message_game_found">Game Found!</string>
-    <string name="play_searching_button_caption_abort_searching">Abort</string>
+    <string name="play_searching_fragment_message_searching_aborted">Searching Aborted!</string>
+    <string name="play_searching_button_caption_abort_searching">Cancel</string>
 
     <string name="play_chatting_fragment_status_bar_title">Chat</string>
     <string name="play_chatting_fragment_section_sending_message_text_hint">Type a message..</string>
@@ -54,6 +55,9 @@
 
     <string name="error_game_session_processor_unknown_command">Unknown command has been provided!</string>
     <string name="error_game_session_processor_searching_state_creation_failed">Searching State creation has been failed!</string>
+    <string name="error_game_session_processor_chatting_state_creation_failed">Chatting State creation has been failed!</string>
+    <string name="error_game_session_processor_choosing_state_creation_failed">Choosing State creation has been failed!</string>
+    <string name="error_game_session_processor_results_state_creation_failed">Results State creation has been failed!</string>
     <string name="error_game_session_processor_unknown_state">Unknown state has been provided!</string>
     <string name="error_game_session_processor_illegal_state">Illegal state has been reached!</string>
     <string name="error_game_session_processor_chosen_users_setting_failed">Chosen Users setting has been failed!</string>
@@ -61,6 +65,7 @@
     <string name="error_game_session_processor_impl_unknown_operation_type">Unknown operation type has been received!</string>
     <string name="error_game_session_processor_impl_null_server_message">Received server message was null!</string>
     <string name="error_game_session_processor_impl_null_server_message_body">Received server message\'s body was null!</string>
+    <string name="error_game_session_processor_impl_sending_client_message_failed">Sending a message to the server has been failed!</string>
 
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>

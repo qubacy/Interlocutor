@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.GameSessionProcessor;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandChooseUsers;
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandLeave;
@@ -17,20 +18,30 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Me
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageSerializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.OperationEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.ServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.ServerMessageError;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.newmessage.NewChatMessageServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.stageover.ChattingStageIsOverServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.userschosen.UsersChosenServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.results.ResultsGottenServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.ClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.chatting.newmessage.NewMessageClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.WebSocketClient;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.listener.WebSocketListenerCallback;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.listener.WebSocketListenerImpl;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateChatting;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateChoosing;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateResults;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateSearching;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+
+import java.util.ArrayList;
 
 /*
 *
@@ -41,7 +52,8 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
         implements
             WebSocketListenerCallback
 {
-    public static final String C_URL = "ws://";
+    public static final String C_URL = "http://127.0.0.1:8080";
+    public static final boolean C_IS_SERVER_ERROR_CRITICAL = true;
 
     private WebSocketClient m_webSocketClient = null;
 
@@ -116,24 +128,38 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
         return null;
     }
 
-    @Override
-    public Error startSearchingCommandProcessing(
-            @NonNull final CommandStartSearching commandStartSearching)
+    private Error generateJsonClientMessageAndSend(
+            final OperationEnum operation,
+            final ClientMessageBody messageBody)
     {
-        GameSessionImplStateSearching gameSessionStateSearching =
-                GameSessionImplStateSearching.getInstance();
+        Message message = Message.getInstance(operation, messageBody);
+        String serializedMessage = m_gson.toJson(message);
 
-        if (gameSessionStateSearching == null) {
+        if (!m_webSocketClient.sendMessage(serializedMessage)) {
             Error error =
                 ErrorUtility.getErrorByStringResourceCodeAndFlag(
                     m_context,
-                    GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.getResourceCode(),
-                    GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.isCritical());
+                    GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.getResourceCode(),
+                    GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.isCritical());
 
             return error;
         }
 
-        // todo: processing a start searching command..
+        return null;
+    }
+
+    @Override
+    public Error startSearchingCommandProcessing(
+            @NonNull final CommandStartSearching commandStartSearching)
+    {
+        StartSearchingClientMessageBody messageBody =
+                StartSearchingClientMessageBody.getInstance(
+                        commandStartSearching.getLocalProfile());
+
+        Error sendingError =
+                generateJsonClientMessageAndSend(OperationEnum.SEARCHING_START, messageBody);
+
+        if (sendingError != null) return sendingError;
 
         return null;
     }
@@ -142,8 +168,14 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error stopSearchingCommandProcessing(
             @NonNull final CommandStopSearching commandStopSearching)
     {
-        // todo: processing a searching stop command..
+        StopSearchingClientMessageBody messageBody = new StopSearchingClientMessageBody();
 
+        Error sendingError =
+                generateJsonClientMessageAndSend(OperationEnum.SEARCHING_STOP, messageBody);
+
+        if (sendingError != null) return sendingError;
+
+        m_webSocketClient.close();
         Thread.currentThread().interrupt();
 
         return null;
@@ -153,7 +185,13 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error sendMessageCommandProcessing(
             @NonNull final CommandSendMessage commandSendMessage)
     {
-        // todo: processing a sending message command..
+        NewMessageClientMessageBody messageBody =
+                NewMessageClientMessageBody.getInstance(commandSendMessage.getMessage());
+
+        Error sendingError =
+                generateJsonClientMessageAndSend(OperationEnum.CHATTING_NEW_MESSAGE, messageBody);
+
+        if (sendingError != null) return sendingError;
 
         return null;
     }
@@ -162,7 +200,13 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error chooseUsersCommandProcessing(
             @NonNull final CommandChooseUsers commandChooseUsers)
     {
-        // todo: processing a choosing users command..
+        UsersChosenClientMessageBody messageBody =
+                UsersChosenClientMessageBody.getInstance(commandChooseUsers.getChosenUserIdList());
+
+        Error sendingError =
+                generateJsonClientMessageAndSend(OperationEnum.CHOOSING_USERS_CHOSEN, messageBody);
+
+        if (sendingError != null) return sendingError;
 
         return null;
     }
@@ -171,7 +215,7 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     public Error leaveCommandProcessing(
             @NonNull final CommandLeave commandLeave)
     {
-        // todo: processing a leave command..
+        // todo: processing a leave command.. ?
 
         return null;
     }
@@ -196,7 +240,8 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
 
         Error processingError =
                 processServerMessage(
-                        message.getOperation(), (ServerMessageBody) message.getMessageBody());
+                        message.getOperation(),
+                        (ServerMessageBody) message.getMessageBody());
 
         if (processingError != null) {
             m_callback.errorOccurred(processingError);
@@ -235,9 +280,6 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             case CHOOSING_STAGE_IS_OVER: return
                     processChoosingStageIsOverServerMessage(
                             (ChoosingStageIsOverServerMessageBody) serverMessageBody);
-            case RESULTS_MATCHED_USERS_GOTTEN: return
-                    processResultsGottenServerMessage(
-                            (ResultsGottenServerMessageBody) serverMessageBody);
         }
 
         Error error =
@@ -247,6 +289,14 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
                         GameSessionProcessorImplErrorEnum.UNKNOWN_OPERATION_TYPE.isCritical());
 
         return error;
+    }
+
+    private Error generateErrorFromServerError(
+            final ServerMessageError serverMessageError)
+    {
+        return Error.getInstance(
+                serverMessageError.getMessage(),
+                C_IS_SERVER_ERROR_CRITICAL);
     }
 
     private Error processSearchingStartServerMessage(
@@ -261,6 +311,26 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
 
             return error;
         }
+
+        ServerMessageError serverError = startSearchingServerMessageBody.getError();
+
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
+
+        GameSessionImplStateSearching gameSessionStateSearching =
+                GameSessionImplStateSearching.getInstance();
+
+        if (gameSessionStateSearching == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.getResourceCode(),
+                            GameSessionProcessorErrorEnum.SEARCHING_STATE_CREATION_FAILED.isCritical());
+
+            return error;
+        }
+
+        m_gameSessionState = gameSessionStateSearching;
 
         return null;
     }
@@ -278,6 +348,13 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
+        ServerMessageError serverError = stopSearchingServerMessageBody.getError();
+
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
+
+        m_callback.gameSearchingAborted();
+
         return null;
     }
 
@@ -294,9 +371,29 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
-        // todo: processing game found data..
+        ServerMessageError serverError = gameFoundServerMessageBody.getError();
 
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
 
+        m_foundGameData = gameFoundServerMessageBody.getFoundGameData();
+
+        GameSessionImplStateChatting gameSessionStateChatting =
+                GameSessionImplStateChatting.getInstance();
+
+        if (gameSessionStateChatting == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorErrorEnum.CHATTING_STATE_CREATION_FAILED.getResourceCode(),
+                            GameSessionProcessorErrorEnum.CHATTING_STATE_CREATION_FAILED.isCritical());
+
+            return error;
+        }
+
+        m_gameSessionState = gameSessionStateChatting;
+
+        m_callback.gameFound(m_foundGameData);
 
         return null;
     }
@@ -314,7 +411,12 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
-        // todo: processing a new chat message..
+        ServerMessageError serverError = newChatMessageServerMessageBody.getError();
+
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
+
+        m_callback.messageReceived(newChatMessageServerMessageBody.getMessage());
 
         return null;
     }
@@ -332,9 +434,27 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
-        // todo: processing a signal of the end of a chatting stage;
+        ServerMessageError serverError = chattingStageIsOverServerMessageBody.getError();
 
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
 
+        GameSessionImplStateChoosing gameSessionStateChoosing =
+                GameSessionImplStateChoosing.getInstance();
+
+        if (gameSessionStateChoosing == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorErrorEnum.CHOOSING_STATE_CREATION_FAILED.getResourceCode(),
+                            GameSessionProcessorErrorEnum.CHOOSING_STATE_CREATION_FAILED.isCritical());
+
+            return error;
+        }
+
+        m_gameSessionState = gameSessionStateChoosing;
+
+        m_callback.onChattingPhaseIsOver();
 
         return null;
     }
@@ -352,6 +472,11 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
+        ServerMessageError serverError = usersChosenServerMessageBody.getError();
+
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
+
         return null;
     }
 
@@ -368,26 +493,29 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             return error;
         }
 
-        // todo: processing a signal of the end of a choosing stage..
+        ServerMessageError serverError = choosingStageIsOverServerMessageBody.getError();
 
-        return null;
-    }
+        if (serverError != null)
+            return generateErrorFromServerError(serverError);
 
-    private Error processResultsGottenServerMessage(
-            final ResultsGottenServerMessageBody resultsGottenServerMessageBody)
-    {
-        if (resultsGottenServerMessageBody == null) {
+        GameSessionImplStateResults gameSessionStateResults =
+                GameSessionImplStateResults.getInstance();
+
+        if (gameSessionStateResults == null) {
             Error error =
                     ErrorUtility.getErrorByStringResourceCodeAndFlag(
                             m_context,
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE_BODY.getResourceCode(),
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE_BODY.isCritical());
+                            GameSessionProcessorErrorEnum.RESULTS_STATE_CREATION_FAILED.getResourceCode(),
+                            GameSessionProcessorErrorEnum.RESULTS_STATE_CREATION_FAILED.isCritical());
 
             return error;
         }
 
-        // todo: processing game results..
+        m_gameSessionState = gameSessionStateResults;
 
+        m_callback.onChoosingPhaseIsOver(
+                (ArrayList<MatchedUserProfileData>) choosingStageIsOverServerMessageBody.
+                        getMatchedUsers());
 
         return null;
     }

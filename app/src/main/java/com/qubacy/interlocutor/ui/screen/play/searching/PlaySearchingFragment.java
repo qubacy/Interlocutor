@@ -162,7 +162,7 @@ public class PlaySearchingFragment extends PlayFragment
 
     @Override
     public void onSearchingStopped() {
-        // todo: doing something??.
-
+        m_messageTextView.setText(R.string.play_searching_fragment_message_searching_aborted);
+        m_progressIndicatorAnimatorSet.cancel();
     }
 }

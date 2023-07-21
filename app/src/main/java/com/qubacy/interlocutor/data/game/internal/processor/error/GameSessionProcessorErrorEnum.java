@@ -7,6 +7,12 @@ public enum GameSessionProcessorErrorEnum {
             R.string.error_game_session_processor_unknown_command, true),
     SEARCHING_STATE_CREATION_FAILED(
             R.string.error_game_session_processor_searching_state_creation_failed, true),
+    CHATTING_STATE_CREATION_FAILED(
+            R.string.error_game_session_processor_chatting_state_creation_failed, true),
+    CHOOSING_STATE_CREATION_FAILED(
+            R.string.error_game_session_processor_choosing_state_creation_failed, true),
+    RESULTS_STATE_CREATION_FAILED(
+            R.string.error_game_session_processor_results_state_creation_failed, true),
     UNKNOWN_STATE_TYPE(
             R.string.error_game_session_processor_unknown_state, true),
     ILLEGAL_STATE(

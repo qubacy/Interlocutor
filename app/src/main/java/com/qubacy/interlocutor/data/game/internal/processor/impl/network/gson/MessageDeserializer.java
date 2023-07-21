@@ -11,10 +11,9 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.newmessage.NewChatMessageServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.newmessage.NewChatMessageServerMessageBodyDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.stageover.ChattingStageIsOverServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.userschosen.UsersChosenServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.results.ResultsGottenServerMessageBodyDeserializer;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.results.ResultsGottenServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBodyDeserializer;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBodyDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
@@ -100,8 +99,6 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
                     deserializeUsersChosenMessageBody(messageBodyJsonObj);
             case CHOOSING_STAGE_IS_OVER: return
                     deserializeChoosingStageIsOverMessageBody(messageBodyJsonObj);
-            case RESULTS_MATCHED_USERS_GOTTEN: return
-                    deserializeResultsMatchedUsersGottenMessageBody(messageBodyJsonObj);
         }
 
         return null;
@@ -164,14 +161,8 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
     private ChoosingStageIsOverServerMessageBody deserializeChoosingStageIsOverMessageBody(
             final JsonObject messageBodyJsonObj)
     {
-        return ChoosingStageIsOverServerMessageBody.getInstance();
-    }
-
-    private ResultsGottenServerMessageBody deserializeResultsMatchedUsersGottenMessageBody(
-            final JsonObject messageBodyJsonObj)
-    {
-        ResultsGottenServerMessageBodyDeserializer deserializer =
-                new ResultsGottenServerMessageBodyDeserializer();
+        ChoosingStageIsOverServerMessageBodyDeserializer deserializer =
+                new ChoosingStageIsOverServerMessageBodyDeserializer();
 
         return deserializer.deserialize(messageBodyJsonObj, m_curType, m_curContext);
     }
