@@ -34,11 +34,9 @@ public class WebSocketClient {
 
     public static WebSocketClient getInstance(
             final String url,
-            //final WebSocketListener webSocketListener,
             final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue)
     {
-        if (url == null || //webSocketListener == null ||
-            networkCallbackCommandQueue == null)
+        if (url == null || networkCallbackCommandQueue == null)
         {
             return null;
         }

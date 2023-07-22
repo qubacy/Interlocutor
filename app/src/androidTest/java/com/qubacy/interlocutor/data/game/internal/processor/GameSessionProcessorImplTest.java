@@ -7,6 +7,10 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImplFactory;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.WebSocketClient;
+import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.WebSocketClientMock;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
@@ -19,6 +23,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @RunWith(JUnit4.class)
 public class GameSessionProcessorImplTest {
@@ -70,8 +76,8 @@ public class GameSessionProcessorImplTest {
 
     @Test
     public void testLaunchingStopping() {
-        GameSessionProcessor gameSessionProcessor = GameSessionProcessorImpl.getInstance();
-
+        GameSessionProcessor gameSessionProcessor =
+                new GameSessionProcessorImplFactory().generateProcessor();
         gameSessionProcessor.launch(m_callback, m_context);
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
@@ -82,8 +88,9 @@ public class GameSessionProcessorImplTest {
     }
 
     @Test
-    public void testSearching() {
-        GameSessionProcessor gameSessionProcessor = GameSessionProcessorImpl.getInstance();
+    public void testSearchingStartAndAbortion() {
+        GameSessionProcessor gameSessionProcessor =
+                new GameSessionProcessorImplFactory().generateProcessor();
 
         gameSessionProcessor.launch(m_callback, m_context);
 
@@ -97,5 +104,26 @@ public class GameSessionProcessorImplTest {
         gameSessionProcessor.stop();
 
         Assert.assertFalse(gameSessionProcessor.isRunning());
+    }
+
+    @Test
+    public void testSearchingStartWithFoundGame() {
+        BlockingQueue<NetworkCallbackCommand> callbackCommands =
+                new LinkedBlockingQueue<>();
+        WebSocketClient webSocketClient =
+                WebSocketClientMock.getInstance(callbackCommands);
+        GameSessionProcessor gameSessionProcessor =
+                GameSessionProcessorImpl.getInstance(
+                        callbackCommands, webSocketClient);
+
+        gameSessionProcessor.launch(m_callback, m_context);
+
+        Assert.assertTrue(gameSessionProcessor.isRunning());
+
+        Profile profile = Profile.getInstance("username", "contact");
+
+        Assert.assertTrue(gameSessionProcessor.startSearching(profile));
+
+
     }
 }
