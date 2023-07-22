@@ -13,6 +13,10 @@ import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStart
 import com.qubacy.interlocutor.data.game.internal.processor.command.CommandStopSearching;
 import com.qubacy.interlocutor.data.game.internal.processor.error.GameSessionProcessorErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.error.GameSessionProcessorImplErrorEnum;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandConnected;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageSerializer;
@@ -32,8 +36,6 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.WebSocketClient;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.listener.WebSocketListenerCallback;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.listener.WebSocketListenerImpl;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateChatting;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateChoosing;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.state.GameSessionImplStateResults;
@@ -42,6 +44,7 @@ import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 
 /*
 *
@@ -49,25 +52,38 @@ import java.util.ArrayList;
 *
 */
 public class GameSessionProcessorImpl extends GameSessionProcessor
-        implements
-            WebSocketListenerCallback
 {
     public static final String C_URL = "http://127.0.0.1:8080";
     public static final boolean C_IS_SERVER_ERROR_CRITICAL = true;
 
-    private WebSocketClient m_webSocketClient = null;
+    private final WebSocketClient m_webSocketClient;
 
     private final Gson m_gson;
 
+    private final BlockingQueue<NetworkCallbackCommand> m_networkCallbackCommandQueue;
+
     protected GameSessionProcessorImpl(
-            final Gson gson)
+            final Gson gson,
+            final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
+            final WebSocketClient webSocketClient)
     {
         super();
 
         m_gson = gson;
+        m_networkCallbackCommandQueue = networkCallbackCommandQueue;
+        m_webSocketClient = webSocketClient;
     }
 
-    public static GameSessionProcessorImpl getInstance() {
+    public static GameSessionProcessorImpl getInstance(
+            final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
+            final WebSocketClient webSocketClient)
+    {
+        if (networkCallbackCommandQueue == null ||
+            webSocketClient == null)
+        {
+            return null;
+        }
+
         MessageSerializer messageSerializer = new MessageSerializer();
         MessageDeserializer messageDeserializer = new MessageDeserializer();
 
@@ -79,25 +95,90 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
 
         if (gson == null) return null;
 
-        GameSessionProcessorImpl gameSessionProcessor =
-                new GameSessionProcessorImpl(gson);
-        WebSocketListenerImpl webSocketListener =
-                WebSocketListenerImpl.getInstance(gameSessionProcessor);
-        WebSocketClient webSocketClient =
-                WebSocketClient.getInstance(C_URL, webSocketListener);
-
-        if (!gameSessionProcessor.setWebSocketClient(webSocketClient))
-            return null;
-
-        return gameSessionProcessor;
+        return new GameSessionProcessorImpl(
+                gson, networkCallbackCommandQueue, webSocketClient);
     }
 
-    protected boolean setWebSocketClient(final WebSocketClient webSocketClient) {
-        if (webSocketClient == null) return false;
+    @Override
+    protected Error execIteration() {
+        Error execError = super.execIteration();
 
-        m_webSocketClient = webSocketClient;
+        if (execError != null) return execError;
 
-        return true;
+        NetworkCallbackCommand callbackCommand =
+                m_networkCallbackCommandQueue.poll();
+
+        if (callbackCommand == null) return null;
+
+        return processCallbackCommand(callbackCommand);
+    }
+
+    private Error processCallbackCommand(
+            final NetworkCallbackCommand callbackCommand)
+    {
+        switch (callbackCommand.getType()) {
+            case CONNECTED: return
+                    processConnectedCallbackCommand(
+                            (NetworkCallbackCommandConnected) callbackCommand);
+            case MESSAGE_RECEIVED: return
+                    processMessageReceivedCallbackCommand(
+                            (NetworkCallbackCommandMessageReceived) callbackCommand);
+            case DISCONNECTED: return
+                    processDisconnectedCallbackCommand(
+                            (NetworkCallbackCommandDisconnected) callbackCommand);
+        }
+
+        Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        GameSessionProcessorImplErrorEnum.
+                                UNKNOWN_NETWORK_CALLBACK_COMMAND_TYPE.getResourceCode(),
+                        GameSessionProcessorImplErrorEnum.
+                                UNKNOWN_NETWORK_CALLBACK_COMMAND_TYPE.isCritical());
+
+        return error;
+    }
+
+    private Error processConnectedCallbackCommand(
+            final NetworkCallbackCommandConnected commandConnected)
+    {
+        // is there anything to do here?..
+
+        return null;
+    }
+
+    private Error processMessageReceivedCallbackCommand(
+            final NetworkCallbackCommandMessageReceived commandMessageReceived)
+    {
+        Message message = m_gson.fromJson(commandMessageReceived.getMessage(), Message.class);
+
+        if (message == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE.getResourceCode(),
+                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE.isCritical());
+
+            return error;
+        }
+
+        Error processingError =
+                processServerMessage(
+                        message.getOperation(),
+                        (ServerMessageBody) message.getMessageBody());
+
+        if (processingError != null) return processingError;
+
+        return null;
+    }
+
+    private Error processDisconnectedCallbackCommand(
+            final NetworkCallbackCommandDisconnected commandDisconnected)
+    {
+        // todo: process it gracefully! user should be alerted about
+        // todo: an abrupt disconnection.
+
+        return null;
     }
 
     @Override
@@ -218,36 +299,6 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
         // todo: processing a leave command.. ?
 
         return null;
-    }
-
-    @Override
-    public void onServerMessageReceived(
-            @NonNull final String serverMessage)
-    {
-        Message message = m_gson.fromJson(serverMessage, Message.class);
-
-        if (message == null) {
-            Error error =
-                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                            m_context,
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE.getResourceCode(),
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE.isCritical());
-
-            m_callback.errorOccurred(error);
-
-            return;
-        }
-
-        Error processingError =
-                processServerMessage(
-                        message.getOperation(),
-                        (ServerMessageBody) message.getMessageBody());
-
-        if (processingError != null) {
-            m_callback.errorOccurred(processingError);
-
-            return;
-        }
     }
 
     private Error processServerMessage(

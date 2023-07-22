@@ -66,6 +66,7 @@
     <string name="error_game_session_processor_impl_null_server_message">Received server message was null!</string>
     <string name="error_game_session_processor_impl_null_server_message_body">Received server message\'s body was null!</string>
     <string name="error_game_session_processor_impl_sending_client_message_failed">Sending a message to the server has been failed!</string>
+    <string name="error_game_session_processor_impl_unknown_network_callback_command_type">Unknown Network Callback command type has been provided!</string>
 
     <string name="error_game_service_broadcast_receiver_creation_failed">Game Service Broadcast Receiver creation has been failed!</string>
     <string name="error_game_service_broadcast_receiver_incorrect_command">Incorrect broadcast command has been provided!</string>

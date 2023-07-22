@@ -10,7 +10,9 @@ public enum GameSessionProcessorImplErrorEnum {
     NULL_SERVER_MESSAGE_BODY(
             R.string.error_game_session_processor_impl_null_server_message_body, true),
     SENDING_CLIENT_MESSAGE_FAILED(
-            R.string.error_game_session_processor_impl_sending_client_message_failed, true);
+            R.string.error_game_session_processor_impl_sending_client_message_failed, true),
+    UNKNOWN_NETWORK_CALLBACK_COMMAND_TYPE(
+            R.string.error_game_session_processor_impl_unknown_network_callback_command_type, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;
