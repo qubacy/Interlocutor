@@ -1,5 +1,7 @@
 package com.qubacy.interlocutor.data.game.internal.processor.impl;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;

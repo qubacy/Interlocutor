@@ -20,7 +20,7 @@ public class WebSocketClient {
 
     private final OkHttpClient m_httpClient;
     private final WebSocket m_webSocket;
-    private final BlockingQueue<NetworkCallbackCommand> m_networkCallbackCommandQueue;
+    protected final BlockingQueue<NetworkCallbackCommand> m_networkCallbackCommandQueue;
 
     protected WebSocketClient(
             final OkHttpClient httpClient,

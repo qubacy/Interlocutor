@@ -1,6 +1,7 @@
 package com.qubacy.interlocutor.data.game.internal.processor;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -9,8 +10,11 @@ import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfil
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImpl;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.GameSessionProcessorImplFactory;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandTypeEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.WebSocketClient;
-import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.WebSocketClientMock;
+import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.WebSocketServerMock;
+import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionStateType;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
@@ -106,15 +110,29 @@ public class GameSessionProcessorImplTest {
         Assert.assertFalse(gameSessionProcessor.isRunning());
     }
 
+    private WebSocketServerMock startWebSocketServer(
+            final BlockingQueue<NetworkCallbackCommand> networkCallbackCommands,
+            final boolean isGameFound)
+    {
+        if (networkCallbackCommands == null) return null;
+
+        WebSocketServerMock webSocketServerMock =
+                WebSocketServerMock.getInstance(networkCallbackCommands, isGameFound);
+
+        webSocketServerMock.launch();
+
+        return webSocketServerMock;
+    }
+
     @Test
-    public void testSearchingStartWithFoundGame() {
+    public void testSearchingStartWithFoundGame() throws InterruptedException {
         BlockingQueue<NetworkCallbackCommand> callbackCommands =
                 new LinkedBlockingQueue<>();
-        WebSocketClient webSocketClient =
-                WebSocketClientMock.getInstance(callbackCommands);
+        WebSocketServerMock webSocketServerMock =
+                startWebSocketServer(callbackCommands, true);
         GameSessionProcessor gameSessionProcessor =
                 GameSessionProcessorImpl.getInstance(
-                        callbackCommands, webSocketClient);
+                        callbackCommands, webSocketServerMock);
 
         gameSessionProcessor.launch(m_callback, m_context);
 
@@ -124,6 +142,20 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
+        Thread.sleep(1500); // it should work. unfortunately it depends on the device;
 
+        Assert.assertEquals(
+                GameSessionStateType.SEARCHING,
+                gameSessionProcessor.m_gameSessionState.getType());
+
+        Thread.sleep(3000); // it should work. unfortunately it depends on the device;
+
+        Assert.assertEquals(
+                GameSessionStateType.CHATTING,
+                gameSessionProcessor.m_gameSessionState.getType());
+
+        webSocketServerMock.stop();
     }
+
+
 }
