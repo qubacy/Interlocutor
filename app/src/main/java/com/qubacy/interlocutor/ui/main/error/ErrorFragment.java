@@ -4,17 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
-import com.qubacy.interlocutor.ui.common.fragment.FragmentBase;
+import com.qubacy.interlocutor.ui.common.fragment.SystemMessageDialogFragment;
 
-public class ErrorFragment extends FragmentBase {
+public class ErrorFragment extends SystemMessageDialogFragment {
     private static final String C_ERROR_ARG_NAME = "error";
 
     private Error m_error = null;
@@ -24,7 +21,7 @@ public class ErrorFragment extends FragmentBase {
     }
 
     protected ErrorFragment(final Error error) {
-        super();
+        super(error.getMessage());
 
         m_error = error;
     }
@@ -38,6 +35,7 @@ public class ErrorFragment extends FragmentBase {
         Bundle args = new Bundle();
 
         args.putSerializable(C_ERROR_ARG_NAME, error);
+        args.putString(C_TEXT_ARG_NAME, error.getMessage());
         errorDialogFragment.setArguments(args);
 
         return errorDialogFragment;
@@ -64,24 +62,11 @@ public class ErrorFragment extends FragmentBase {
     @Nullable
     @Override
     public View onCreateView(
-            @NonNull final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState)
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_error, container, false);
-
-        TextView messageTextView = view.findViewById(R.id.error_message);
-        Button okButton = view.findViewById(R.id.error_button_ok);
-
-        messageTextView.setText(m_error.getMessage());
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                onOkClicked();
-            }
-        });
-
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -89,10 +74,6 @@ public class ErrorFragment extends FragmentBase {
         outState.putSerializable(C_ERROR_ARG_NAME, m_error);
 
         super.onSaveInstanceState(outState);
-    }
-
-    private void onOkClicked() {
-        getActivity().onBackPressed();
     }
 
     public Error getError() {

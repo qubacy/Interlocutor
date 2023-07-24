@@ -1,7 +1,5 @@
 package com.qubacy.interlocutor.data.game.internal.processor.impl;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -31,7 +29,6 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.ClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.chatting.newmessage.NewMessageClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
@@ -177,8 +174,7 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     private Error processDisconnectedCallbackCommand(
             final NetworkCallbackCommandDisconnected commandDisconnected)
     {
-        // todo: process it gracefully! user should be alerted about
-        // todo: an abrupt disconnection.
+        m_callback.onUnexpectedDisconnection();
 
         return null;
     }
@@ -315,9 +311,6 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             case SEARCHING_START: return
                     processSearchingStartServerMessage(
                             (StartSearchingServerMessageBody) serverMessageBody);
-            case SEARCHING_STOP: return
-                    processSearchingStopServerMessage(
-                            (StopSearchingServerMessageBody) serverMessageBody);
             case SEARCHING_GAME_FOUND: return
                     processGameFoundServerMessage(
                             (GameFoundServerMessageBody) serverMessageBody);
@@ -384,29 +377,6 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
         }
 
         m_gameSessionState = gameSessionStateSearching;
-
-        return null;
-    }
-
-    private Error processSearchingStopServerMessage(
-            final StopSearchingServerMessageBody stopSearchingServerMessageBody)
-    {
-        if (stopSearchingServerMessageBody == null) {
-            Error error =
-                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                            m_context,
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE_BODY.getResourceCode(),
-                            GameSessionProcessorImplErrorEnum.NULL_SERVER_MESSAGE_BODY.isCritical());
-
-            return error;
-        }
-
-        ServerMessageError serverError = stopSearchingServerMessageBody.getError();
-
-        if (serverError != null)
-            return generateErrorFromServerError(serverError);
-
-        m_callback.gameSearchingAborted();
 
         return null;
     }

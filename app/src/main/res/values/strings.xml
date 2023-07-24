@@ -16,6 +16,8 @@
     <string name="profile_confirm_error_message_saving_failed">Provided profile data saving was failed!</string>
     <string name="profile_confirm_error_message_saving_succeed">Provided profile data has been saved!</string>
 
+    <string name="play_activity_unexpected_disconnection_message_text">Unexpected disconnection has been occurred!</string>
+
     <string name="play_searching_fragment_message_searching_game">Searching Game…</string>
     <string name="play_searching_fragment_message_game_found">Game Found!</string>
     <string name="play_searching_fragment_message_searching_aborted">Searching Aborted!</string>
@@ -86,6 +88,8 @@
     <string name="error_play_activity_null_arguments">Arguments were null!</string>
     <string name="error_play_activity_broadcast_receiver_creation_failed">Play Activity Broadcast Receiver creation has been failed!</string>
     <string name="error_play_activity_services_start_failed">Services\' start has been failed!</string>
+
+    <string name="error_play_activity_broadcast_receiver_incorrect_command">Incorrect Command has been provided!</string>
 
     <string name="error_play_searching_fragment_broadcast_receiver_creation_failed">Play Searching Fragment Broadcast Receiver creation has been failed!</string>
     <string name="error_play_searching_fragment_null_arguments">Arguments were null!</string>

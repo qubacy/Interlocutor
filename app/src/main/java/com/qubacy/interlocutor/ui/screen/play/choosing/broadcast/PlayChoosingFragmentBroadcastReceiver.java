@@ -90,6 +90,11 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase
             final Context context,
             final Intent intent)
     {
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
         String action  = intent.getAction();
         PlayChoosingFragmentBroadcastCommand command =
                 PlayChoosingFragmentBroadcastCommand.getCommandByCommandString(action);
@@ -103,7 +108,7 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase
 
             MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
-            return;
+            return false;
         }
 
         Error commandProcessingError = processCommand(command, intent);
@@ -111,8 +116,10 @@ public class PlayChoosingFragmentBroadcastReceiver extends BroadcastReceiverBase
         if (commandProcessingError != null) {
             MainActivityBroadcastReceiver.broadcastError(m_context, commandProcessingError);
 
-            return;
+            return false;
         }
+
+        return true;
     }
 
     private Error processCommand(

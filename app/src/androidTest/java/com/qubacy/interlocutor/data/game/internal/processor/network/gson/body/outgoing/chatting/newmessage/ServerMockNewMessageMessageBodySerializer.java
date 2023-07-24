@@ -29,7 +29,7 @@ public class ServerMockNewMessageMessageBodySerializer
         JsonObject messageBodyJsonObj = new JsonObject();
 
         messageBodyJsonObj.add(
-                NewChatMessageServerMessageBody.C_MESSAGE_PROP_NAME, messageBodyJsonObj);
+                NewChatMessageServerMessageBody.C_MESSAGE_PROP_NAME, newMessageJsonObj);
 
         return messageBodyJsonObj;
     }

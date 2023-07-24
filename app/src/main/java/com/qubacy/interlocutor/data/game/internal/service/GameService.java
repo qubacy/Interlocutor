@@ -28,6 +28,7 @@ import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfil
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.chatting.broadcast.PlayChattingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.PlayChoosingFragmentBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.PlayActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastCommand;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 
@@ -202,25 +203,8 @@ public class GameService extends Service
     }
 
     @Override
-    public void gameSearchingAborted() {
-        m_gameSessionProcessor.stopSearching();
-
-        Intent intent =
-                new Intent(PlaySearchingFragmentBroadcastCommand.SEARCHING_STOPPED.toString());
-
-        LocalBroadcastManager.
-                getInstance(getApplicationContext()).
-                sendBroadcast(intent);
-    }
-
-    @Override
     public void errorOccurred(@NonNull final Error error) {
         MainActivityBroadcastReceiver.broadcastError(this, error);
-    }
-
-    @Override
-    public void messageSent() {
-        // is it necessary?
     }
 
     @Override
@@ -237,8 +221,21 @@ public class GameService extends Service
     public void onChoosingPhaseIsOver(
             @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList)
     {
+        m_gameSessionProcessor.stop();
+
         PlayChoosingFragmentBroadcastReceiver.broadcastChoosingPhaseIsOver(
                 this, userProfileContactDataList);
+    }
+
+    @Override
+    public void onUnexpectedDisconnection() {
+        if (!m_gameSessionProcessor.isRunning())
+            return;
+
+        m_gameSessionProcessor.stop();
+
+        PlayActivityBroadcastReceiver.
+                broadcastUnexpectedDisconnection(this);
     }
 
     // BroadcastReceiver:

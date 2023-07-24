@@ -159,10 +159,4 @@ public class PlaySearchingFragment extends PlayFragment
             findNavController(getView()).
             navigate(R.id.action_playSearchingFragment_to_playChattingFragment);
     }
-
-    @Override
-    public void onSearchingStopped() {
-        m_messageTextView.setText(R.string.play_searching_fragment_message_searching_aborted);
-        m_progressIndicatorAnimatorSet.cancel();
-    }
 }

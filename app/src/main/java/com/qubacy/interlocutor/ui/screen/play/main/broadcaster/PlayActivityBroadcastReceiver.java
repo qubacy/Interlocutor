@@ -6,7 +6,13 @@ import android.content.IntentFilter;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.common.activity.broadcaster.ErrorHandlingBroadcastReceiver;
+import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
+import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.PlayChoosingFragmentBroadcastCommand;
+import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.error.PlayChoosingFragmentBroadcastErrorEnum;
+import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.error.PlayActivityBroadcastErrorEnum;
 
 public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceiver {
     protected PlayActivityBroadcastReceiver(
@@ -48,9 +54,22 @@ public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
         LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver);
     }
 
+    public static void broadcastUnexpectedDisconnection(final Context context) {
+        Intent intent =
+                new Intent(PlayActivityBroadcastCommand.UNEXPECTED_DISCONNECTION.toString());
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
     @Override
     public IntentFilter generateIntentFilter() {
         IntentFilter intentFilter = super.generateIntentFilter();
+
+        for (final PlayActivityBroadcastCommand command :
+                PlayActivityBroadcastCommand.values())
+        {
+            intentFilter.addAction(command.toString());
+        }
 
         return intentFilter;
     }
@@ -60,6 +79,62 @@ public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
             final Context context,
             final Intent intent)
     {
-        super.onReceive(context, intent);
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
+        if (super.processBroadcast(context, intent)) return true;
+
+        String action  = intent.getAction();
+        PlayActivityBroadcastCommand command =
+                PlayActivityBroadcastCommand.getCommandByCommandString(action);
+
+        if (command == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayActivityBroadcastErrorEnum.INCORRECT_COMMAND.getResourceCode(),
+                            PlayActivityBroadcastErrorEnum.INCORRECT_COMMAND.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(m_context, error);
+
+            return false;
+        }
+
+        Error commandProcessingError = processCommand(command, intent);
+
+        if (commandProcessingError != null) {
+            MainActivityBroadcastReceiver.broadcastError(m_context, commandProcessingError);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private Error processCommand(
+            final PlayActivityBroadcastCommand command,
+            final Intent data)
+    {
+        switch (command) {
+            case UNEXPECTED_DISCONNECTION:
+                return processUnexpectedDisconnectionCommand(data);
+        }
+
+        Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        PlayActivityBroadcastErrorEnum.INCORRECT_COMMAND.getResourceCode(),
+                        PlayActivityBroadcastErrorEnum.INCORRECT_COMMAND.isCritical());
+
+        return error;
+    }
+
+    private Error processUnexpectedDisconnectionCommand(final Intent data) {
+        ((PlayActivityBroadcastReceiverCallback)m_callback).
+                onUnexpectedDisconnectionOccurred();
+
+        return null;
     }
 }

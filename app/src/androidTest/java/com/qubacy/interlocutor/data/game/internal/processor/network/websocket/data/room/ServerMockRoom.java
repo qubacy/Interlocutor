@@ -9,6 +9,7 @@ import java.util.List;
 public class ServerMockRoom {
     private final List<ServerMockUser> m_userList;
     private ServerMockRoomState m_state = null;
+    private boolean m_isDestroyed = false;
 
     protected ServerMockRoom(
             final List<ServerMockUser> userList,
@@ -107,5 +108,13 @@ public class ServerMockRoom {
         m_state = state;
 
         return true;
+    }
+
+    public void setDestroyed() {
+        m_isDestroyed = true;
+    }
+
+    public boolean isDestroyed() {
+        return m_isDestroyed;
     }
 }

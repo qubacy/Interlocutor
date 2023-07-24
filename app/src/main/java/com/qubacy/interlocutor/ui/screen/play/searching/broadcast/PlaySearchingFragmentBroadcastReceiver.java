@@ -101,20 +101,25 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiverBas
             final Context context,
             final Intent intent)
     {
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
         String action = intent.getAction();
         PlaySearchingFragmentBroadcastCommand command =
                 PlaySearchingFragmentBroadcastCommand.getCommandByCommandString(action);
 
         if (command == null) {
             Error error =
-                ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                    m_context,
-                    PlaySearchingFragmentBroadcastReceiverErrorEnum.INCORRECT_COMMAND.getResourceCode(),
-                    PlaySearchingFragmentBroadcastReceiverErrorEnum.INCORRECT_COMMAND.isCritical());
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlaySearchingFragmentBroadcastReceiverErrorEnum.INCORRECT_COMMAND.getResourceCode(),
+                            PlaySearchingFragmentBroadcastReceiverErrorEnum.INCORRECT_COMMAND.isCritical());
 
             MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
-            return;
+            return false;
         }
 
         Error commandProcessingError = processCommand(command, intent);
@@ -122,8 +127,10 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiverBas
         if (commandProcessingError != null) {
             MainActivityBroadcastReceiver.broadcastError(m_context, commandProcessingError);
 
-            return;
+            return false;
         }
+
+        return true;
     }
 
     private Error processCommand(
@@ -133,7 +140,6 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiverBas
         switch (command) {
             case SERVICE_READY: return processServiceReadyCommand(data);
             case GAME_FOUND: return processGameFoundCommand(data);
-            case SEARCHING_STOPPED: return processSearchingStoppedCommand(data);
         }
 
         Error error =
@@ -178,12 +184,6 @@ public class PlaySearchingFragmentBroadcastReceiver extends BroadcastReceiverBas
         FoundGameData foundGameData = (FoundGameData) foundGameDataSerializable;
 
         ((PlaySearchingFragmentBroadcastReceiverCallback)m_callback).onGameFound(foundGameData);
-
-        return null;
-    }
-
-    private Error processSearchingStoppedCommand(final Intent data) {
-        ((PlaySearchingFragmentBroadcastReceiverCallback)m_callback).onSearchingStopped();
 
         return null;
     }

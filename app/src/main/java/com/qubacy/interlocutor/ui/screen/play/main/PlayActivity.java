@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.qubacy.interlocutor.R;
@@ -14,6 +15,7 @@ import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.ui.common.activity.ErrorHandlingActivity;
+import com.qubacy.interlocutor.ui.common.fragment.SystemMessageDialogFragment;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.PlayActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.PlayActivityBroadcastReceiverCallback;
@@ -136,5 +138,19 @@ public class PlayActivity extends ErrorHandlingActivity
         if (error.isCritical()) return;
 
         showErrorToast(error);
+    }
+
+    @Override
+    public void onUnexpectedDisconnectionOccurred() {
+        SystemMessageDialogFragment systemMessageDialogFragment =
+                SystemMessageDialogFragment.getInstance(
+                        getString(R.string.play_activity_unexpected_disconnection_message_text));
+
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.playFragmentContainerView, systemMessageDialogFragment).
+                commit();
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
     }
 }

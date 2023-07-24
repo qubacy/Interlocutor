@@ -10,5 +10,4 @@ public interface PlaySearchingFragmentBroadcastReceiverCallback
 {
     public void onServiceReady();
     public void onGameFound(@NonNull final FoundGameData foundGameData);
-    public void onSearchingStopped();
 }

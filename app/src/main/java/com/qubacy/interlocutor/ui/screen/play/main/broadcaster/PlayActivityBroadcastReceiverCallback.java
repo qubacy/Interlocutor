@@ -5,5 +5,5 @@ import com.qubacy.interlocutor.ui.common.activity.broadcaster.ErrorHandlingBroad
 public interface PlayActivityBroadcastReceiverCallback
         extends ErrorHandlingBroadcastReceiverCallback
 {
-
+    public void onUnexpectedDisconnectionOccurred();
 }

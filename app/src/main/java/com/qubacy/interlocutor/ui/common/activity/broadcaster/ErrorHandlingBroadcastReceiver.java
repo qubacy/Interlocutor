@@ -1,6 +1,5 @@
 package com.qubacy.interlocutor.ui.common.activity.broadcaster;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,19 +43,26 @@ public abstract class ErrorHandlingBroadcastReceiver extends BroadcastReceiverBa
             final Context context,
             final Intent intent)
     {
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
         String action = intent.getAction();
         ErrorHandlingBroadcastCommand command =
                 ErrorHandlingBroadcastCommand.getCommandByCommandString(action);
 
-        if (command == null) return;
+        if (command == null) return false;
 
         Error processingError = processCommand(command, intent);
 
         if (processingError != null) {
             ((ErrorHandlingBroadcastReceiverCallback)m_callback).onErrorOccurred(processingError);
 
-            return;
+            return false;
         }
+
+        return true;
     }
 
     protected Error processCommand(

@@ -15,7 +15,6 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.userschosen.UsersChosenServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.network.gson.body.outgoing.chatting.newmessage.ServerMockNewMessageMessageBodySerializer;
 import com.qubacy.interlocutor.data.game.internal.processor.network.gson.body.outgoing.choosing.stageisover.ServerMockChoosingStageIsOverMessageBodySerializer;
 import com.qubacy.interlocutor.data.game.internal.processor.network.gson.body.outgoing.searching.gamefound.ServerMockGameFoundMessageBodySerializer;
@@ -83,20 +82,36 @@ public class ServerMockMessageSerializer implements JsonSerializer<Message> {
         JsonElement bodyJsonElem = null;
 
         switch (operation) {
-            case SEARCHING_START: bodyJsonElem = serializeStartSearchingBody(
-                    (StartSearchingServerMessageBody) messageBody); break;
-            case SEARCHING_STOP: bodyJsonElem = serializeStopSearchingBody(
-                    (StopSearchingServerMessageBody) messageBody); break;
-            case SEARCHING_GAME_FOUND: bodyJsonElem = serializeGameFoundBody(
-                    (GameFoundServerMessageBody) messageBody); break;
-            case CHATTING_NEW_MESSAGE: bodyJsonElem = serializeNewMessageBody(
-                    (NewChatMessageServerMessageBody) messageBody); break;
-            case CHATTING_STAGE_IS_OVER: bodyJsonElem = serializeChattingStageIsOverBody(
-                    (ChattingStageIsOverServerMessageBody) messageBody); break;
-            case CHOOSING_USERS_CHOSEN: bodyJsonElem = serializeUsersChosenBody(
-                    (UsersChosenServerMessageBody) messageBody); break;
-            case CHOOSING_STAGE_IS_OVER: bodyJsonElem = serializeChoosingStageIsOverBody(
-                    (ChoosingStageIsOverServerMessageBody) messageBody); break;
+            case SEARCHING_START: {
+                bodyJsonElem = serializeStartSearchingBody(
+                        (StartSearchingServerMessageBody) messageBody);
+                break;
+            }
+            case SEARCHING_GAME_FOUND: {
+                bodyJsonElem = serializeGameFoundBody(
+                        (GameFoundServerMessageBody) messageBody);
+                break;
+            }
+            case CHATTING_NEW_MESSAGE: {
+                bodyJsonElem = serializeNewMessageBody(
+                    (NewChatMessageServerMessageBody) messageBody);
+                break;
+            }
+            case CHATTING_STAGE_IS_OVER: {
+                bodyJsonElem = serializeChattingStageIsOverBody(
+                        (ChattingStageIsOverServerMessageBody) messageBody);
+                break;
+            }
+            case CHOOSING_USERS_CHOSEN: {
+                bodyJsonElem = serializeUsersChosenBody(
+                        (UsersChosenServerMessageBody) messageBody);
+                break;
+            }
+            case CHOOSING_STAGE_IS_OVER: {
+                bodyJsonElem = serializeChoosingStageIsOverBody(
+                        (ChoosingStageIsOverServerMessageBody) messageBody);
+                break;
+            }
         }
 
         if (bodyJsonElem == null) return null;
@@ -115,12 +130,6 @@ public class ServerMockMessageSerializer implements JsonSerializer<Message> {
 
     private JsonElement serializeStartSearchingBody(
             final StartSearchingServerMessageBody messageBody)
-    {
-        return new JsonObject();
-    }
-
-    private JsonElement serializeStopSearchingBody(
-            final StopSearchingServerMessageBody messageBody)
     {
         return new JsonObject();
     }

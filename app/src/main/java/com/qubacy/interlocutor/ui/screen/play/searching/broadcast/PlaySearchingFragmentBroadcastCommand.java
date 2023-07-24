@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 
 public enum PlaySearchingFragmentBroadcastCommand {
     SERVICE_READY(PlaySearchingFragmentBroadcastReceiver.class.getName() + ".service_ready"),
-    GAME_FOUND(PlaySearchingFragmentBroadcastReceiver.class.getName() + ".game_found"),
-    SEARCHING_STOPPED(PlaySearchingFragmentBroadcastReceiver.class.getName() + ".searching_stopped");
-
+    GAME_FOUND(PlaySearchingFragmentBroadcastReceiver.class.getName() + ".game_found");
     private final String m_commandString;
 
     private PlaySearchingFragmentBroadcastCommand(final String commandString) {

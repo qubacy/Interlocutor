@@ -2,6 +2,7 @@ package com.qubacy.interlocutor.ui.common.broadcaster;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 
 public abstract class BroadcastReceiverBase extends BroadcastReceiver {
@@ -17,4 +18,13 @@ public abstract class BroadcastReceiverBase extends BroadcastReceiver {
     }
 
     public abstract IntentFilter generateIntentFilter();
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    protected abstract boolean processBroadcast(
+            final Context context,
+            final Intent intent);
 }

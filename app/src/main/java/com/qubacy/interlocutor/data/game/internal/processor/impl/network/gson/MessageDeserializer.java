@@ -17,7 +17,6 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBodyDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
 
 import java.lang.reflect.Type;
 
@@ -87,8 +86,6 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
         switch (operation) {
             case SEARCHING_START: return
                     deserializeSearchingStartMessageBody(messageBodyJsonObj);
-            case SEARCHING_STOP: return
-                    deserializeSearchingStopMessageBody(messageBodyJsonObj);
             case SEARCHING_GAME_FOUND: return
                     deserializeGameFoundMessageBody(messageBodyJsonObj);
             case CHATTING_NEW_MESSAGE: return
@@ -120,12 +117,6 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
             final JsonObject messageBodyJsonObj)
     {
         return StartSearchingServerMessageBody.getInstance();
-    }
-
-    private StopSearchingServerMessageBody deserializeSearchingStopMessageBody(
-            final JsonObject messageBodyJsonObj)
-    {
-        return StopSearchingServerMessageBody.getInstance();
     }
 
     private GameFoundServerMessageBody deserializeGameFoundMessageBody(

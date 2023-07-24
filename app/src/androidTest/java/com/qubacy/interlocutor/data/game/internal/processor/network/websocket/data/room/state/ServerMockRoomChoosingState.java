@@ -18,6 +18,9 @@ public class ServerMockRoomChoosingState extends ServerMockRoomState {
         super(startTime, duration);
 
         m_userChoiceMatrix = new ArrayList<>(userCount);
+
+        for (int i = 0; i < userCount; ++i)
+            m_userChoiceMatrix.add(new ArrayList<>());
     }
 
     public static ServerMockRoomChoosingState getInstance(

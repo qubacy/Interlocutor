@@ -1,20 +1,29 @@
 package com.qubacy.interlocutor.data.game.internal.processor.network.websocket;
 
 import android.os.SystemClock;
-import android.util.Log;
+import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.OperationEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.MessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.ServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.ServerMessageError;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.newmessage.NewChatMessageServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.chatting.stageover.ChattingStageIsOverServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.stageover.ChoosingStageIsOverServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.choosing.userschosen.UsersChosenServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.found.GameFoundServerMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.start.StartSearchingServerMessageBody;
-import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.incoming.searching.stop.StopSearchingServerMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.chatting.newmessage.NewMessageClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket.WebSocketClient;
 import com.qubacy.interlocutor.data.game.internal.processor.network.gson.ServerMockMessageDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.network.gson.ServerMockMessageSerializer;
@@ -27,6 +36,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.da
 import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.data.room.state.ServerMockRoomState;
 import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.data.room.state.ServerMockRoomStateTypeEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.data.user.ServerMockUser;
+import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
@@ -44,6 +54,7 @@ import okhttp3.WebSocket;
 public class WebSocketServerMock extends WebSocketClient {
     public static final long C_TIMEOUT_MILLISECONDS = 400;
     public static final int C_DEFAULT_USER_ID = 0;
+    public static final long C_MAX_SEARCHING_STAGE_DURATION = 3000;
     public static final String C_DEFAULT_TOPIC = "Some topic..";
 
     private final Gson m_gson;
@@ -53,6 +64,7 @@ public class WebSocketServerMock extends WebSocketClient {
 
     private final List<ServerMockRoom> m_roomList;
 
+    private final boolean m_isAboutToDisconnect;
     private final boolean m_isGameFound;
 
     protected WebSocketServerMock(
@@ -60,7 +72,8 @@ public class WebSocketServerMock extends WebSocketClient {
             final WebSocket webSocket,
             final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
             final Gson gson,
-            final boolean isGameFound)
+            final boolean isGameFound,
+            final boolean isAboutToDisconnect)
     {
         super(httpClient, webSocket, networkCallbackCommandQueue);
 
@@ -68,11 +81,13 @@ public class WebSocketServerMock extends WebSocketClient {
         m_commandQueue = new LinkedBlockingQueue<>();
         m_roomList = new LinkedList<>();
         m_isGameFound = isGameFound;
+        m_isAboutToDisconnect = isAboutToDisconnect;
     }
 
     public static WebSocketServerMock getInstance(
             final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
-            final boolean isGameFound)
+            final boolean isGameFound,
+            final boolean isAboutToDisconnect)
     {
         if (networkCallbackCommandQueue == null) return null;
 
@@ -85,7 +100,12 @@ public class WebSocketServerMock extends WebSocketClient {
         if (gson == null) return null;
 
         return new WebSocketServerMock(
-                null, null, networkCallbackCommandQueue, gson, isGameFound);
+                null,
+                null,
+                networkCallbackCommandQueue,
+                gson,
+                isGameFound,
+                isAboutToDisconnect);
     }
 
     public void launch() {
@@ -129,6 +149,16 @@ public class WebSocketServerMock extends WebSocketClient {
         for (final ServerMockRoom room : m_roomList)
             if (!execRoomState(room)) return false;
 
+        for (int i = 0; i < m_roomList.size(); ++i) {
+            for (final ServerMockRoom room : m_roomList) {
+                if (room.isDestroyed()) {
+                    m_roomList.remove(room);
+
+                    break;
+                }
+            }
+        }
+
         return true;
     }
 
@@ -162,17 +192,48 @@ public class WebSocketServerMock extends WebSocketClient {
         switch (message.getOperation()) {
             case SEARCHING_START:
                 return processSearchingStartMessage((StartSearchingClientMessageBody) messageBody);
+            case SEARCHING_STOP:
+                return processSearchingStopMessage((StopSearchingClientMessageBody) messageBody);
+            case CHATTING_NEW_MESSAGE:
+                return processNewMessageMessage((NewMessageClientMessageBody) messageBody);
+            case CHOOSING_USERS_CHOSEN:
+                return processUsersChosenMessage((UsersChosenClientMessageBody) messageBody);
         }
 
         return false;
     }
 
     protected boolean processSearchingStartMessage(
-            final StartSearchingClientMessageBody startSearchingClientMessageBody)
-    {
+            final StartSearchingClientMessageBody startSearchingClientMessageBody) {
         if (startSearchingClientMessageBody == null) return false;
 
         Profile userProfile = startSearchingClientMessageBody.getProfile();
+
+        boolean isProfileCorrect = true;
+
+        if (userProfile.getUsername() == null || userProfile.getContact() == null) {
+            isProfileCorrect = false;
+        } else {
+            if (userProfile.getUsername() != null) {
+                if (userProfile.getUsername().isEmpty())
+                    isProfileCorrect = false;
+            }
+
+            if (userProfile.getContact() != null && isProfileCorrect) {
+                if (userProfile.getContact().isEmpty())
+                    isProfileCorrect = false;
+            }
+        }
+
+        if (!isProfileCorrect) {
+            ServerMessageError serverMessageError =
+                    ServerMessageError.getInstance("Incorrect profile");
+            ServerMessageBody serverMessageBody =
+                    ServerMessageBody.getInstance(serverMessageError);
+
+            return generateAndDeliverNetworkCallbackMessage(
+                    OperationEnum.SEARCHING_START, serverMessageBody);
+        }
 
         ServerMockRoom room = null;
 
@@ -214,13 +275,81 @@ public class WebSocketServerMock extends WebSocketClient {
         }
 
         ServerMessageBody messageBody = StartSearchingServerMessageBody.getInstance();
-        Message message = Message.getInstance(OperationEnum.SEARCHING_START, messageBody);
+
+        return generateAndDeliverNetworkCallbackMessage(
+                OperationEnum.SEARCHING_START, messageBody);
+    }
+
+    protected boolean processSearchingStopMessage(
+            final StopSearchingClientMessageBody messageBody)
+    {
+        if (messageBody == null) return false;
+        if (m_roomList.size() <= 0) return false;
+
+        ServerMockRoom room = m_roomList.get(0);
+
+        if (!room.removeUserById(C_DEFAULT_USER_ID))
+            return false;
+
+        return true;
+    }
+
+    protected boolean processNewMessageMessage(
+            final NewMessageClientMessageBody messageBody)
+    {
+        if (messageBody == null) return false;
+
+        com.qubacy.interlocutor.data.game.export.struct.message.Message clientMessage =
+                messageBody.getMessage();
+        RemoteMessage remoteMessage =
+                RemoteMessage.getInstance(C_DEFAULT_USER_ID, clientMessage.getText());
+
+        if (remoteMessage == null) return false;
+
+        ServerMessageBody outgoingMessageBody
+                = NewChatMessageServerMessageBody.getInstance(remoteMessage);
+
+        return generateAndDeliverNetworkCallbackMessage(
+                OperationEnum.CHATTING_NEW_MESSAGE, outgoingMessageBody);
+    }
+
+    protected boolean processUsersChosenMessage(
+            final UsersChosenClientMessageBody messageBody)
+    {
+        if (messageBody == null) return false;
+        if (m_roomList.size() <= 0) return false;
+
+        ServerMockRoom room = m_roomList.get(0);
+
+        ServerMockRoomChoosingState state = (ServerMockRoomChoosingState) room.getState();
+
+        if (state == null) return false;
+        if (!state.setUserChoice(C_DEFAULT_USER_ID, messageBody.getChosenUserIdList()))
+            return false;
+
+        ServerMessageBody outgoingMessageBody =
+                UsersChosenServerMessageBody.getInstance();
+
+        return generateAndDeliverNetworkCallbackMessage(
+                OperationEnum.CHOOSING_USERS_CHOSEN,
+                outgoingMessageBody);
+    }
+
+    private boolean generateAndDeliverNetworkCallbackMessage(
+            final OperationEnum operation,
+            final ServerMessageBody messageBody)
+    {
+        if (messageBody == null) return false;
+
+        Message message = Message.getInstance(operation, messageBody);
 
         if (message == null) return false;
 
-        String serializedMessage = m_gson.toJson(message);
+        String serializedMessage = m_gson.toJson(message, Message.class);
         NetworkCallbackCommandMessageReceived messageReceived =
                 NetworkCallbackCommandMessageReceived.getInstance(serializedMessage);
+
+        if (messageReceived == null) return false;
 
         try {
             m_networkCallbackCommandQueue.put(messageReceived);
@@ -273,9 +402,23 @@ public class WebSocketServerMock extends WebSocketClient {
             Message message = null;
 
             if (!m_isGameFound) {
-                ServerMessageBody messageBody = StopSearchingServerMessageBody.getInstance();
+                if (searchingState.getStartTime() + C_MAX_SEARCHING_STAGE_DURATION >=
+                    System.currentTimeMillis())
+                {
+                    return true;
+                }
 
-                message = Message.getInstance(OperationEnum.SEARCHING_STOP, messageBody);
+                NetworkCallbackCommandDisconnected disconnected =
+                        NetworkCallbackCommandDisconnected.getInstance();
+
+                try {
+                    m_networkCallbackCommandQueue.put(disconnected);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+                    return false;
+                }
 
                 m_roomList.remove(room);
 
@@ -351,7 +494,56 @@ public class WebSocketServerMock extends WebSocketClient {
     {
         if (chattingState == null) return false;
 
+        long endTime = chattingState.getStartTime() + chattingState.getDuration();
 
+        if (endTime >= System.currentTimeMillis()) {
+            if (m_isAboutToDisconnect) {
+                NetworkCallbackCommandDisconnected networkCallbackCommandDisconnected =
+                        NetworkCallbackCommandDisconnected.getInstance();
+
+                try {
+                    m_networkCallbackCommandQueue.put(networkCallbackCommandDisconnected);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            ServerMessageBody messageBody =
+                    ChattingStageIsOverServerMessageBody.getInstance();
+            Message message =
+                    Message.getInstance(OperationEnum.CHATTING_STAGE_IS_OVER, messageBody);
+
+            if (message == null) return false;
+
+            String serializedMessage = m_gson.toJson(message, Message.class);
+            NetworkCallbackCommandMessageReceived messageReceived =
+                    NetworkCallbackCommandMessageReceived.getInstance(serializedMessage);
+
+            if (messageReceived == null) return false;
+
+            try {
+                m_networkCallbackCommandQueue.put(messageReceived);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+                return false;
+            }
+
+            long startChoosingTime = System.currentTimeMillis();
+
+            ServerMockRoomChoosingState choosingState =
+                    ServerMockRoomChoosingState.getInstance(
+                            startChoosingTime, room.getUserCount());
+
+            if (choosingState == null) return false;
+            if (!room.setState(choosingState)) return false;
+        }
 
         return true;
     }
@@ -362,7 +554,52 @@ public class WebSocketServerMock extends WebSocketClient {
     {
         if (choosingState == null) return false;
 
+        long endTime = choosingState.getStartTime() + choosingState.getDuration();
 
+        if (System.currentTimeMillis() >= endTime) {
+            List<Pair<Integer, Integer>> userChoiceMatrix =
+                    choosingState.generateUserMatchMatrix();
+            List<MatchedUserProfileData> matchedUserProfileDataList =
+                    new ArrayList<>();
+
+            for (final Pair<Integer, Integer> userMatureChoice : userChoiceMatrix) {
+                if (userMatureChoice.first == C_DEFAULT_USER_ID) {
+                    ServerMockUser user = room.getUserById(userMatureChoice.second);
+
+                    if (user == null) return false;
+
+                    MatchedUserProfileData matchedUserProfileData =
+                            MatchedUserProfileData.getInstance(
+                                    userMatureChoice.second, user.getProfile().getContact());
+
+                    matchedUserProfileDataList.add(matchedUserProfileData);
+                }
+            }
+
+
+            ServerMessageBody messageBody =
+                    ChoosingStageIsOverServerMessageBody.getInstance(matchedUserProfileDataList);
+            Message message =
+                    Message.getInstance(OperationEnum.CHOOSING_STAGE_IS_OVER, messageBody);
+
+            if (message == null) return false;
+
+            String serializedMessage = m_gson.toJson(message, Message.class);
+            NetworkCallbackCommandMessageReceived messageReceived =
+                    NetworkCallbackCommandMessageReceived.getInstance(serializedMessage);
+
+            if (messageReceived == null) return false;
+
+            try {
+                m_networkCallbackCommandQueue.put(messageReceived);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+                return false;
+            }
+
+            room.setDestroyed();
+        }
 
         return true;
     }

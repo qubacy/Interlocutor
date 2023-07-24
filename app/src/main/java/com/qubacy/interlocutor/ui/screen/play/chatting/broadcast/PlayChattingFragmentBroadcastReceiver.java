@@ -103,20 +103,25 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiverBase
             final Context context,
             final Intent intent)
     {
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
         String action  = intent.getAction();
         PlayChattingFragmentBroadcastCommand command =
                 PlayChattingFragmentBroadcastCommand.getCommandByCommandString(action);
 
         if (command == null) {
             Error error =
-                ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                    m_context,
-                    PlayChattingFragmentBroadcastErrorEnum.INCORRECT_COMMAND.getResourceCode(),
-                    PlayChattingFragmentBroadcastErrorEnum.INCORRECT_COMMAND.isCritical());
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayChattingFragmentBroadcastErrorEnum.INCORRECT_COMMAND.getResourceCode(),
+                            PlayChattingFragmentBroadcastErrorEnum.INCORRECT_COMMAND.isCritical());
 
             MainActivityBroadcastReceiver.broadcastError(m_context, error);
 
-            return;
+            return false;
         }
 
         Error commandProcessingError = processCommand(command, intent);
@@ -124,8 +129,10 @@ public class PlayChattingFragmentBroadcastReceiver extends BroadcastReceiverBase
         if (commandProcessingError != null) {
             MainActivityBroadcastReceiver.broadcastError(m_context, commandProcessingError);
 
-            return;
+            return false;
         }
+
+        return true;
     }
 
     private Error processCommand(

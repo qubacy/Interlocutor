@@ -11,11 +11,10 @@ import java.util.ArrayList;
 
 public interface GameSessionProcessorCallback {
     public void gameFound(@NonNull final RemoteFoundGameData foundGameData);
-    public void gameSearchingAborted();
     public void errorOccurred(@NonNull final Error error);
-    public void messageSent();
     public void messageReceived(@NonNull final RemoteMessage message);
     public void onChattingPhaseIsOver();
     public void onChoosingPhaseIsOver(
             @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList);
+    public void onUnexpectedDisconnection();
 }

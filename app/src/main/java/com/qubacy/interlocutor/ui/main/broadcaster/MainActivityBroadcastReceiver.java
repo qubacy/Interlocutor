@@ -64,6 +64,13 @@ public class MainActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
             final Context context,
             final Intent intent)
     {
-        super.onReceive(context, intent);
+        if (!processBroadcast(context, intent)) return;
+    }
+
+    @Override
+    protected boolean processBroadcast(Context context, Intent intent) {
+        if (super.processBroadcast(context, intent)) return true;
+
+        return true;
     }
 }
