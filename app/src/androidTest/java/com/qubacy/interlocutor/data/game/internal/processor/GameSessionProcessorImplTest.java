@@ -68,7 +68,7 @@ public class GameSessionProcessorImplTest {
             }
 
             @Override
-            public void onUnexpectedDisconnection() {
+            public void onDisconnection() {
 
             }
         };
@@ -161,7 +161,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onUnexpectedDisconnection() {
+                    public void onDisconnection() {
                         isDisconnected[0] = true;
                     }
                 };
@@ -222,7 +222,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onUnexpectedDisconnection() {
+                    public void onDisconnection() {
 
                     }
                 };
@@ -348,7 +348,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onUnexpectedDisconnection() {
+                    public void onDisconnection() {
 
                     }
                 };
@@ -432,7 +432,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onUnexpectedDisconnection() {
+                    public void onDisconnection() {
 
                     }
                 };

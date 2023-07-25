@@ -3,8 +3,8 @@ package com.qubacy.interlocutor.ui.screen.play.main.broadcaster;
 import androidx.annotation.NonNull;
 
 public enum PlayActivityBroadcastCommand {
-    UNEXPECTED_DISCONNECTION(
-            PlayActivityBroadcastReceiver.class.getName() + ".unexpected_disconnection");
+    DISCONNECTION(
+            PlayActivityBroadcastReceiver.class.getName() + ".disconnection");
 
     private final String m_commandString;
 

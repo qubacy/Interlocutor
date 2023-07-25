@@ -16,5 +16,5 @@ public interface GameSessionProcessorCallback {
     public void onChattingPhaseIsOver();
     public void onChoosingPhaseIsOver(
             @NonNull final ArrayList<MatchedUserProfileData> userProfileContactDataList);
-    public void onUnexpectedDisconnection();
+    public void onDisconnection(final boolean isIncorrect);
 }

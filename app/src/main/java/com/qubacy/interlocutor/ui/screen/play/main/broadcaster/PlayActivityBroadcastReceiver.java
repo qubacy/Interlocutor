@@ -10,11 +10,11 @@ import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.common.activity.broadcaster.ErrorHandlingBroadcastReceiver;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
-import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.PlayChoosingFragmentBroadcastCommand;
-import com.qubacy.interlocutor.ui.screen.play.choosing.broadcast.error.PlayChoosingFragmentBroadcastErrorEnum;
 import com.qubacy.interlocutor.ui.screen.play.main.broadcaster.error.PlayActivityBroadcastErrorEnum;
 
 public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceiver {
+    public static final String C_IS_INCORRECT_PROP_NAME = "isIncorrect";
+
     protected PlayActivityBroadcastReceiver(
             final Context context,
             final PlayActivityBroadcastReceiverCallback callback)
@@ -54,9 +54,13 @@ public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
         LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver);
     }
 
-    public static void broadcastUnexpectedDisconnection(final Context context) {
+    public static void broadcastDisconnection(
+            final Context context, final boolean isIncorrect)
+    {
         Intent intent =
-                new Intent(PlayActivityBroadcastCommand.UNEXPECTED_DISCONNECTION.toString());
+                new Intent(PlayActivityBroadcastCommand.DISCONNECTION.toString());
+
+        intent.putExtra(C_IS_INCORRECT_PROP_NAME, isIncorrect);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -118,8 +122,8 @@ public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
             final Intent data)
     {
         switch (command) {
-            case UNEXPECTED_DISCONNECTION:
-                return processUnexpectedDisconnectionCommand(data);
+            case DISCONNECTION:
+                return processDisconnectionCommand(data);
         }
 
         Error error =
@@ -131,9 +135,20 @@ public class PlayActivityBroadcastReceiver extends ErrorHandlingBroadcastReceive
         return error;
     }
 
-    private Error processUnexpectedDisconnectionCommand(final Intent data) {
+    private Error processDisconnectionCommand(final Intent data) {
+        if (!data.hasExtra(C_IS_INCORRECT_PROP_NAME)) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            PlayActivityBroadcastErrorEnum.LACKING_DISCONNECTION_DATA.getResourceCode(),
+                            PlayActivityBroadcastErrorEnum.LACKING_DISCONNECTION_DATA.isCritical());
+
+            return error;
+        }
+
         ((PlayActivityBroadcastReceiverCallback)m_callback).
-                onUnexpectedDisconnectionOccurred();
+                onDisconnectionOccurred(
+                        data.getBooleanExtra(C_IS_INCORRECT_PROP_NAME, false));
 
         return null;
     }

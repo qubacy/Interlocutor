@@ -1,10 +1,12 @@
 package com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandConnected;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandFailureOccurred;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
 
 import java.util.concurrent.BlockingQueue;
@@ -95,6 +97,23 @@ public class WebSocketClient {
                 try {
                     networkCallbackCommandQueue.
                             put(NetworkCallbackCommandConnected.getInstance());
+
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void onFailure(
+                    @NonNull WebSocket webSocket,
+                    @NonNull Throwable t,
+                    @Nullable Response response)
+            {
+                super.onFailure(webSocket, t, response);
+
+                try {
+                    networkCallbackCommandQueue.
+                            put(NetworkCallbackCommandFailureOccurred.getInstance());
 
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

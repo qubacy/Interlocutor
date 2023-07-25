@@ -16,6 +16,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.error.GameSessi
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandConnected;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandFailureOccurred;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageDeserializer;
@@ -52,7 +53,7 @@ import java.util.concurrent.BlockingQueue;
 */
 public class GameSessionProcessorImpl extends GameSessionProcessor
 {
-    public static final String C_URL = "http://127.0.0.1:8080";
+    public static final String C_URL = "http://10.0.2.2:47777/";
     public static final boolean C_IS_SERVER_ERROR_CRITICAL = true;
 
     private final WebSocketClient m_webSocketClient;
@@ -119,6 +120,9 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             case CONNECTED: return
                     processConnectedCallbackCommand(
                             (NetworkCallbackCommandConnected) callbackCommand);
+            case FAILURE_OCCURRED: return
+                    processFailureOccurredCallback(
+                            (NetworkCallbackCommandFailureOccurred) callbackCommand);
             case MESSAGE_RECEIVED: return
                     processMessageReceivedCallbackCommand(
                             (NetworkCallbackCommandMessageReceived) callbackCommand);
@@ -142,6 +146,14 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             final NetworkCallbackCommandConnected commandConnected)
     {
         // is there anything to do here?..
+
+        return null;
+    }
+
+    private Error processFailureOccurredCallback(
+            final NetworkCallbackCommandFailureOccurred commandFailureOccurred)
+    {
+        m_callback.onDisconnection(true);
 
         return null;
     }
@@ -174,7 +186,7 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     private Error processDisconnectedCallbackCommand(
             final NetworkCallbackCommandDisconnected commandDisconnected)
     {
-        m_callback.onUnexpectedDisconnection();
+        m_callback.onDisconnection(false);
 
         return null;
     }

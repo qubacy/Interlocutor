@@ -4,7 +4,9 @@ import com.qubacy.interlocutor.R;
 
 public enum PlayActivityBroadcastErrorEnum {
     INCORRECT_COMMAND(
-            R.string.error_play_activity_broadcast_receiver_incorrect_command, true);
+            R.string.error_play_activity_broadcast_receiver_incorrect_command, true),
+    LACKING_DISCONNECTION_DATA(
+            R.string.error_play_activity_broadcast_receiver_lacking_disconnection_data, true);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

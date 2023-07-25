@@ -228,14 +228,14 @@ public class GameService extends Service
     }
 
     @Override
-    public void onUnexpectedDisconnection() {
+    public void onDisconnection(final boolean isIncorrect) {
         if (!m_gameSessionProcessor.isRunning())
             return;
 
         m_gameSessionProcessor.stop();
 
         PlayActivityBroadcastReceiver.
-                broadcastUnexpectedDisconnection(this);
+                broadcastDisconnection(this, isIncorrect);
     }
 
     // BroadcastReceiver:
