@@ -1,5 +1,7 @@
 package com.qubacy.interlocutor.data.game.internal.processor.impl.network.websocket;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -10,6 +12,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callbac
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -24,14 +27,18 @@ public class WebSocketClient {
     private final WebSocket m_webSocket;
     protected final BlockingQueue<NetworkCallbackCommand> m_networkCallbackCommandQueue;
 
+    private final AtomicBoolean m_isClosed;
+
     protected WebSocketClient(
             final OkHttpClient httpClient,
             final WebSocket webSocket,
-            final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue)
+            final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
+            final AtomicBoolean isClosed)
     {
         m_httpClient = httpClient;
         m_webSocket = webSocket;
         m_networkCallbackCommandQueue = networkCallbackCommandQueue;
+        m_isClosed = isClosed;
     }
 
     public static WebSocketClient getInstance(
@@ -53,6 +60,8 @@ public class WebSocketClient {
 
         if (request == null) return null;
 
+        AtomicBoolean isClosed = new AtomicBoolean(false);
+
         WebSocketListener webSocketListener = new WebSocketListener() {
             @Override
             public void onClosed(
@@ -61,6 +70,10 @@ public class WebSocketClient {
                     @NonNull String reason)
             {
                 super.onClosed(webSocket, code, reason);
+
+                isClosed.set(true);
+
+                Log.d("TEST", "onClosed(); reason: " + reason);
 
                 try {
                     networkCallbackCommandQueue.
@@ -78,6 +91,8 @@ public class WebSocketClient {
             {
                 super.onMessage(webSocket, text);
 
+                Log.d("TEST", "onMessage(); message: " + text);
+
                 try {
                     networkCallbackCommandQueue.
                             put(NetworkCallbackCommandMessageReceived.getInstance(text));
@@ -93,6 +108,8 @@ public class WebSocketClient {
                     @NonNull Response response)
             {
                 super.onOpen(webSocket, response);
+
+                Log.d("TEST", "onOpen()");
 
                 try {
                     networkCallbackCommandQueue.
@@ -111,6 +128,10 @@ public class WebSocketClient {
             {
                 super.onFailure(webSocket, t, response);
 
+                isClosed.set(true);
+
+                Log.d("TEST", "onFailure(); exception: " + (t.getMessage() == null ? "" : t.getMessage()));
+
                 try {
                     networkCallbackCommandQueue.
                             put(NetworkCallbackCommandFailureOccurred.getInstance());
@@ -118,6 +139,17 @@ public class WebSocketClient {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            @Override
+            public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                super.onClosing(webSocket, code, reason);
+
+                isClosed.set(true);
+
+                Log.d("TEST", "onClosing(); reason: " + reason + "; code: " + String.valueOf(code));
+
+                webSocket.close(code, "");
             }
         };
 
@@ -128,14 +160,20 @@ public class WebSocketClient {
 
         okHttpClient.dispatcher().executorService().shutdown();
 
-        return new WebSocketClient(okHttpClient, webSocket, networkCallbackCommandQueue);
+        return new WebSocketClient(okHttpClient, webSocket, networkCallbackCommandQueue, isClosed);
     }
 
     public boolean sendMessage(final String message) {
+        if (m_isClosed.get() == true) return true;
+
         return m_webSocket.send(message);
     }
 
     public void close() {
+        if (m_isClosed.get() == true) return;
+
+        // todo: it's not really a graceful closure. Think of it..
+
         m_webSocket.close(C_NORMAL_CLOSURE_CODE, null);
     }
 }

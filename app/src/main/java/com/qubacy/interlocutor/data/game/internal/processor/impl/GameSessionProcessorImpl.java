@@ -1,5 +1,7 @@
 package com.qubacy.interlocutor.data.game.internal.processor.impl;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -223,6 +225,8 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             final OperationEnum operation,
             final ClientMessageBody messageBody)
     {
+        Log.d("TEST", "operation: " + operation.getId());
+
         Message message = Message.getInstance(operation, messageBody);
         String serializedMessage = m_gson.toJson(message);
 
