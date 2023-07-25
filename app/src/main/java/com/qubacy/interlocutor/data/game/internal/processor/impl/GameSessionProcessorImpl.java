@@ -18,6 +18,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callbac
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandFailureOccurred;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.error.NetworkServerErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageSerializer;
@@ -54,7 +55,6 @@ import java.util.concurrent.BlockingQueue;
 public class GameSessionProcessorImpl extends GameSessionProcessor
 {
     public static final String C_URL = "http://10.0.2.2:47777/";
-    public static final boolean C_IS_SERVER_ERROR_CRITICAL = true;
 
     private final WebSocketClient m_webSocketClient;
 
@@ -316,7 +316,9 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             final ServerMessageBody serverMessageBody)
     {
         if (serverMessageBody.getError() != null) {
-            return Error.getInstance(serverMessageBody.getError().getMessage(), true);
+            Error error = generateErrorFromServerError(serverMessageBody.getError());
+
+            return error;
         }
 
         switch (operationEnum) {
@@ -352,9 +354,26 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     private Error generateErrorFromServerError(
             final ServerMessageError serverMessageError)
     {
-        return Error.getInstance(
-                serverMessageError.getMessage(),
-                C_IS_SERVER_ERROR_CRITICAL);
+        NetworkServerErrorEnum serverError =
+                NetworkServerErrorEnum.getNetworkServerErrorById(serverMessageError.getId());
+
+        if (serverError == null) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorImplErrorEnum.UNKNOWN_SERVER_ERROR.getResourceCode(),
+                            GameSessionProcessorImplErrorEnum.UNKNOWN_SERVER_ERROR.isCritical());
+
+            return error;
+        }
+
+        Error error =
+                ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                        m_context,
+                        serverError.getStringResId(),
+                        serverError.isCritical());
+
+        return error;
     }
 
     private Error processSearchingStartServerMessage(

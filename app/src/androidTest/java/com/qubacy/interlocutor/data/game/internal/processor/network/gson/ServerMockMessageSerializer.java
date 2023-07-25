@@ -120,10 +120,10 @@ public class ServerMockMessageSerializer implements JsonSerializer<Message> {
     }
 
     private JsonObject serializeServerError(final ServerMessageError error) {
-        JsonPrimitive messageValueJson = new JsonPrimitive(error.getMessage());
+        JsonPrimitive messageValueJson = new JsonPrimitive(error.getId());
         JsonObject errorJsonObj = new JsonObject();
 
-        errorJsonObj.add(ServerMessageError.C_MESSAGE_PROP_NAME, messageValueJson);
+        errorJsonObj.add(ServerMessageError.C_ID_PROP_NAME, messageValueJson);
 
         return errorJsonObj;
     }

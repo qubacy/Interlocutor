@@ -9,6 +9,7 @@ import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfil
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommand;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandDisconnected;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.callback.NetworkCallbackCommandMessageReceived;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.error.NetworkServerErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.OperationEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.MessageBody;
@@ -227,7 +228,7 @@ public class WebSocketServerMock extends WebSocketClient {
 
         if (!isProfileCorrect) {
             ServerMessageError serverMessageError =
-                    ServerMessageError.getInstance("Incorrect profile");
+                    ServerMessageError.getInstance(NetworkServerErrorEnum.INCORRECT_PROFILE.getId());
             ServerMessageBody serverMessageBody =
                     ServerMessageBody.getInstance(serverMessageError);
 

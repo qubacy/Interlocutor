@@ -3,22 +3,26 @@ package com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.b
 import java.util.Objects;
 
 public class ServerMessageError {
-    public static final String C_MESSAGE_PROP_NAME = "message";
+    public static final String C_ID_PROP_NAME = "id";
 
-    private final String m_message;
+    private final int m_id;
 
-    protected ServerMessageError(final String message) {
-        m_message = message;
+    protected ServerMessageError(
+            final int id)
+    {
+        m_id = id;
     }
 
-    public static ServerMessageError getInstance(final String message) {
-        if (message == null) return null;
+    public static ServerMessageError getInstance(
+            final int id)
+    {
+        if (id < 0) return null;
 
-        return new ServerMessageError(message);
+        return new ServerMessageError(id);
     }
 
-    public String getMessage() {
-        return m_message;
+    public int getId() {
+        return m_id;
     }
 
     @Override
@@ -28,11 +32,11 @@ public class ServerMessageError {
 
         ServerMessageError that = (ServerMessageError) o;
 
-        return Objects.equals(m_message, that.m_message);
+        return Objects.equals(m_id, that.m_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(m_message);
+        return Objects.hash(m_id);
     }
 }

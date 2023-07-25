@@ -103,14 +103,14 @@ public class MessageDeserializer implements JsonDeserializer<Message> {
 
     private ServerMessageError deserializeError(final JsonObject errorJsonObj) {
         if (errorJsonObj == null) return null;
-        if (!errorJsonObj.has(ServerMessageError.C_MESSAGE_PROP_NAME)) return null;
+        if (!errorJsonObj.has(ServerMessageError.C_ID_PROP_NAME)) return null;
 
-        JsonPrimitive errorMessageValueJson =
-                errorJsonObj.getAsJsonPrimitive(ServerMessageError.C_MESSAGE_PROP_NAME);
+        JsonPrimitive errorIdValueJson =
+                errorJsonObj.getAsJsonPrimitive(ServerMessageError.C_ID_PROP_NAME);
 
-        if (errorMessageValueJson == null) return null;
+        if (errorIdValueJson == null) return null;
 
-        return ServerMessageError.getInstance(errorMessageValueJson.getAsString());
+        return ServerMessageError.getInstance(errorIdValueJson.getAsInt());
     }
 
     private StartSearchingServerMessageBody deserializeSearchingStartMessageBody(

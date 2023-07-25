@@ -68,7 +68,7 @@ public class GameSessionProcessorImplTest {
             }
 
             @Override
-            public void onDisconnection() {
+            public void onDisconnection(final boolean isIncorrect) {
 
             }
         };
@@ -161,7 +161,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onDisconnection() {
+                    public void onDisconnection(final boolean isIncorrect) {
                         isDisconnected[0] = true;
                     }
                 };
@@ -222,7 +222,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onDisconnection() {
+                    public void onDisconnection(final boolean isIncorrect) {
 
                     }
                 };
@@ -348,7 +348,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onDisconnection() {
+                    public void onDisconnection(final boolean isIncorrect) {
 
                     }
                 };
@@ -432,7 +432,7 @@ public class GameSessionProcessorImplTest {
                     }
 
                     @Override
-                    public void onDisconnection() {
+                    public void onDisconnection(final boolean isIncorrect) {
 
                     }
                 };
