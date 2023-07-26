@@ -43,6 +43,7 @@
         android:layout_marginRight="8dp"
         android:padding="10dp"
         android:textSize="20sp"
+        android:textColor="?attr/colorSecondary"
         android:text="@string/play_results_fragment_button_finish_caption"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

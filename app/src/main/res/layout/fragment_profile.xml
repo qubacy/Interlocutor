@@ -46,6 +46,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:padding="10dp"
         android:textSize="18sp"
+        android:textColor="?attr/colorSecondary"
         android:text="@string/profile_confirm_button_caption"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
