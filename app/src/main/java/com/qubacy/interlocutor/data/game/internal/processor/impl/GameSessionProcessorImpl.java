@@ -102,6 +102,13 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
     }
 
     @Override
+    public void stop() {
+        m_webSocketClient.close();
+
+        super.stop();
+    }
+
+    @Override
     protected Error execIteration() {
         Error execError = super.execIteration();
 

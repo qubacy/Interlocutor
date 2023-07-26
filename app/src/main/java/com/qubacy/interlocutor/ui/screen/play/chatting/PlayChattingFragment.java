@@ -48,6 +48,7 @@ public class PlayChattingFragment extends PlayFragment
     private PlayChattingFragmentBroadcastReceiver m_broadcastReceiver = null;
 
     private EditText m_messageEditText = null;
+    private RecyclerView m_recyclerView = null;
 
     private TextViewTimerAsyncTask m_timerAsyncTask = null;
 
@@ -131,13 +132,13 @@ public class PlayChattingFragment extends PlayFragment
 
         m_playChattingMessageAdapter = playChattingMessageAdapter;
 
-        RecyclerView recyclerView = view.findViewById(R.id.play_chatting_chat_list);
+        m_recyclerView = view.findViewById(R.id.play_chatting_chat_list);
 
-        recyclerView.setAdapter(m_playChattingMessageAdapter);
+        m_recyclerView.setAdapter(m_playChattingMessageAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(m_context);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
+        m_recyclerView.setLayoutManager(linearLayoutManager);
 
         m_messageEditText = view.findViewById(R.id.play_chatting_section_sending_message_text);
 
@@ -170,6 +171,7 @@ public class PlayChattingFragment extends PlayFragment
         m_playChattingFragmentViewModel.addMessage(message);
         // todo: think of substitution, paying attention to the leveraging of the device's resources;
         m_playChattingMessageAdapter.notifyDataSetChanged();//.notifyItemRangeInserted(lastItemIndex, 1);
+        m_recyclerView.smoothScrollToPosition(lastItemIndex + 1);
     }
 
     @Override

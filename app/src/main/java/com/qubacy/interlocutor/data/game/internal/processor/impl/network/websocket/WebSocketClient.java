@@ -172,6 +172,10 @@ public class WebSocketClient {
     public void close() {
         if (m_isClosed.get() == true) return;
 
+        Log.d("TEST", "WebSocketClient.close();");
+
+        m_isClosed.set(true);
+
         // todo: it's not really a graceful closure. Think of it..
 
         m_webSocket.close(C_NORMAL_CLOSURE_CODE, null);
