@@ -22,7 +22,6 @@ import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.PlayFragment;
-import com.qubacy.interlocutor.ui.screen.play.main.PlayActivity;
 import com.qubacy.interlocutor.ui.screen.play.main.model.PlayFullViewModel;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.play.searching.broadcast.PlaySearchingFragmentBroadcastReceiverCallback;

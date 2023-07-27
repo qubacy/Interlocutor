@@ -84,6 +84,7 @@
     <string name="error_game_service_broadcast_receiver_chosen_users_data">Chosen Users data hasn\'t been fully provided!</string>
 
     <string name="error_main_activity_broadcast_receiver_creation_failed">Main Activity Broadcast Receiver creation has been failed!</string>
+    <string name="error_main_activity_ad_banner_loading_failed">Ad Banner loading has been failed!</string>
 
     <string name="error_main_activity_broadcast_receiver_unknown_command_type">A command of an unknown type has been provided!</string>
     <string name="error_main_activity_broadcast_receiver_lacking_error_data">Error data hasn\'t been provided!</string>
@@ -92,6 +93,7 @@
     <string name="error_play_activity_null_arguments">Arguments were null!</string>
     <string name="error_play_activity_broadcast_receiver_creation_failed">Play Activity Broadcast Receiver creation has been failed!</string>
     <string name="error_play_activity_services_start_failed">Services\' start has been failed!</string>
+    <string name="error_play_activity_ad_banner_loading_failed">Ad Banner loading has been failed!</string>
 
     <string name="error_play_activity_broadcast_receiver_incorrect_command">Incorrect Command has been provided!</string>
     <string name="error_play_activity_broadcast_receiver_lacking_disconnection_data">Disconnection data hasn\'t been provided fully!</string>

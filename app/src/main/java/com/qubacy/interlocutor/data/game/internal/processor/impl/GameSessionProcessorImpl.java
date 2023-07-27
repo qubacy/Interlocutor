@@ -50,10 +50,10 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 /*
-*
-* This class is in charge to IMPLEMENT the CLIENT-SERVER RELATION LOGIC;
-*
-*/
+ *
+ * This class is in charge to IMPLEMENT the CLIENT-SERVER RELATION LOGIC;
+ *
+ */
 public class GameSessionProcessorImpl extends GameSessionProcessor
 {
     public static final String C_URL = "http://10.0.2.2:47777/";
@@ -81,7 +81,7 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
             final WebSocketClient webSocketClient)
     {
         if (networkCallbackCommandQueue == null ||
-            webSocketClient == null)
+                webSocketClient == null)
         {
             return null;
         }
@@ -239,10 +239,10 @@ public class GameSessionProcessorImpl extends GameSessionProcessor
 
         if (!m_webSocketClient.sendMessage(serializedMessage)) {
             Error error =
-                ErrorUtility.getErrorByStringResourceCodeAndFlag(
-                    m_context,
-                    GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.getResourceCode(),
-                    GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.isCritical());
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            m_context,
+                            GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.getResourceCode(),
+                            GameSessionProcessorImplErrorEnum.SENDING_CLIENT_MESSAGE_FAILED.isCritical());
 
             return error;
         }

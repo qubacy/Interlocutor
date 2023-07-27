@@ -40,6 +40,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
+    implementation 'com.yandex.android:mobmetricalib:5.3.0'
+    implementation 'com.yandex.android:mobileads:5.10.0'
+
     debugImplementation "androidx.fragment:fragment-testing-manifest:1.6.0-alpha04"
     androidTestImplementation "androidx.fragment:fragment-testing:1.6.0-alpha04"
 

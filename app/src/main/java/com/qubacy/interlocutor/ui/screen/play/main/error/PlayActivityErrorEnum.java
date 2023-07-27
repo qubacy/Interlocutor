@@ -8,7 +8,9 @@ public enum PlayActivityErrorEnum {
     BROADCAST_RECEIVER_CREATION_FAILED(
             R.string.error_play_activity_broadcast_receiver_creation_failed, true),
     SERVICES_START_FAILED(
-            R.string.error_play_activity_services_start_failed, true);
+            R.string.error_play_activity_services_start_failed, true),
+    AD_BANNER_LOADING_FAILED(
+            R.string.error_play_activity_ad_banner_loading_failed, false);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

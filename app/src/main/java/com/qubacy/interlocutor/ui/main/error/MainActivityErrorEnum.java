@@ -4,7 +4,9 @@ import com.qubacy.interlocutor.R;
 
 public enum MainActivityErrorEnum {
     BROADCAST_RECEIVER_CREATION_FAILED(
-            R.string.error_main_activity_broadcast_receiver_creation_failed, true);
+            R.string.error_main_activity_broadcast_receiver_creation_failed, true),
+    AD_BANNER_LOADING_FAILED(
+            R.string.error_main_activity_ad_banner_loading_failed, false);
 
     private final int m_resourceCode;
     private final boolean m_isCritical;

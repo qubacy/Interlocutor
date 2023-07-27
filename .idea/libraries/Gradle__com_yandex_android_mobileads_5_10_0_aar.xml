@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: com.yandex.android:mobileads:5.10.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/da18156608179fb7fd3720deaf97e628/transformed/mobileads-5.10.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/da18156608179fb7fd3720deaf97e628/transformed/mobileads-5.10.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/da18156608179fb7fd3720deaf97e628/transformed/mobileads-5.10.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/da18156608179fb7fd3720deaf97e628/transformed/mobileads-5.10.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yandex.android/mobileads/5.10.0/9476d4d56a098772863c7e7bba4a8a77ac257cde/mobileads-5.10.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yandex.android/mobileads/5.10.0/c30e5c08c405b7e9396b669dbe7eb3e86cff98d9/mobileads-5.10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

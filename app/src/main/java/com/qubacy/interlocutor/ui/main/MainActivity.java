@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
@@ -16,6 +17,8 @@ import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiverCallback;
 import com.qubacy.interlocutor.ui.main.error.ErrorFragment;
 import com.qubacy.interlocutor.ui.main.error.MainActivityErrorEnum;
+import com.yandex.mobile.ads.common.InitializationListener;
+import com.yandex.mobile.ads.common.MobileAds;
 
 public class MainActivity extends ErrorHandlingActivity
     implements
@@ -52,6 +55,25 @@ public class MainActivity extends ErrorHandlingActivity
         }
 
         m_broadcastReceiver = mainActivityBroadcastReceiver;
+
+        MobileAds.initialize(this, new InitializationListener() {
+            @Override
+            public void onInitializationCompleted() {
+                Log.d(YANDEX_MOBILE_ADS_TAG, "SDK initialized");
+            }
+        });
+
+        if (!setBannerAd(this, R.id.activity_main_banner_ad_view)) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            this,
+                            MainActivityErrorEnum.AD_BANNER_LOADING_FAILED.getResourceCode(),
+                            MainActivityErrorEnum.AD_BANNER_LOADING_FAILED.isCritical());
+
+            onErrorOccurred(error);
+
+            return;
+        }
     }
 
     @Override

@@ -86,6 +86,18 @@ public class PlayActivity extends ErrorHandlingActivity
 
             return;
         }
+
+        if (!setBannerAd(this, R.id.activity_play_banner_ad_view)) {
+            Error error =
+                    ErrorUtility.getErrorByStringResourceCodeAndFlag(
+                            this,
+                            PlayActivityErrorEnum.AD_BANNER_LOADING_FAILED.getResourceCode(),
+                            PlayActivityErrorEnum.AD_BANNER_LOADING_FAILED.isCritical());
+
+            MainActivityBroadcastReceiver.broadcastError(this, error);
+
+            return;
+        }
     }
 
     private boolean initWithArgs() {
