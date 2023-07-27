@@ -39,6 +39,7 @@ public class PlayActivity extends ErrorHandlingActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_play);
+        setCustomActionBar(R.id.activity_play_toolbar);
 
         m_playActivityViewModel =
                 new ViewModelProvider(this).get(PlayActivityViewModel.class);

@@ -14,8 +14,8 @@ public class GameSessionProcessorFactoryGenerator {
 
     public GameSessionProcessorFactory generateGameSessionProcessor() {
         GameSessionProcessorFactory gameSessionProcessorFactory =
-                //GameSessionProcessorImplFakeFactory.getInstance(); // todo: get back to a real impl.
-                GameSessionProcessorImplFactory.getInstance();
+                GameSessionProcessorImplFakeFactory.getInstance(); // todo: get back to a real impl.
+                //GameSessionProcessorImplFactory.getInstance();
 
         return gameSessionProcessorFactory;
     }

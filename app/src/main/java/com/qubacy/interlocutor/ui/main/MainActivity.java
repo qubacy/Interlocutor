@@ -30,6 +30,7 @@ public class MainActivity extends ErrorHandlingActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        setCustomActionBar(R.id.activity_main_toolbar);
 
         ActionBar actionBar = getSupportActionBar();
 
