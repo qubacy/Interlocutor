@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph_general"
-    app:startDestination="@id/mainMenuFragment">
+    app:startDestination="@id/loadingFragment">
 
     <fragment
         android:id="@+id/mainMenuFragment"
@@ -29,4 +29,14 @@
         android:id="@+id/playActivity"
         android:name="com.qubacy.interlocutor.ui.screen.play.main.PlayActivity"
         android:label="PlayActivity" />
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.qubacy.interlocutor.ui.screen.loading.LoadingFragment"
+        android:label="LoadingFragment" >
+        <action
+            android:id="@+id/action_loadingFragment_to_mainMenuFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/mainMenuFragment" />
+    </fragment>
 </navigation>

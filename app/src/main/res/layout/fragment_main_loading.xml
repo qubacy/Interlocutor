@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimary">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fragment_main_loading_guideline_horizontal_50"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="horizontal"/>
+
+    <ImageView
+        android:id="@+id/fragment_main_loading_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/fragment_main_loading_guideline_horizontal_50"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_main_loading_guideline_horizontal_50"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/ic_qubacy_logo"/>
+
+    <ImageView
+        android:id="@+id/fragment_main_loading_progress_bar_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/main_loading_screen_progress_bar_background"
+        app:layout_constraintTop_toBottomOf="@id/fragment_main_loading_logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/fragment_main_loading_progress_bar_foreground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/fragment_main_loading_progress_bar_background"
+        app:layout_constraintLeft_toLeftOf="@id/fragment_main_loading_progress_bar_background"
+
+        android:src="@drawable/main_loading_screen_progress_bar_foreground"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
