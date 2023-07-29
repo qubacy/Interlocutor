@@ -56,7 +56,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class GameSessionProcessorImpl extends GameSessionProcessor
 {
-    public static final String C_URL = "http://10.0.2.2:47777/";
+    public static final String C_URL = "http://qubacy.online:47777/";
 
     private final WebSocketClient m_webSocketClient;
 
