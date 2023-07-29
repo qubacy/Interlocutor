@@ -48,6 +48,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
@@ -73,10 +74,11 @@ public class WebSocketServerMock extends WebSocketClient {
             final WebSocket webSocket,
             final BlockingQueue<NetworkCallbackCommand> networkCallbackCommandQueue,
             final Gson gson,
+            final AtomicBoolean isClosed,
             final boolean isGameFound,
             final boolean isAboutToDisconnect)
     {
-        super(httpClient, webSocket, networkCallbackCommandQueue);
+        super(httpClient, webSocket, networkCallbackCommandQueue, isClosed);
 
         m_gson = gson;
         m_commandQueue = new LinkedBlockingQueue<>();
@@ -100,11 +102,14 @@ public class WebSocketServerMock extends WebSocketClient {
 
         if (gson == null) return null;
 
+        AtomicBoolean isClosed = new AtomicBoolean(false);
+
         return new WebSocketServerMock(
                 null,
                 null,
                 networkCallbackCommandQueue,
                 gson,
+                isClosed,
                 isGameFound,
                 isAboutToDisconnect);
     }

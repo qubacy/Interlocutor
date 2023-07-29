@@ -27,14 +27,15 @@ import java.util.List;
 public class GameSessionProcessorImplFake extends GameSessionProcessor
         implements Serializable
 {
-    private static final long C_SEARCHING_TIME_MILLISECONDS = 1000;
-    private static final long C_CHATTING_TIME_MILLISECONDS = 1000; //300000;
-    private static final long C_CHOOSING_TIME_MILLISECONDS = 5000; //60000;
+    private static final long C_SEARCHING_TIME_MILLISECONDS = 10000;
+    private static final long C_CHATTING_TIME_MILLISECONDS = 30000; //300000;
+    private static final long C_CHOOSING_TIME_MILLISECONDS = 30000; //60000;
 
     private static final int C_LOCAL_ID = 0;
     private static final int C_INTERLOCUTOR_ID = 1;
 
-    private static final String C_INTERLOCUTOR_USERNAME = "user1";
+    private static final String C_TOPIC = "Board games";
+    private static final String C_INTERLOCUTOR_USERNAME = "User1";
 
     protected GameSessionProcessorImplFake() {
         super();
@@ -61,9 +62,9 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
                         add(RemoteProfilePublic.
                                 getInstance(C_INTERLOCUTOR_ID, C_INTERLOCUTOR_USERNAME));
                         add(RemoteProfilePublic.
-                                getInstance(C_INTERLOCUTOR_ID + 1, "user2"));
+                                getInstance(C_INTERLOCUTOR_ID + 1, "User2"));
                         add(RemoteProfilePublic.
-                                getInstance(C_INTERLOCUTOR_ID + 2, "user3"));
+                                getInstance(C_INTERLOCUTOR_ID + 2, "User3"));
                     }
                 };
 
@@ -73,7 +74,7 @@ public class GameSessionProcessorImplFake extends GameSessionProcessor
                         System.currentTimeMillis(),
                         C_CHATTING_TIME_MILLISECONDS,
                         C_CHOOSING_TIME_MILLISECONDS,
-                        "Test topic",
+                        C_TOPIC,
                         remoteProfilePublicList);
 
         m_callback.gameFound(remoteFoundGameData);
