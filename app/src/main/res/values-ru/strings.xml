@@ -1,0 +1,146 @@
+<resources>
+    <string name="app_name">Interlocutor</string>
+
+    <string name="main_menu_logo">\>INTERLOCUTOR_</string>
+    <string name="main_menu_button_caption_play">ИГРАТЬ</string>
+    <string name="main_menu_button_caption_profile">ПРОФИЛЬ</string>
+    <string name="main_menu_button_caption_exit">ВЫХОД</string>
+
+    <string name="profile_status_bar_title">Профиль</string>
+    <string name="profile_username_label_caption">Никнейм</string>
+    <string name="profile_username_input_hint">Введите ваш никнейм..</string>
+    <string name="profile_contact_label_caption">Контакт</string>
+    <string name="profile_contact_input_hint">Введите вашу контактную информацию..</string>
+    <string name="profile_confirm_button_caption">Подтвердить</string>
+    <string name="profile_confirm_error_message_invalid_data">Введенная информация о профиле невалидна!</string>
+    <string name="profile_confirm_error_message_saving_failed">Ошибка при сохранении введенных данных профиля!</string>
+    <string name="profile_confirm_error_message_saving_succeed">Введенные данные профиля сохранены!</string>
+
+    <string name="play_activity_disconnection_message_text">Произошло закрытие соединения!</string>
+    <string name="play_activity_unexpected_connection_ending_message_text">Произошел неожиданный обрыв соединения!</string>
+
+    <string name="play_searching_fragment_message_searching_game">Поиск игры...</string>
+    <string name="play_searching_fragment_message_game_found">Игра найдена!</string>
+    <string name="play_searching_fragment_message_searching_aborted">Поиск остановлен!</string>
+    <string name="play_searching_button_caption_abort_searching">Отмена</string>
+
+    <string name="play_chatting_fragment_status_bar_title">Чат</string>
+    <string name="play_chatting_fragment_section_sending_message_text_hint">Введите сообщение..</string>
+    <string name="play_chatting_fragment_notification_null_message_text">Введите текст!</string>
+
+    <string name="play_choosing_fragment_status_bar_title">Выбор</string>
+    <string name="play_choosing_fragment_header_title_text">Выберите своих фаворитов!</string>
+    <string name="play_choosing_fragment_button_confirm_caption">Подтвердить</string>
+
+    <string name="play_results_fragment_status_bar_title">Результаты</string>
+    <string name="play_results_fragment_header_title_text">Проверьте результаты!</string>
+    <string name="play_results_fragment_button_finish_caption">Завершить</string>
+
+    <string name="play_results_fragment_clipboard_contact_copied_note">Контакт пользователя был скопирован!</string>
+
+    <string name="error_fragment_button_ok_caption">OK</string>
+
+    <!--  ERRORS  -->
+
+    <string name="error_main_menu_fragment_null_profile_data_source">Источник данных профиля был нулевым!</string>
+    <string name="error_main_menu_fragment_null_game_service_launcher">Лаунчер игрового сервиса был нулевым!</string>
+    <string name="error_main_menu_fragment_null_profile_data_repository">Репозиторий данных профиля был нулевым!</string>
+    <string name="error_main_menu_fragment_null_profile_data">Данные профиля не были предоставлены!</string>
+
+    <string name="error_game_service_lacking_game_processor">Игровой процессор не был предоставлен!</string>
+    <string name="error_game_service_starting_searching_failed">Ошибка начала поиска!</string>
+    <string name="error_game_service_stopping_searching_failed">Ошибка приостановки поиска!</string>
+    <string name="error_game_service_sending_message_failed">Ошибка отправки сообщения!</string>
+    <string name="error_game_service_remote_profile_data_mapper_creation_failed">Ошибка создания Remote Profile Data Mapper!</string>
+    <string name="error_game_service_remote_found_game_data_mapper_creation_failed">Ошибка создания Remote Found Game Data Mapper!</string>
+    <string name="error_game_service_remote_found_game_data_mapping_failed">Ошибка конвертации Remote Found Game Data!</string>
+    <string name="error_game_service_choosing_users_failed">Ошибка выбора пользователей!</string>
+
+    <string name="error_game_session_processor_unknown_command">Неизвестная команда была предоставлена!</string>
+    <string name="error_game_session_processor_searching_state_creation_failed">Ошибка создания Searching State!</string>
+    <string name="error_game_session_processor_chatting_state_creation_failed">Ошибка создания Chatting State!</string>
+    <string name="error_game_session_processor_choosing_state_creation_failed">Ошибка создания Choosing State!</string>
+    <string name="error_game_session_processor_results_state_creation_failed">Ошибка создания Results State!</string>
+    <string name="error_game_session_processor_unknown_state">Неизвестное состояние было получено!</string>
+    <string name="error_game_session_processor_illegal_state">Неподходящее состояние было достигнуто!</string>
+    <string name="error_game_session_processor_chosen_users_setting_failed">Ошибка установки выбранных пользователей!</string>
+
+    <string name="error_game_session_processor_impl_unknown_operation_type">Неизвестный тип операции был получен!</string>
+    <string name="error_game_session_processor_impl_null_server_message">Полученное сообщение от сервера было нулевым!</string>
+    <string name="error_game_session_processor_impl_null_server_message_body">Тело полученного сообщения от сервера было нулевым!</string>
+    <string name="error_game_session_processor_impl_sending_client_message_failed">Ошибка отправки сообщения серверу!</string>
+    <string name="error_game_session_processor_impl_unknown_network_callback_command_type">Неизвестный тип комманды Network Callback был предоставлен!</string>
+    <string name="error_game_session_processor_impl_unknown_server_error">Неизвестная ошибка сервера была получена!</string>
+
+    <string name="error_game_session_processor_impl_network_incorrect_profile">Некорректные данные профиля были предоставлены!</string>
+
+    <string name="error_game_service_broadcast_receiver_creation_failed">Ошибка создания Game Service Broadcast Receiver!</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_command">Некорректная команда broadcast была предоставлена!</string>
+    <string name="error_game_service_broadcast_receiver_unknown_command_type">Неизвестный тип команды был предоставлен!</string>
+    <string name="error_game_service_broadcast_receiver_lacking_profile_data">Данные профиля не были предоставлены!</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_profile_data">Некорректные данные профиля были предоставлены!</string>
+    <string name="error_game_service_broadcast_receiver_lacking_message_data">Данные сообщения не были предоставлены</string>
+    <string name="error_game_service_broadcast_receiver_incorrect_message_data">Некорректные данные сообщения были предоставлены!</string>
+    <string name="error_game_service_broadcast_receiver_chosen_users_data">Данные выбранных пользователей не были полностью предоставлены!</string>
+
+    <string name="error_main_activity_broadcast_receiver_creation_failed">Ошибка создания Main Activity Broadcast Receiver!</string>
+    <string name="error_main_activity_ad_banner_loading_failed">Ошибка загрузки Ad Banner!</string>
+
+    <string name="error_main_activity_broadcast_receiver_unknown_command_type">Команда неизвестного типа была предоставлена!</string>
+    <string name="error_main_activity_broadcast_receiver_lacking_error_data">Данные ошибки не были предоставлены!</string>
+    <string name="error_main_activity_broadcast_receiver_incorrect_error_data">Некорректные данные ошибки были предоставлены!</string>
+
+    <string name="error_play_activity_null_arguments">Аргументы были нулевыми!</string>
+    <string name="error_play_activity_broadcast_receiver_creation_failed">Ошибка создания Play Activity Broadcast Receiver!</string>
+    <string name="error_play_activity_services_start_failed">Ошибка запуска сервисов!</string>
+    <string name="error_play_activity_ad_banner_loading_failed">Ошибка загрузки Ad Banner!</string>
+
+    <string name="error_play_activity_broadcast_receiver_incorrect_command">Некорректная команда была предоставлена!</string>
+    <string name="error_play_activity_broadcast_receiver_lacking_disconnection_data">Данные закрытия соединения не были предоставлены в полном объеме!</string>
+
+    <string name="error_play_searching_fragment_broadcast_receiver_creation_failed">Ошибка создания Play Searching Fragment Broadcast Receiver</string>
+    <string name="error_play_searching_fragment_null_arguments">Аргументы были нулевыми!</string>
+
+    <string name="error_play_searching_fragment_broadcast_receiver_incorrect_command">Некорректная команда была предоставлена!</string>
+    <string name="error_play_searching_fragment_broadcast_receiver_lacking_found_game_data">Данные найденной игры не были предоставлены!</string>
+    <string name="error_play_searching_fragment_broadcast_receiver_incorrect_found_game_data">Некорректные данные найденной игры были предоставлены!</string>
+
+    <string name="error_play_chatting_fragment_broadcast_receiver_creation_failed">Ошибка создания Play Chatting Fragment Broadcast Receiver!</string>
+    <string name="error_play_chatting_fragment_sending_message_creation_failed">Ошибка создания сообщения для отправки!</string>
+    <string name="error_play_chatting_fragment_message_adapter_creation_failed">Ошибка создания Message Adapter!</string>
+
+    <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_command">Некорректная команда была предоставлена!</string>
+    <string name="error_play_chatting_fragment_broadcast_receiver_lacking_message_data">Данные сообщения не были предоставлены!</string>
+    <string name="error_play_chatting_fragment_broadcast_receiver_incorrect_message_data">Некорректные данные сообщения были предоставлены!</string>
+
+    <string name="error_play_chatting_message_adapter_null_message">Нулевое сообщение было предоставлено!</string>
+    <string name="error_play_chatting_message_adapter_null_sender_profile">Нулевой профиль отправителя был предоставлен!</string>
+    <string name="error_play_chatting_message_adapter_setting_view_holder_data_failed">Ошибка установки данных View Holder!</string>
+
+    <string name="error_play_choosing_fragment_broadcast_receiver_creation_failed">Ошибка создания Game Choosing Broadcast Receiver!</string>
+    <string name="error_play_choosing_fragment_user_adapter_creation_failed">Ошибка создания Users Adapter!</string>
+    <string name="error_play_choosing_fragment_user_id_contact_data_list_setting_failed">Ошибка установки списка данных User ID - Contact!</string>
+
+    <string name="error_play_choosing_fragment_broadcast_receiver_incorrect_command">Некорректная команда была предоставлена!</string>
+    <string name="error_play_choosing_fragment_broadcast_receiver_lacking_user_id_contact_data_list">Данные User Id - Contact не были предоставлены!</string>
+    <string name="error_play_choosing_fragment_broadcast_receiver_invalid_user_id_contact_data_list">Некорректные данные User Id - Contact были предоставлены!</string>
+
+    <string name="error_play_choosing_user_adapter_null_profile_data">Данные профиля не были предоставлены!</string>
+    <string name="error_play_choosing_user_adapter_setting_data_failed">Ошибка установки данных!</string>
+    <string name="error_play_choosing_user_adapter_user_chosen_state_setting_failed">Ошибка установки User chosen state!</string>
+
+    <string name="error_play_results_fragment_adapter_creation_failed">Ошибка создания Adapter!</string>
+
+    <string name="error_play_results_user_contact_adapter_null_matched_user_profile_data">Данные Matched User Profile были нулевыми!</string>
+    <string name="error_play_results_user_contact_adapter_null_profile_data">Данные профиля были нулевыми!</string>
+    <string name="error_play_results_user_contact_adapter_data_setting_failed">Ошибка установки данных!</string>
+
+    <string name="error_profile_fragment_null_arguments">Аргументы были нулевыми!</string>
+    <string name="error_profile_fragment_profile_creation_failed">Ошибка создания профиля!</string>
+
+
+
+    <string name="error_error_handling_broadcast_receiver_unknown_command_type">Неизвестный тип команды был предоставлен!</string>
+    <string name="error_error_handling_broadcast_receiver_lacking_error_data">Данные ошибки не были предоставлены!</string>
+    <string name="error_error_handling_broadcast_receiver_incorrect_error_data">Некорректные данные ошибки были предоставлены!</string>
+</resources>
