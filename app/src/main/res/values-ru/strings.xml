@@ -11,6 +11,7 @@
     <string name="profile_username_input_hint">Введите ваш никнейм..</string>
     <string name="profile_contact_label_caption">Контакт</string>
     <string name="profile_contact_input_hint">Введите вашу контактную информацию..</string>
+    <string name="profile_language_label_caption">Язык</string>
     <string name="profile_confirm_button_caption">Подтвердить</string>
     <string name="profile_confirm_error_message_invalid_data">Введенная информация о профиле невалидна!</string>
     <string name="profile_confirm_error_message_saving_failed">Ошибка при сохранении введенных данных профиля!</string>

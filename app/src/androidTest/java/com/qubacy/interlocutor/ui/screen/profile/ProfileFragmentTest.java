@@ -21,6 +21,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.qubacy.interlocutor.R;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 import com.qubacy.interlocutor.data.profile.internal.source.ProfileDataSourceImpl;
 
@@ -57,16 +58,21 @@ public class ProfileFragmentTest {
         Espresso.
                 onView(ViewMatchers.withId(R.id.profile_contact_input)).
                 check(matches(ViewMatchers.withText("")));
+        Espresso.
+                onView(ViewMatchers.withId(R.id.profile_language_input)).
+                check(matches(ViewMatchers.withSpinnerText(LanguageEnum.getLanguageById(0).getName())));
     }
 
     @Test
     public void testUsernameAndContactAreShownAsInitializedWhenDataStoreIsInitialized() {
         String username = "someUsername";
         String contact = "someContact";
+        LanguageEnum lang =  LanguageEnum.EN;
 
         assertTrue(
                 m_profileDataRepository.setUsername(username) &&
-                        m_profileDataRepository.setContact(contact));
+                        m_profileDataRepository.setContact(contact) &&
+                        m_profileDataRepository.setLanguage(lang));
 
         m_profileFragmentScenario = initFragmentScenario();
 
@@ -78,6 +84,9 @@ public class ProfileFragmentTest {
         Espresso.
                 onView(ViewMatchers.withId(R.id.profile_contact_input)).
                 check(matches(ViewMatchers.withText(contact)));
+        Espresso.
+                onView(ViewMatchers.withId(R.id.profile_language_input)).
+                check(matches(ViewMatchers.withSpinnerText(lang.getName())));
     }
 
     @Test

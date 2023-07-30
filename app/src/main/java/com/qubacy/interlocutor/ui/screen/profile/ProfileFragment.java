@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,10 +18,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.qubacy.interlocutor.R;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
 import com.qubacy.interlocutor.data.general.export.struct.error.utility.ErrorUtility;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.profile.export.repository.ProfileDataRepository;
 import com.qubacy.interlocutor.ui.main.broadcaster.MainActivityBroadcastReceiver;
 import com.qubacy.interlocutor.ui.screen.NavigationFragment;
+import com.qubacy.interlocutor.ui.screen.profile.adapter.LanguageSpinnerAdapter;
 import com.qubacy.interlocutor.ui.screen.profile.error.ProfileFragmentErrorEnum;
 import com.qubacy.interlocutor.ui.screen.profile.model.ProfileFragmentViewModel;
 import com.qubacy.interlocutor.ui.utility.ActivityUtility;
@@ -32,6 +37,7 @@ public class ProfileFragment extends NavigationFragment {
 
     private EditText m_usernameEditText = null;
     private EditText m_contactEditText = null;
+    private Spinner m_langSpinner = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,16 +92,30 @@ public class ProfileFragment extends NavigationFragment {
 
         m_usernameEditText = view.findViewById(R.id.profile_username_input);
         m_contactEditText = view.findViewById(R.id.profile_contact_input);
+        m_langSpinner = view.findViewById(R.id.profile_language_input);
+
+        SpinnerAdapter langSpinnerAdapter = LanguageSpinnerAdapter.getInstance(m_context);
+
+        if (langSpinnerAdapter == null) {
+            // todo: process an error..
+
+            return view;
+        }
+
+        m_langSpinner.setAdapter(langSpinnerAdapter);
+        m_langSpinner.setSelection(0);
 
         Profile profile = m_profileFragmentViewModel.getProfile(m_context);
 
         if (profile != null) {
             String username = profile.getUsername();
             String contact = profile.getContact();
+            LanguageEnum lang = profile.getLang();
 
-            if (username != null && contact != null) {
+            if (username != null && contact != null && lang != null) {
                 m_usernameEditText.setText(username);
                 m_contactEditText.setText(contact);
+                m_langSpinner.setSelection(lang.getId());
             }
         }
 
@@ -125,8 +145,9 @@ public class ProfileFragment extends NavigationFragment {
     private void confirmProfileChanges() {
         String username = m_usernameEditText.getText().toString();
         String contact = m_contactEditText.getText().toString();
+        LanguageEnum language = (LanguageEnum) m_langSpinner.getSelectedItem();
 
-        if (username.isEmpty() || contact.isEmpty()) {
+        if (username.isEmpty() || contact.isEmpty() || language == null) {
             Toast.makeText(
                     getContext(),
                     R.string.profile_confirm_error_message_invalid_data,
@@ -136,7 +157,7 @@ public class ProfileFragment extends NavigationFragment {
             return;
         }
 
-        Profile profile = Profile.getInstance(username, contact);
+        Profile profile = Profile.getInstance(username, contact, language);
 
         if (profile == null) {
             Error error =

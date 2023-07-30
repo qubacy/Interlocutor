@@ -39,8 +39,8 @@ import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.da
 import com.qubacy.interlocutor.data.game.internal.processor.network.websocket.data.user.ServerMockUser;
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
-import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfile;
 import com.qubacy.interlocutor.data.general.internal.struct.profile.RemoteProfilePublic;
 
 import java.util.ArrayList;
@@ -252,11 +252,12 @@ public class WebSocketServerMock extends WebSocketClient {
         }
 
         if (room == null) {
-            RemoteProfile remoteProfile =
-                    RemoteProfile.getInstance(
+            Profile remoteProfile =
+                    Profile.getInstance(
                             C_DEFAULT_USER_ID,
                             userProfile.getUsername(),
-                            userProfile.getContact());
+                            userProfile.getContact(),
+                            userProfile.getLang());
             ServerMockUser serverMockUser = ServerMockUser.getInstance(remoteProfile);
 
             List<ServerMockUser> userList =
@@ -270,11 +271,12 @@ public class WebSocketServerMock extends WebSocketClient {
             m_roomList.add(room);
 
         } else {
-            RemoteProfile remoteProfile =
-                    RemoteProfile.getInstance(
+            Profile remoteProfile =
+                    Profile.getInstance(
                             room.getMinAvailableUserId(),
                             userProfile.getUsername(),
-                            userProfile.getContact());
+                            userProfile.getContact(),
+                            userProfile.getLang());
             ServerMockUser serverMockUser = ServerMockUser.getInstance(remoteProfile);
 
             if (!room.addUser(serverMockUser)) return false;

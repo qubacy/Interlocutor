@@ -40,9 +40,11 @@ public class StartSearchingClientMessageBodySerializer
 
         JsonPrimitive usernameValueJson = new JsonPrimitive(profile.getUsername());
         JsonPrimitive contactValueJson = new JsonPrimitive(profile.getContact());
+        JsonPrimitive langIdValueJson = new JsonPrimitive(profile.getLang().getId());
 
         profileJsonObj.add(Profile.C_USERNAME_PROP_NAME, usernameValueJson);
         profileJsonObj.add(Profile.C_CONTACT_PROP_NAME, contactValueJson);
+        profileJsonObj.add(Profile.C_LANG_PROP_NAME, langIdValueJson);
 
         return profileJsonObj;
     }

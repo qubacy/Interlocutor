@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.MessageBodyDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 
 import java.lang.reflect.Type;
@@ -45,14 +46,18 @@ public class ServerMockStartSearchingMessageBodyDeserializer
                 profileJsonObj.getAsJsonPrimitive(Profile.C_USERNAME_PROP_NAME);
         JsonPrimitive contactValueJson =
                 profileJsonObj.getAsJsonPrimitive(Profile.C_CONTACT_PROP_NAME);
+        JsonPrimitive langIdValueJson =
+                profileJsonObj.getAsJsonPrimitive(Profile.C_LANG_PROP_NAME);
 
-        if (usernameValueJson == null || contactValueJson == null) return null;
+        if (usernameValueJson == null || contactValueJson == null || langIdValueJson == null)
+            return null;
 
         String username = usernameValueJson.getAsString();
         String contact = contactValueJson.getAsString();
+        LanguageEnum lang = LanguageEnum.getLanguageById(langIdValueJson.getAsInt());
 
-        if (username == null || contact == null) return null;
+        if (username == null || contact == null || lang == null) return null;
 
-        return Profile.getInstance(username, contact);
+        return Profile.getInstance(username, contact, lang);
     }
 }

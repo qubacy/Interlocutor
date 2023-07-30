@@ -11,6 +11,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.bo
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.choosing.makechoice.UsersChosenClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.start.StartSearchingClientMessageBody;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.body.outgoing.searching.stop.StopSearchingClientMessageBody;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 
 import org.junit.Assert;
@@ -41,7 +42,7 @@ public class MessageSerializerTest {
 
     @Test
     public void testStartSearchingMessageSerialization() {
-        Profile profile = Profile.getInstance("user1", "contact");
+        Profile profile = Profile.getInstance("user1", "contact", LanguageEnum.EN);
 
         MessageBody messageBody = StartSearchingClientMessageBody.getInstance(profile);
         Message message = Message.getInstance(OperationEnum.SEARCHING_START, messageBody);
@@ -62,7 +63,11 @@ public class MessageSerializerTest {
         expectedJsonStringBuilder.append(Profile.C_CONTACT_PROP_NAME);
         expectedJsonStringBuilder.append("\":\"");
         expectedJsonStringBuilder.append(profile.getContact());
-        expectedJsonStringBuilder.append("\"}}}");
+        expectedJsonStringBuilder.append("\",\"");
+        expectedJsonStringBuilder.append(Profile.C_LANG_PROP_NAME);
+        expectedJsonStringBuilder.append("\":");
+        expectedJsonStringBuilder.append(profile.getLang().getId());
+        expectedJsonStringBuilder.append("}}}");
 
         Assert.assertEquals(expectedJsonStringBuilder.toString(), gottenJsonString);
     }

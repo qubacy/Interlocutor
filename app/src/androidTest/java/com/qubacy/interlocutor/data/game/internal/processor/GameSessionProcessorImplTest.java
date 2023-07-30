@@ -18,6 +18,7 @@ import com.qubacy.interlocutor.data.game.internal.processor.state.GameSessionSta
 import com.qubacy.interlocutor.data.game.internal.struct.message.RemoteMessage;
 import com.qubacy.interlocutor.data.game.internal.struct.searching.RemoteFoundGameData;
 import com.qubacy.interlocutor.data.general.export.struct.error.Error;
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 
 import org.junit.Assert;
@@ -96,7 +97,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
         Assert.assertTrue(gameSessionProcessor.stopSearching());
@@ -170,7 +171,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
@@ -231,7 +232,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("", "contact");
+        Profile profile = Profile.getInstance("", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
@@ -256,7 +257,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
@@ -289,7 +290,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
@@ -357,7 +358,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 
@@ -441,7 +442,7 @@ public class GameSessionProcessorImplTest {
 
         Assert.assertTrue(gameSessionProcessor.isRunning());
 
-        Profile profile = Profile.getInstance("username", "contact");
+        Profile profile = Profile.getInstance("username", "contact", LanguageEnum.EN);
 
         Assert.assertTrue(gameSessionProcessor.startSearching(profile));
 

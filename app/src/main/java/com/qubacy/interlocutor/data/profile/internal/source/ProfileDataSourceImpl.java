@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.qubacy.interlocutor.data.general.export.struct.profile.LanguageEnum;
 import com.qubacy.interlocutor.data.general.export.struct.profile.Profile;
 import com.qubacy.interlocutor.data.profile.export.source.ProfileDataSource;
 
@@ -13,6 +14,7 @@ public class ProfileDataSourceImpl implements ProfileDataSource {
 
     public static final String C_USERNAME_PROP_NAME = "username";
     public static final String C_CONTACT_PROP_NAME = "contact";
+    public static final String C_LANGUAGE_PROP_NAME = "lang";
 
     final private SharedPreferences m_dataStore;
 
@@ -31,8 +33,15 @@ public class ProfileDataSourceImpl implements ProfileDataSource {
     }
 
     @Override
+    public LanguageEnum getLanguage() {
+        int langId = m_dataStore.getInt(C_LANGUAGE_PROP_NAME, 0);
+
+        return LanguageEnum.getLanguageById(langId);
+    }
+
+    @Override
     public Profile getProfile() {
-        return Profile.getInstance(getUsername(), getContact());
+        return Profile.getInstance(getUsername(), getContact(), getLanguage());
     }
 
     @Override
@@ -50,8 +59,17 @@ public class ProfileDataSourceImpl implements ProfileDataSource {
     }
 
     @Override
+    public boolean setLanguage(@NonNull final LanguageEnum language) {
+        m_dataStore.edit().putInt(C_LANGUAGE_PROP_NAME, language.getId()).apply();
+
+        return true;
+    }
+
+    @Override
     public boolean setProfile(@NonNull final Profile profile) {
-        return (setUsername(profile.getUsername()) && setContact(profile.getContact()));
+        return (setUsername(profile.getUsername()) &&
+                setContact(profile.getContact()) &&
+                setLanguage(profile.getLang()));
     }
 
     public static class Builder {

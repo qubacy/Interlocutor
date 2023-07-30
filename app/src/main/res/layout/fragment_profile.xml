@@ -38,6 +38,23 @@
         app:layout_constraintTop_toBottomOf="@id/profile_contact_label"
         android:hint="@string/profile_contact_input_hint"/>
 
+    <TextView
+        android:id="@+id/profile_language_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_contact_input"
+        android:layout_marginTop="8dp"
+        style="@style/ProfileLabelStyle"
+        android:text="@string/profile_language_label_caption"/>
+
+    <Spinner
+        android:id="@+id/profile_language_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_language_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"/>
+
     <Button
         android:id="@+id/profile_confirm_button"
         android:layout_width="wrap_content"

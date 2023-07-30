@@ -3,6 +3,7 @@ package com.qubacy.interlocutor.data.general.internal.struct.profile;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qubacy.interlocutor.data.game.export.struct.results.MatchedUserProfileData;
+import com.qubacy.interlocutor.data.game.internal.processor.impl.network.error.NetworkServerErrorEnum;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.Message;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.MessageDeserializer;
 import com.qubacy.interlocutor.data.game.internal.processor.impl.network.gson.OperationEnum;
@@ -62,7 +63,7 @@ public class MessageDeserializerTest {
     @Test
     public void testErrorMessageDeserialization() {
         ServerMessageError serverMessageError =
-                ServerMessageError.getInstance("some error");
+                ServerMessageError.getInstance(NetworkServerErrorEnum.INCORRECT_PROFILE.getId());
 
         StringBuilder messageStringBuilder = new StringBuilder("{\"");
 
@@ -72,9 +73,9 @@ public class MessageDeserializerTest {
         messageStringBuilder.append(",\"body\":{\"");
         messageStringBuilder.append(ServerMessageBody.C_ERROR_PROP_NAME);
         messageStringBuilder.append("\":{\"");
-        messageStringBuilder.append(ServerMessageError.C_MESSAGE_PROP_NAME);
+        messageStringBuilder.append(ServerMessageError.C_ID_PROP_NAME);
         messageStringBuilder.append("\":\"");
-        messageStringBuilder.append(serverMessageError.getMessage());
+        messageStringBuilder.append(serverMessageError.getId());
         messageStringBuilder.append("\"}}}");
 
         MessageBody expectedMessageBody =

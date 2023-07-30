@@ -11,6 +11,7 @@
     <string name="profile_username_input_hint">Type your username..</string>
     <string name="profile_contact_label_caption">Contact</string>
     <string name="profile_contact_input_hint">Type your contact info..</string>
+    <string name="profile_language_label_caption">Language</string>
     <string name="profile_confirm_button_caption">Confirm</string>
     <string name="profile_confirm_error_message_invalid_data">Provided profile data is incorrect!</string>
     <string name="profile_confirm_error_message_saving_failed">Provided profile data saving was failed!</string>
