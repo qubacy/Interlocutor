@@ -27,9 +27,9 @@ import java.util.List;
 public class GameSessionProcessorImplFake extends GameSessionProcessor
         implements Serializable
 {
-    private static final long C_SEARCHING_TIME_MILLISECONDS = 10000;
-    private static final long C_CHATTING_TIME_MILLISECONDS = 30000; //300000;
-    private static final long C_CHOOSING_TIME_MILLISECONDS = 30000; //60000;
+    private static final long C_SEARCHING_TIME_MILLISECONDS = 1000;
+    private static final long C_CHATTING_TIME_MILLISECONDS = 2000; //300000;
+    private static final long C_CHOOSING_TIME_MILLISECONDS = 2000; //60000;
 
     private static final int C_LOCAL_ID = 0;
     private static final int C_INTERLOCUTOR_ID = 1;

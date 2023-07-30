@@ -53,7 +53,7 @@
         android:layout_marginRight="8dp"
         android:padding="10dp"
         android:textSize="20sp"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="?attr/colorOnSecondary"
         android:text="@string/play_choosing_fragment_button_confirm_caption"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

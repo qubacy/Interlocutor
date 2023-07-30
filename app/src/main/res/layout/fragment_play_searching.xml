@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="20sp"
         android:padding="12dp"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="?attr/colorOnSecondary"
         android:text="@string/play_searching_button_caption_abort_searching" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
