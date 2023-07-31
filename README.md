@@ -2,6 +2,8 @@
 A discussion game that is mostly oriented toward getting new contacts. The link to Google Play Market will be published soon.
 ## App mechanics
 Every game session starts from a searching process. When an appropriate game room is found you will be provided with a facility of chatting with other users. The conversation time is limited so at the end of this stage you have to choose your favourites. If your choice matches with somebody you both will be provided with contact information of each other.
+
+![Gameplay footage](https://github.com/qubacy/Interlocutor/assets/48231933/4bb44f9d-6632-4f63-88f0-1c57ce33a106)
 ## Requirements
 Your device has to conform with the following requirements:
 - Android OS with API level 26 or higher;
