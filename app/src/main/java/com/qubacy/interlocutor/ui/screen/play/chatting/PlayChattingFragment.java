@@ -1,6 +1,7 @@
 package com.qubacy.interlocutor.ui.screen.play.chatting;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,6 +142,18 @@ public class PlayChattingFragment extends PlayFragment
         m_recyclerView.setLayoutManager(linearLayoutManager);
 
         m_messageEditText = view.findViewById(R.id.play_chatting_section_sending_message_text);
+
+        m_messageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getKeyCode() != KeyEvent.KEYCODE_ENTER) return false;
+                if (event.getAction() == KeyEvent.ACTION_UP) return false;
+
+                onMessageSendingRequested();
+
+                return true;
+            }
+        });
 
         ImageButton sendButton = view.findViewById(R.id.play_chatting_section_sending_button_send);
 
