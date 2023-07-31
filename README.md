@@ -8,7 +8,7 @@ Your device has to conform with the following requirements:
 - Stable network connection.
 ## Used libraries:
 The following libraries are in use:
-- OkHttp3 (handling network requests);
-- Gson (JSON serialization & deserialization);
-- Navigation Framework (handling transition between fragments & activities);
-- Espresso (for Instrumental Testing).
+- [OkHttp3](https://github.com/square/okhttp) (handling network requests);
+- [Gson](https://github.com/google/gson) (JSON serialization & deserialization);
+- [Navigation Framework](https://developer.android.com/reference/androidx/navigation/package-summary) (handling transition between fragments & activities);
+- [Espresso](https://developer.android.com/training/testing/espresso) (for Instrumental Testing).
