@@ -19,7 +19,7 @@ import com.yandex.mobile.ads.common.ImpressionData;
 
 public abstract class ActivityBase extends AppCompatActivity {
     public static final String YANDEX_MOBILE_ADS_TAG = "YandexMobileAds";
-    public static final String C_AD_UNIT_ID = "demo-banner-yandex";
+    public static final String C_AD_UNIT_ID = "R-M-2561747-1";
 
     protected BannerAdView m_bannerAdView = null;
 
@@ -48,10 +48,13 @@ public abstract class ActivityBase extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
         float widthInDp =
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    displayMetrics.widthPixels,
-                    displayMetrics);
+                displayMetrics.widthPixels / displayMetrics.density;
+//                TypedValue.applyDimension(
+//                    TypedValue.COMPLEX_UNIT_PX,
+//                    displayMetrics.widthPixels,
+//                    displayMetrics);
+
+        Log.d(YANDEX_MOBILE_ADS_TAG, "Banner width: " + widthInDp);
 
         m_bannerAdView.setAdUnitId(C_AD_UNIT_ID);
         m_bannerAdView.setAdSize(AdSize.stickySize(this, (int) widthInDp));
@@ -61,12 +64,12 @@ public abstract class ActivityBase extends AppCompatActivity {
         m_bannerAdView.setBannerAdEventListener(new BannerAdEventListener() {
             @Override
             public void onAdLoaded() {
-                Log.d(YANDEX_MOBILE_ADS_TAG, "Ad has been loaded!");
+                Log.d(YANDEX_MOBILE_ADS_TAG, "Ad has been loaded! ID: " + C_AD_UNIT_ID);
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull AdRequestError adRequestError) {
-                Log.d(YANDEX_MOBILE_ADS_TAG, adRequestError.getDescription());
+                Log.d(YANDEX_MOBILE_ADS_TAG, "Code: " + String.valueOf(adRequestError.getCode()) + "; Description: " + adRequestError.getDescription());
             }
 
             @Override

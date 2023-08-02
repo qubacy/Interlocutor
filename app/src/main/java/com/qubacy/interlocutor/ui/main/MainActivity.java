@@ -56,14 +56,15 @@ public class MainActivity extends ErrorHandlingActivity
 
         m_broadcastReceiver = mainActivityBroadcastReceiver;
 
-        MobileAds.initialize(this, new InitializationListener() {
+        MobileAds.initialize(getApplicationContext(), new InitializationListener() {
             @Override
             public void onInitializationCompleted() {
                 Log.d(YANDEX_MOBILE_ADS_TAG, "SDK initialized");
             }
         });
+        MobileAds.enableLogging(true);
 
-        if (!setBannerAd(this, R.id.activity_main_banner_ad_view)) {
+        if (!setBannerAd(getApplicationContext(), R.id.activity_main_banner_ad_view)) {
             Error error =
                     ErrorUtility.getErrorByStringResourceCodeAndFlag(
                             this,
